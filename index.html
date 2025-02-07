@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Andres Nicolas - Python Developer Portfolio">
+        <meta name="keywords" content="Portfolio, Full Stack Engineer, Python Developer">
+        <title>Andres Nicolas - Portfolio</title>
+        <link rel="preload" href="styles.css" as="style">
+        <link rel="stylesheet" href="./styles/styles.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+
+        <nav class="navbar">
+            <div class="logo">
+                <img src="./assets/Images/logo.png" alt="Logo">
+            </div>
+            <div class="nav-links-container">
+                <ul>
+                    <li><a href="#Home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#skills-modal">Skills</a></li>
+                    <li><a href="#certifications">Licenses & Certifications</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                </ul>
+            </div>
+            <div class="download-cv">
+                <a href="./cv/cv - Andres Nicolas.pdf" download class="cv-button">Download Resume</a>
+            </div>
+        </nav>
+
+        <div class="scrollspy intro-header" id="Home">
+            <div class="jumbotron centerize">
+                <div id="delayed-content" style="display: none;"></div>
+                    <img src="./assets/Images/profile.png" alt="Andres Nicolas" class="profile-pic">
+
+                    <div id="typed-output"></div>
+
+                        <h1 style="color: red;">Andres Nicolas Alegre</h1>
+                        <p>Full Stack Engineer | Python Developer</p>
+                        
+                        <div class="social">
+                            <a href="https://github.com/andresnalegre" target="_blank" aria-label="GitHub" class="icon-white-bg">
+                                <svg height="24" aria-hidden="true" viewBox="0 0 24 24" version="1.1" width="24" class="social-icon">
+                                    <path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path>
+                                </svg>
+                            </a>
+                            <a href="https://www.linkedin.com/in/andresni/" target="_blank" aria-label="LinkedIn" class="icon-white-bg">
+                                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" class="social-icon" />
+                            </a>
+                            <a href="https://codepen.io/andresnalegre" target="_blank" aria-label="CodePen" class="icon-yellow-bg">
+                                <img src="https://assets.codepen.io/t-1/internal/avatars/teams/default.png?fit=crop&format=auto&height=512&version=1623701316&width=512" alt="CodePen" class="social-icon" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="about" class="section">
+            <div class="about-container">
+                
+                <div class="about-image">
+                    <img src="./assets/Images/Andres.png" alt="Andres Nicolás" />
+                </div>
+        
+                <div class="about-details">
+                    <h2>About Me</h2>
+                    <p><strong>I’m a full-stack engineer with a passion for building and creating tech things, and over the years I’ve focused on software development, working with tools like Python and web stuff to bring my creative ideas to life.</strong></p>
+                    <p><strong>Areas of Expertise:</strong> I specialised in creating practical solutions, always aiming to automate everyday tasks in a way that’s user-friendly for colleagues. This interest evolved during my time at IBM, where I had the opportunity to work with Watson AI and integrate projects using IBM Cloud.</p>
+                    <p><strong>Career Milestones:</strong> At IBM, I developed software using Selenium, OpenCV, and Python3 to automate data inputs in a closed tool, reducing manual work by 80%. This innovation earned me the "VISION" merit in 2019 for strategic thinking.</p>
+                    <p><strong>Languages:</strong> My native languages are Spanish and Portuguese, but I can communicate in English easily.</p>
+                    
+                    <div class="about-work-education">
+                        <div class="education">
+                            <p><strong>Education:</strong> Bachelor of Computer Engineering</p>
+                        </div>
+                    </div>
+
+                    <div class="about-social">
+                        <a href="#">#Python3</a>
+                        <a href="#">#FullStack</a>
+                        <a href="#">#Engineer</a>
+                        <a href="#">#Developer</a>
+                        <a href="#">#Automation</a>
+                        <a href="#">#Innovation</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="experience" class="section">
+            <h2>Professional Experience</h2>
+
+            <p class="timeline-past">Past</p>
+
+            <div class="timeline">    
+                <div class="timeline-item" data-year="2014">
+                    <h3>Technical Support Representative</h3>
+                    <p>Nelri Comércio e Serviços de Informática Ltda., Campinas, Brazil</p>
+                    <p>I Worked as an IT lab technician, handling data recovery, computer maintenance,<br>
+                        and performing Level 2 remote access support for clients.</p>
+                    <p><strong>Skills:</strong> Linux, Data Recovery, Windows, Problem Solving, Remote Access, Active Directory</p>
+                </div>
+
+                <div class="timeline-item" data-year="2015">
+                    <h3>Technical Support Specialist</h3>
+                    <p>IBM, Brazil</p>
+                    <p>Worked as Level 2 and Level 3 technical support for the Michelin client, resolving issues through remote access, managing user access control, and fixing system bugs using TypeScript. Followed KPI methodologies to ensure effective support.</p>
+                    <p><strong>Skills:</strong> SAP, Active Directory, Linux, TypeScript</p>
+                </div>
+
+                <div class="timeline-item" data-year="2017">
+                    <h3>Python Developer</h3>
+                    <p>IBM, Brazil</p>
+                    <p>I worked in the Finance SSA department, providing support across Latin America and creating automations using Python3 to streamline tasks, with recognised merit for achievements.</p>
+                    <p><strong>Skills:</strong> Slack, GitHub, Python3, Flask, IBM Cloud, React, PyQt5, Bootstrap, Agile Methodologies.</p>
+                </div>
+
+                <div class="timeline-item" data-year="2020">
+                    <h3>Freelancer</h3>
+                    <p>Empoderador Digital, Worldwide</p>
+                    <p>Worked on website creation and developed AdSense strategies for marketing management during the pandemic.</p>
+                    <p><strong>Skills:</strong> HTML5, CSS3, JavaScript, Bootstrap, Google Analytics, Google Ads, Facebook Ads, WordPress, SEO.</p>
+                </div>
+
+                <div class="timeline-item" data-year="✈️">
+                    <p>Moved from Brazil 🇧🇷 to Ireland 🇮🇪</p>
+                </div>
+
+                <div class="timeline-item" data-year="2022">
+                    <h3>Security Officer</h3>
+                    <p>Bidvest Noonan, Dublin, Ireland</p>
+                    <p>Working as a hospital environment security officer to improve English proficiency while validating my skills, certifications, and degree in Ireland.</p>
+                    <p><strong>Skills:</strong> Working Under Pressure, Reports, Critical Thinking, Problem Solving.</p>
+                </div>
+            </div>
+
+            <p class="timeline-present">Present</p>
+        </section>
+
+        <section id="education" class="section">
+            <h2>Education</h2>
+            <div class="education-item">
+                <h3>São Paulo Salesian University Center</h3>
+                <p>Bachelor of Engineering - BE, Computer Engineering</p>
+                <p>Feb 2014 - Feb 2020</p>
+            </div>
+        </section>
+
+        <section id="skills-modal">
+            <h2>Skills</h2>
+
+            <div class="skills-filter">
+                <button class="filter-btn active" data-category="most-progress">Most Progress</button>
+                <button class="filter-btn" data-category="languages">Languages</button>
+            </div>
+
+            <div class="skills-table">
+                <div class="skill-row">
+                    <div class="skill-name">HTML & CSS</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar" data-years="2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025"></div>
+                    </div>
+                    <div class="skill-xp">0 XP</div>
+                </div>
+
+                <div class="skill-row">
+                    <div class="skill-name">Python 3</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar" data-years="2015,2016,2017,2018,2019,2020,2022,2023,2024,2025"></div>
+                    </div>
+                    <div class="skill-xp">0 XP</div>
+                </div>
+
+                <div class="skill-row">
+                    <div class="skill-name">Web Development</div>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar" data-years="2016,2017,2018,2019,2020,2021,2022,2024,2025"></div>
+                    </div>
+                    <div class="skill-xp">0 XP</div>
+                </div>
+
+                <div class="hidden-skills">
+                    <div class="skill-row">
+                        <div class="skill-name">Data Science</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2016,2017,2018,2019,2020,2021,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">Cybersecurity</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2016,2017,2018,2019,2020,2021,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">Bootstrap</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2016,2017,2018,2019,2020,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">SQL</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2017,2018,2019,2020,2022,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">Linux</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2015,2016,2018,2019,2020,2021,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">PHP</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2017,2018,2019,2020,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">JavaScript</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2018,2019,2020,2021,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">jQuery</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2018,2019,2020,2021,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">Java</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2018,2019,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">C#</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2016,2017,2018,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">IT</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2015,2016,2017,2018,2019,2020,2021,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div class="skill-name">GitHub</div>
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-years="2015,2016,2017,2018,2019,2020,2023,2024,2025"></div>
+                        </div>
+                        <div class="skill-xp">0 XP</div>
+                    </div>
+                </div>
+
+                <button class="more-btn">Show More Skills</button>
+            </div>
+
+            <div class="language-skills" style="display: none;">
+                <div class="skill-row">
+                    <div class="skill-name">Spanish</div>
+                    <div class="skill-level">Native</div>
+                </div>
+
+                <div class="skill-row">
+                    <div class="skill-name">Portuguese</div>
+                    <div class="skill-level">Native</div>
+                </div>
+
+                <div class="skill-row">
+                    <div class="skill-name">English</div>
+                    <div class="skill-level">Upper-Intermediate</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="certifications" class="section">
+            <h2>Licenses & Certifications</h2>
+            <div class="certifications-container">
+
+                <div class="certification-item">
+                    <p class="year">2025</p>
+                    <h3 class="cerificate">Full Stack Engineer</h3>
+                    <p class="provider">Codecademy<br><strong>Credential ID 731B506F-F</strong></p>
+                    <a href="https://www.codecademy.com/profiles/andresnicolas/certificates/5f7e644d833c070013ef47c4" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2024</p>
+                    <h3 class="cerificate">Java</h3>
+                    <p class="provider">Codecademy<br><strong>Credential ID 03BA50CC-B</strong></p>
+                    <a href="https://www.codecademy.com/profiles/andresnicolas/certificates/d3f89367b558583e361640f778191345" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2024</p>
+                    <h3 class="cerificate">C#</h3>
+                    <p class="provider">Codecademy<br><strong>Credential ID 8C915DEB-E</strong></p>
+                    <a href="https://www.codecademy.com/profiles/andresnicolas/certificates/65f0ff88f4fc58e0536b3b51648dff24" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2024</p>
+                    <h3 class="cerificate">Python 3</h3>
+                    <p class="provider">Codecademy<br><strong>Credential ID 879A14FB-0</strong></p>
+                    <a href="https://www.codecademy.com/profiles/andresnicolas/certificates/6c152bd262967f8c941c9707ed636bda" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2024</p>
+                    <h3 class="cerificate">PHP</h3>
+                    <p class="provider">Codecademy<br><strong>Credential ID 2B9851B4-9</strong></p>
+                    <a href="https://www.codecademy.com/profiles/andresnicolas/certificates/9b7bcc38d0ed49f593228763cbfd51e3" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2024</p>
+                    <h3 class="cerificate">jQuery</h3>
+                    <p class="provider">Codecademy<br><strong>Credential ID 8BE8661E-6</strong></p>
+                    <a href="https://www.codecademy.com/profiles/andresnicolas/certificates/0becf7c1cd2bd715f24331dddd23425a" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2024</p>
+                    <h3 class="cerificate">Bootstrap</h3>
+                    <p class="provider">Codecademy<br><strong>Credential ID D2587012-4</strong></p>
+                    <a href="https://www.codecademy.com/profiles/andresnicolas/certificates/0595479d03627a8cb816b069000e4d06" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2024</p>
+                    <h3 class="cerificate">Python (INF-303)</h3>
+                    <p class="provider">Solas IT Recruitment</p>
+                    <a href="https://solas.pkanti.com//Awards/ViewAward/?id=b199a1a5-02d4-4c7a-a36f-3a18638fa838" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2020</p>
+                    <h3 class="cerificate">Digital Marketing Essentials</h3>
+                    <p class="provider">Skillsoft<br><strong>Credential ID 23323576</strong></p>
+                    <a href="https://skillsoft.digitalbadges.skillsoft.com/a7784f6f-2d51-4a4d-81ce-253b97311475#gs.2ej9rk" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">SAP ERP INTELLIGENCE</h3>
+                    <p class="provider">MDL Consulting Inc.</p>
+                    <a href="https://media.licdn.com/dms/image/C4E22AQFaPCAFL6NzMQ/feedshare-shrink_1280/0/1574636397438?e=1706745600&v=beta&t=UdxX00tcSjaDtR6XRch5JwJVr6ikfrF_I1S0Pctc9to" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Python for Data Science</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/56b03131-3c80-4ac9-b525-1064ca4d89b9/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">IoT - AI for Buildings</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/9e87fda7-1708-4959-a556-a10fed7e72aa/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">IBM Watson IoT</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/125935c0-2322-4f2b-9987-a1ee8ab4dacb/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Build Your Own Chatbot</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/1b570646-5637-43f8-916e-04e15bd89c61/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">IBM CLM® for SAFe®</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/86f09474-ed48-4465-9cab-43a5bcab3a62/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Node-RED: From Basics to Bots</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/b5f6e8a4-d820-43b3-bf73-354f0c6b600b/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Zero to Node-Red</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/8538c212-a947-4950-82e5-9d6bbd5d0a83/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">AgileTA Explorer</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/529f9faa-ce43-471c-b39c-20e482894d7d/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">IBM Agile Achiever</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/4e6d707f-ddce-43f6-9bbe-55d2e7b879f0/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Enterprise Design Thinking Practitioner</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/b161f6e9-f068-4950-841f-f72e6232fb42/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Cognitive Practitioner</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/fb61c16c-9c1f-4f2d-95e1-8258c39e3f6e/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">IBM Agile Champion</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/0803d257-da2f-46ef-84c7-f54dd4a031e1/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">IBM Blockchain Essentials</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/ae4c1368-0f46-49d3-9c24-83c8b486722e/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">IBM Security Essentials for Architects</h3>
+                    <p class="provider">IBM</p>
+                    <a href="https://www.credly.com/badges/48326328-0782-4619-a419-6ba9c3e1b06a/linked_in_profile" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Certified Ethical Hacker</h3>
+                    <p class="provider">IBM<br><strong>Credential ID <br> EELC-SAFARI100000006A0630</strong></p>
+                    <a href="https://login.w3.ibm.com/idaas/mtfim/sps/idaas/login?runtime=true&Target=https%3A%2F%2Flogin.w3.ibm.com%2Fsaml%2Fsps%2Fauth%23certificate%2FEELC-SAFARI100000006A0630%2FEELC-08435A631_EELC_SAFARI100000006A0630&devicetype=MACOS" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Forensics & Investigation</h3>
+                    <p class="provider">Udemy<br><strong>Credential ID UC-UL7TSYTJ</strong></p>
+                    <a href="https://www.udemy.com/certificate/UC-UL7TSYTJ/" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2018</p>
+                    <h3 class="cerificate">Security in PHP</h3>
+                    <p class="provider">4Linux<br><strong> ID: 4L045000029256<br>COD: U6aMtSax</strong></p>
+                    <a href="https://certificados.4linux.com.br/" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2017</p>
+                    <h3 class="cerificate">Linux Fundamentals in Cloud</h3>
+                    <p class="provider">4Linux<br><strong> ID: 4L045000029256<br>COD: U6aMtSax</strong></p>
+                    <a href="https://certificados.4linux.com.br/" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2017</p>
+                    <h3 class="cerificate">Linux Security Servers in Cloud</h3>
+                    <p class="provider">4Linux<br><strong> ID: 4L045000029256<br>COD: U6aMtSax</strong></p>
+                    <a href="https://certificados.4linux.com.br/" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+                <div class="certification-item">
+                    <p class="year">2017</p>
+                    <h3 class="cerificate">Linux Security SysAdmin in Cloud</h3>
+                    <p class="provider">4Linux<br><strong> ID: 4L045000029256<br>COD: U6aMtSax</strong></p>
+                    <a href="https://certificados.4linux.com.br/" target="_blank" class="validate-link">Verify</a>
+                </div>
+
+            </div>
+        </section>
+        
+        <section id="projects" class="section">
+            <h2>Projects</h2>
+
+            <div id="filter-container">
+                <label for="category-filter">Filter by Category:</label>
+                <select id="category-filter">
+                    <option value="all">Show All</option>
+                </select>
+            </div>
+
+            <div class="projects-container" id="projects-container">
+
+                <a href="https://github.com/andresnalegre/DataScrape" class="project" data-category="Python">
+                    <div>
+                        <h3>DataScrape</h3>
+                        <p><strong>Personal Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/Firecat" class="project" data-category="Python">
+                    <div>
+                        <h3>Firecat</h3>
+                        <p><strong>Personal Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/JamLite" class="project" data-category="React">
+                    <div>
+                        <h3>JamLite</h3>
+                        <p><strong>Codecademy Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/DailyBlessing" class="project" data-category="Node.js">
+                    <div>
+                        <h3>Daily Blessing</h3>
+                        <p><strong>Codecademy Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/Storify" class="project" data-category="React">
+                    <div>
+                        <h3>Storify</h3>
+                        <p><strong>Personal Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/PiggyBank" class="project" data-category="React">
+                    <div>
+                        <h3>Piggy Bank</h3>
+                        <p><strong>Codeacademy Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/RedCatch" class="project" data-category="React">
+                    <div>
+                        <h3>RedCatch</h3>
+                        <p><strong>Codecademy Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/AstroCalc" class="project" data-category="Web Development">
+                    <div>
+                        <h3>AstroCalc</h3>
+                        <p><strong>Personal Project</strong></p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/andresnalegre/CipherFlow" class="project" data-category="Web Development">
+                    <div>
+                        <h3>Cipher Flow</h3>
+                        <p><strong>Personal Project</strong></p>
+                    </div>
+                </a>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Andres Nicolas</p>
+            <p>Connect with me on <a href="https://www.linkedin.com/in/andresni/" target="_blank">LinkedIn</a>.</p>
+        </footer>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+        <script src="./scripts/script.js"></script>
+    </body>
+</html>
