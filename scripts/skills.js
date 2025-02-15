@@ -1,49 +1,4 @@
-const navLinks = document.querySelectorAll('.navbar a[href^="#"]');
-const offsets = {
-    "#Home": 50,
-    "#about": -30,
-    "#experience": 90,
-    "#education": 150,
-    "#skills-modal": 100,
-    "#certifications": 80,
-    "#projects": 120
-};
-
-const getOffsetForLink = (href) => offsets[href] || 90;
-
-navLinks.forEach(link => {
-    link.addEventListener('click', event => {
-        event.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-
-        if (targetSection) {
-            const offset = getOffsetForLink(targetId);
-            const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - offset;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-const educationSection = document.querySelector('#education');
-let positionX = 0;
-
-function animateBackground() {
-    positionX -= 0.2;
-
-    if (positionX <= -100) {
-        positionX = 0;
-    }
-
-    educationSection.style.backgroundPosition = `${positionX}% 0`;
-    requestAnimationFrame(animateBackground);
-}
-
-animateBackground();
+// Logical system for skill visualization, filtering, and dynamic XP calculation
 
 document.addEventListener("DOMContentLoaded", () => {
     const moreBtn = document.querySelector(".more-btn");
@@ -135,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             lessBtn.style.borderRadius = "30px";
             lessBtn.style.fontWeight = "bold";
             lessBtn.style.fontSize = "1rem";
-            lessBtn.style.backgroundColor = "#002040";
+            lessBtn.style.backgroundColor = "#4a148c";
             lessBtn.style.color = "white";
             lessBtn.style.border = "none";
             lessBtn.style.cursor = "pointer";
@@ -213,32 +168,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const projects = document.querySelectorAll(".project");
-    const filterSelect = document.getElementById("category-filter");
-
-    const categoryCount = {};
-    projects.forEach(project => {
-        const category = project.dataset.category;
-        categoryCount[category] = (categoryCount[category] || 0) + 1;
-    });
-
-    Object.entries(categoryCount).forEach(([category, count]) => {
-        const option = document.createElement("option");
-        option.value = category;
-        option.textContent = `${category} (${count})`;
-        filterSelect.appendChild(option);
-    });
-
-    filterSelect.addEventListener("change", () => {
-        const selectedCategory = filterSelect.value;
-        projects.forEach(project => {
-            const projectCategory = project.dataset.category;
-            if (selectedCategory === "all" || projectCategory === selectedCategory) {
-                project.style.display = "block";
-            } else {
-                project.style.display = "none";
-            }
-        });
-    });
-});
