@@ -33,10 +33,11 @@ body {
     align-items: center;
     margin-right: -50px;
     margin-left: 20px;
+    margin-bottom: 10px;
 }
 
 .navbar .logo img {
-    height: 115px;
+    height: 120px;
     width: auto;
     object-fit: contain;
     pointer-events: none;
