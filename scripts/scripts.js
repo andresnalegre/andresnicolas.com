@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             this.initializeSkills();
             this.setupFilterButtons();
-            this.setupSkillBarsAccessibility();
+            this.setupSkillBars();
             
             if (DOM.moreBtn) {
                 DOM.moreBtn.setAttribute('role', 'button');
@@ -189,6 +189,45 @@ document.addEventListener('DOMContentLoaded', function() {
             if (activeFilterBtn && activeFilterBtn.dataset.category === 'most-progress') {
                 this.displayTopSkills();
             }
+            
+            this.addAccessibilityStyles();
+        },
+        
+        addAccessibilityStyles: function() {
+            const styleEl = document.createElement('style');
+            styleEl.textContent = `
+                .skill-row .year-label {
+                    color: #000000 !important;
+                    font-weight: bold !important;
+                    background-color: rgba(255, 255, 255, 0.8);
+                    padding: 1px 3px;
+                    border-radius: 2px;
+                }
+                
+                .skill-bar-container:hover .year-label,
+                .skill-bar-container:focus-within .year-label {
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                
+                .filter-btn:focus, .more-btn:focus, .less-btn:focus {
+                    outline: 2px solid #4a148c;
+                    outline-offset: 2px;
+                }
+                
+                .sr-only {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    white-space: nowrap;
+                    border-width: 0;
+                }
+            `;
+            document.head.appendChild(styleEl);
         },
         
         initializeSkills: function() {
@@ -209,7 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (skillXP) {
                     skillXP.textContent = `${totalXP} XP`;
                     skillXP.setAttribute('data-years', bar.dataset.years);
+                    skillXP.style.color = '#000000';
                 }
+                
+                const skillName = row.querySelector('.skill-name')?.textContent || '';
+                bar.setAttribute('aria-label', `${skillName} skill active in years ${dataYears.join(', ')}`);
                 
                 this.skillRows.push({ element: row, xp: totalXP });
             });
@@ -381,86 +424,48 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         
-        setupSkillBarsAccessibility: function() {
+        setupSkillBars: function() {
             if (!DOM.skillBars.length) return;
             
             DOM.skillBars.forEach(bar => {
                 if (!bar.dataset.years) return;
                 
                 const dataYears = bar.dataset.years.split(',').map(Number);
-                const skillName = bar.closest('.skill-row')?.querySelector('.skill-name')?.textContent || 'Skill';
+                const container = bar.closest('.skill-bar-container');
+                if (!container) return;
                 
-                let yearsDescription = dataYears.join(', ');
-                const ariaLabel = `${skillName} active in years ${yearsDescription}`;
-                bar.setAttribute('aria-label', ariaLabel);
-                
-                bar.setAttribute('title', `Active years: ${yearsDescription}`);
-                
-                this.createYearMarkers(bar, dataYears);
-            });
-        },
-        
-        createYearMarkers: function(bar, activeYears) {
-            const container = bar.closest('.skill-bar-container');
-            if (!container) return;
-            
-            const existingMarkers = container.querySelectorAll('.year-marker');
-            existingMarkers.forEach(marker => marker.remove());
-            
-            const startYear = CONFIG.startYear;
-            const endYear = CONFIG.currentYear;
-            const totalYears = endYear - startYear + 1;
-            
-            activeYears.forEach(year => {
-                if (year < startYear || year > endYear) return;
-                
-                const position = ((year - startYear) / totalYears) * 100;
-                const width = (1 / totalYears) * 100;
-                
-                const yearMarker = Util.createElement('div', {
-                    className: 'year-marker',
-                    attributes: {
-                        'data-year': year.toString(),
-                        'title': `Year: ${year}`
-                    },
-                    cssText: `
-                        position: absolute;
-                        left: ${position}%;
-                        width: ${width}%;
-                        height: 100%;
-                        background-color: #28a745;
-                        z-index: 1;
-                    `
+                const fragment = document.createDocumentFragment();
+                const scaleContainer = Util.createElement('div', {
+                    cssText: 'position: absolute; height: 100%; width: 100%; top: 0; left: 0; display: flex; justify-content: space-between;'
                 });
                 
-                bar.appendChild(yearMarker);
-            });
-            
-            if (window.innerWidth > 768) {
-                for (let year = startYear; year <= endYear; year++) {
-                    const position = ((year - startYear) / totalYears) * 100;
+                bar.setAttribute('title', `Active years: ${dataYears.join(', ')}`);
+                
+                for (let year = CONFIG.startYear; year <= CONFIG.currentYear; year++) {
+                    const dashedLine = Util.createElement('div', {
+                        cssText: 'border-left: 1px dashed black; position: absolute; height: 100%; top: 0; left: 0;'
+                    });
                     
-                    const yearLabel = Util.createElement('div', {
+                    const yearLabel = Util.createElement('span', {
+                        text: year,
                         className: 'year-label',
-                        text: year.toString(),
                         attributes: {
                             'aria-hidden': 'true'
                         },
-                        cssText: `
-                            position: absolute;
-                            left: ${position}%;
-                            top: -25px;
-                            transform: translateX(-50%);
-                            font-size: 10px;
-                            color: #000000;
-                            font-weight: bold;
-                            z-index: 2;
-                        `
+                        cssText: 'position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #000000; font-weight: bold;'
                     });
                     
-                    container.appendChild(yearLabel);
+                    const yearElement = Util.createElement('div', {
+                        cssText: `flex: 1; position: relative; height: 100%; ${dataYears.includes(year) && dataYears.includes(year + 1) ? 'background: #28a745;' : ''}`,
+                        children: [dashedLine, yearLabel]
+                    });
+                    
+                    scaleContainer.appendChild(yearElement);
                 }
-            }
+                
+                fragment.appendChild(scaleContainer);
+                container.appendChild(fragment);
+            });
         }
     };
     
@@ -508,10 +513,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     project.setAttribute('aria-hidden', display === 'none' ? 'true' : 'false');
                 });
-                
-                const visibleProjects = Array.from(DOM.projects).filter(p => p.style.display !== 'none').length;
-                const announcement = `Showing ${visibleProjects} ${selectedCategory === 'all' ? 'projects' : selectedCategory + ' projects'}`;
-                this.announceToScreenReaders(announcement);
             });
         },
         
@@ -539,26 +540,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const ariaLabel = `${title} - ${description} - Category: ${category}`;
                 project.setAttribute('aria-label', ariaLabel);
             });
-        },
-        
-        announceToScreenReaders: function(message) {
-            let announcer = document.getElementById('sr-announcer');
-            
-            if (!announcer) {
-                announcer = Util.createElement('div', {
-                    attributes: {
-                        'id': 'sr-announcer',
-                        'aria-live': 'polite',
-                        'aria-atomic': 'true',
-                        'class': 'sr-only'
-                    },
-                    cssText: 'position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;'
-                });
-                
-                document.body.appendChild(announcer);
-            }
-            
-            announcer.textContent = message;
         }
     };
     
@@ -584,8 +565,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 if (!img.hasAttribute('alt')) {
                                     const altText = img.getAttribute('data-alt') || 
-                                                    img.parentElement.textContent.trim() || 
-                                                    'Image';
+                                                   img.parentElement.textContent.trim() || 
+                                                   'Image';
                                     img.setAttribute('alt', altText);
                                 }
                             }
@@ -621,8 +602,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         if (!img.hasAttribute('alt')) {
                             const altText = img.getAttribute('data-alt') || 
-                                            img.parentElement.textContent.trim() || 
-                                            'Image';
+                                           img.parentElement.textContent.trim() || 
+                                           'Image';
                             img.setAttribute('alt', altText);
                         }
                     }
@@ -639,40 +620,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    const addAccessibilityStyles = function() {
-        const styleElement = document.createElement('style');
-        styleElement.textContent = `
-            .sr-only {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                margin: -1px;
-                padding: 0;
-                overflow: hidden;
-                clip: rect(0, 0, 0, 0);
-                border: 0;
-            }
-            
-            a:focus, button:focus, [role="button"]:focus, input:focus, select:focus, textarea:focus, [tabindex]:focus {
-                outline: 3px solid #4a148c;
-                outline-offset: 2px;
-            }
-            
-            .filter-btn, .more-btn, .less-btn {
-                color: #000000;
-                font-weight: bold;
-            }
-            
-            .skill-xp {
-                color: #000000;
-                font-weight: bold;
-            }
-        `;
-        
-        document.head.appendChild(styleElement);
-    };
-    
-    addAccessibilityStyles();
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
