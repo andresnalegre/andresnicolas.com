@@ -139,6 +139,7 @@ body {
 @media screen and (max-width: 1300px) {
     .navbar .logo {
         margin-right: 20px;
+        height: 100px;
     }
     
     .navbar ul {
