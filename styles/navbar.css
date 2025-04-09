@@ -37,11 +37,12 @@ body {
 }
 
 .navbar .logo img {
-    height: 120px;
+    height: 300px;
     width: auto;
     object-fit: contain;
     pointer-events: none;
     -webkit-user-drag: none;
+    margin-top: 10px;
 }
 
 .nav-links-container {
@@ -67,7 +68,7 @@ body {
 .navbar a {
     color: white;
     text-decoration: none;
-    font-size: 1.1em;
+    font-size: 1em;
     transition: color 0.3s;
 }
 
@@ -127,7 +128,7 @@ body {
     }
 
     .navbar a {
-        font-size: 0.95em;
+        font-size: 0.8em;
     }
 
     .cv-button {
@@ -212,7 +213,7 @@ body {
     }
 
     .navbar a {
-        font-size: 1em;
+        font-size: 0.8em;
         padding: 10px;
         display: block;
     }
@@ -245,7 +246,7 @@ body {
     }
 
     .navbar .logo img {
-        height: 80px;
+        height: 160px;
     }
 
     .nav-links-container {
