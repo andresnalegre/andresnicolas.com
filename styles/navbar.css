@@ -251,7 +251,7 @@ body {
 
     .nav-links-container {
         top: 88px;
-        height: calc(50vh - 70px);
+        height: calc(60vh - 70px);
     }
 
     .cv-button {
