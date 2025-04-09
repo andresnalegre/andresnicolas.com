@@ -226,6 +226,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     white-space: nowrap;
                     border-width: 0;
                 }
+                
+                .skill-xp {
+                    color: #000000 !important;
+                    font-weight: bold;
+                }
+                
+                .skill-name {
+                    color: #000000 !important;
+                    font-weight: bold;
+                }
             `;
             document.head.appendChild(styleEl);
         },
@@ -248,11 +258,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (skillXP) {
                     skillXP.textContent = `${totalXP} XP`;
                     skillXP.setAttribute('data-years', bar.dataset.years);
-                    skillXP.style.color = '#000000';
                 }
                 
                 const skillName = row.querySelector('.skill-name')?.textContent || '';
-                bar.setAttribute('aria-label', `${skillName} skill active in years ${dataYears.join(', ')}`);
+                bar.setAttribute('title', `${skillName} skill active in years ${dataYears.join(', ')}`);
+                
+                const srText = document.createElement('span');
+                srText.className = 'sr-only';
+                srText.textContent = `${skillName} skill active in years ${dataYears.join(', ')}`;
+                row.appendChild(srText);
                 
                 this.skillRows.push({ element: row, xp: totalXP });
             });
@@ -537,8 +551,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const description = project.querySelector('p')?.textContent || '';
                 const category = project.dataset.category || '';
                 
-                const ariaLabel = `${title} - ${description} - Category: ${category}`;
-                project.setAttribute('aria-label', ariaLabel);
+                project.setAttribute('title', `${title} - ${category}`);
+                
+                if (project.getAttribute('role') === 'link') {
+                    project.setAttribute('aria-label', `${title} - ${description} - Category: ${category}`);
+                }
             });
         }
     };
