@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Global
+
     const CONFIG = {
         startYear: 2014,
         currentYear: 2024,
@@ -305,7 +305,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!DOM.skillBars.length) return;
             
             DOM.skillBars.forEach(bar => {
-                const dataYears = bar.dataset.years ? bar.dataset.years.split(',').map(Number) : [];
+                if (!bar.dataset.years) return;
+                
+                const dataYears = bar.dataset.years.split(',').map(Number);
                 const container = bar.closest('.skill-bar-container');
                 if (!container) return;
                 
@@ -325,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                     
                     const yearElement = Util.createElement('div', {
-                        cssText: `flex: 1; position: relative; height: 100%; ${dataYears.includes(year) ? 'background: #28a745;' : ''}`,
+                        cssText: `flex: 1; position: relative; height: 100%; ${dataYears.includes(year) && dataYears.includes(year + 1) ? 'background: #28a745;' : ''}`,
                         children: [dashedLine, yearLabel]
                     });
                     
