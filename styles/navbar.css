@@ -116,7 +116,7 @@ body {
     background-color: white;
 }
 
-/* Media Queries */
+/* Navbar Media Queries */
 
 @media screen and (max-width: 1200px) and (min-width: 980px) {
     .download-cv {

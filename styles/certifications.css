@@ -1,4 +1,5 @@
 /* Certifications */
+
 body {
     min-width: 450px;
     margin: 0;
@@ -146,7 +147,7 @@ body {
     border: 2px solid #ff7043;
 }
 
-/* Media Queries */
+/* Certifications Media Queries */
 @media screen and (max-width: 768px) {
     #certifications h2 {
         font-size: 1.8em;

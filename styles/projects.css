@@ -101,7 +101,7 @@ body {
     color: #666;
 }
 
-/* Media Queries */
+/* Projects Media Queries */
 
 @media screen and (max-width: 1024px) {
     .projects-container {

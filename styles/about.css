@@ -1,4 +1,4 @@
-/* About Styles */
+/* About */
 
 * {
     margin: 0;
@@ -178,7 +178,7 @@ html, body {
     box-shadow: 0 5px 15px rgba(41, 128, 185, 0.2);
 }
 
-/* Media Queries */
+/* About Media Queries */
 
 @media screen and (max-width: 1024px) {
     .about-container {
