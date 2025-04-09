@@ -47,6 +47,11 @@ body {
     color: white;
 }
 
+.filter-btn:focus {
+    outline: 3px solid #000000;
+    outline-offset: 2px;
+}
+
 .skill-row {
     display: flex;
     align-items: center;
@@ -60,7 +65,7 @@ body {
 .skill-name {
     flex: 2;
     font-weight: bold;
-    color: #333;
+    color: #000000;
     min-width: 150px;
 }
 
@@ -74,65 +79,41 @@ body {
     overflow: visible;
 }
 
-.years-container {
+.skill-bar {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    overflow: visible;
+}
+
+.skill-bar[data-years]::before {
+    content: attr(data-years);
     position: absolute;
     top: -25px;
     left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    text-align: center;
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-weight: bold;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+    font-size: 12px;
 }
 
-.year-label {
-    font-size: 11px;
-    color: #666;
-    transform: translateX(-50%);
+.year-marker {
     position: absolute;
-}
-
-.year-divisions {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     height: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.year-division {
-    width: 1px;
-    height: 100%;
-    border-left: 1px dashed #999;
-    position: relative;
-}
-
-.progress-segments {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    display: flex;
-}
-
-.segment {
-    height: 100%;
-    flex: 1;
-}
-
-.segment.active {
     background-color: #28a745;
-}
-
-.segment.inactive {
-    background-color: #e9ecef;
+    transition: all 0.3s ease;
 }
 
 .skill-xp {
     flex: 1;
     text-align: right;
-    color: #666;
+    color: #000000;
     font-weight: bold;
     min-width: 80px;
 }
@@ -154,6 +135,11 @@ body {
     background-color: #6a1b9a;
 }
 
+.more-btn:focus {
+    outline: 3px solid #000000;
+    outline-offset: 2px;
+}
+
 .hidden-skills {
     display: none;
 }
@@ -163,8 +149,12 @@ body {
 }
 
 .language-skills .skill-level {
-    color: #4a148c;
+    color: #000000;
     font-weight: bold;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #333333;
 }
 
 /* Skills Media Queries */
@@ -227,7 +217,7 @@ body {
 
     .skill-name {
         font-weight: bold;
-        color: #333;
+        color: #000000;
         margin: 0;
         min-width: auto;
         flex: none;
@@ -238,20 +228,12 @@ body {
     }
 
     .skill-xp {
-        color: #666;
+        color: #000000;
         font-weight: bold;
         margin: 0;
         min-width: auto;
         flex: none;
         text-align: right;
-    }
-
-    .years-container,
-    .year-label,
-    .year-divisions,
-    .year-division,
-    .progress-segments {
-        display: none;
     }
 
     .skills-filter {
@@ -290,5 +272,33 @@ body {
 
     .language-skills .skill-level {
         text-align: right;
+    }
+    
+    .skill-xp::after {
+        content: " (" attr(data-years) ")";
+        font-size: 12px;
+        color: #000000;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .skill-name, 
+    .skill-xp {
+        color: #ffffff;
+    }
+    
+    .skill-bar::before {
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #ffffff;
+    }
+    
+    .filter-btn {
+        background-color: #333333;
+        color: #ffffff;
+        border-color: #ffffff;
+    }
+    
+    .filter-btn.active {
+        background-color: #6a1b9a;
     }
 }

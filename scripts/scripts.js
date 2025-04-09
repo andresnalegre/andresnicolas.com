@@ -95,15 +95,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.smoothScroll(window.location.hash);
                 }, 100);
             }
+            
+            if (DOM.hamburger) {
+                DOM.hamburger.setAttribute('role', 'button');
+                DOM.hamburger.setAttribute('aria-label', 'Toggle navigation menu');
+                DOM.hamburger.setAttribute('aria-expanded', 'false');
+                DOM.hamburger.setAttribute('tabindex', '0');
+                
+                DOM.hamburger.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.toggleMenu();
+                    }
+                });
+            }
         },
         
         toggleMenu: function() {
+            const isExpanded = DOM.hamburger.getAttribute('aria-expanded') === 'true';
+            DOM.hamburger.setAttribute('aria-expanded', (!isExpanded).toString());
+            
             DOM.hamburger.classList.toggle('active');
             DOM.navLinks.classList.toggle('active');
             DOM.body.classList.toggle('menu-open');
         },
         
         closeMenu: function() {
+            DOM.hamburger.setAttribute('aria-expanded', 'false');
             DOM.hamburger.classList.remove('active');
             DOM.navLinks.classList.remove('active');
             DOM.body.classList.remove('menu-open');
@@ -134,6 +152,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             this.closeMenu();
+            
+            targetSection.setAttribute('tabindex', '-1');
+            targetSection.focus({ preventScroll: true });
         }
     };
     
@@ -147,10 +168,21 @@ document.addEventListener('DOMContentLoaded', function() {
             
             this.initializeSkills();
             this.setupFilterButtons();
-            this.setupSkillBars();
+            this.setupSkillBarsAccessibility();
             
             if (DOM.moreBtn) {
+                DOM.moreBtn.setAttribute('role', 'button');
+                DOM.moreBtn.setAttribute('aria-expanded', 'false');
+                DOM.moreBtn.setAttribute('aria-controls', 'hidden-skills');
+                
                 DOM.moreBtn.addEventListener('click', this.showAllSkills.bind(this));
+                
+                DOM.moreBtn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.showAllSkills();
+                    }
+                });
             }
             
             const activeFilterBtn = document.querySelector('.filter-btn.active');
@@ -176,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (skillXP) {
                     skillXP.textContent = `${totalXP} XP`;
+                    skillXP.setAttribute('data-years', bar.dataset.years);
                 }
                 
                 this.skillRows.push({ element: row, xp: totalXP });
@@ -221,7 +254,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.style.display = 'flex';
             });
             
-            if (DOM.moreBtn) DOM.moreBtn.style.display = 'none';
+            if (DOM.moreBtn) {
+                DOM.moreBtn.style.display = 'none';
+                DOM.moreBtn.setAttribute('aria-expanded', 'true');
+            }
+            
             this.addLessButton();
         },
         
@@ -236,10 +273,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 className: 'less-btn',
                 text: 'Show Less Skills',
                 cssText: buttonStyle,
+                attributes: {
+                    'role': 'button',
+                    'aria-expanded': 'true',
+                    'aria-controls': 'hidden-skills'
+                },
                 events: {
                     click: () => {
                         this.displayTopSkills();
                         this.scrollToSkills();
+                    },
+                    keydown: (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.displayTopSkills();
+                            this.scrollToSkills();
+                        }
                     }
                 }
             });
@@ -263,10 +312,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 top: skillsTop,
                 behavior: 'smooth'
             });
+            
+            DOM.skillsSection.setAttribute('tabindex', '-1');
+            DOM.skillsSection.focus({ preventScroll: true });
         },
         
         setupFilterButtons: function() {
             if (!DOM.filterButtons.length) return;
+            
+            DOM.filterButtons.forEach(btn => {
+                btn.setAttribute('role', 'button');
+                btn.setAttribute('aria-pressed', btn.classList.contains('active').toString());
+                
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.handleFilterClick(btn);
+                    }
+                });
+            });
             
             const filterContainer = DOM.filterButtons[0].parentNode;
             if (!filterContainer) return;
@@ -275,12 +339,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 const btn = e.target.closest('.filter-btn');
                 if (!btn) return;
                 
-                DOM.filterButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const category = btn.dataset.category;
-                this.toggleCategory(category);
+                this.handleFilterClick(btn);
             });
+        },
+        
+        handleFilterClick: function(btn) {
+            DOM.filterButtons.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
+            
+            btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
+            
+            const category = btn.dataset.category;
+            this.toggleCategory(category);
         },
         
         toggleCategory: function(category) {
@@ -289,11 +362,18 @@ document.addEventListener('DOMContentLoaded', function() {
             if (category === 'languages') {
                 DOM.skillsTable.style.display = 'none';
                 DOM.languageSkills.style.display = 'block';
+                
+                DOM.languageSkills.setAttribute('aria-hidden', 'false');
+                DOM.skillsTable.setAttribute('aria-hidden', 'true');
+                
                 if (DOM.moreBtn) DOM.moreBtn.style.display = 'none';
                 this.removeLessButton();
             } else if (category === 'most-progress') {
                 DOM.skillsTable.style.display = 'block';
                 DOM.languageSkills.style.display = 'none';
+                
+                DOM.languageSkills.setAttribute('aria-hidden', 'true');
+                DOM.skillsTable.setAttribute('aria-hidden', 'false');
                 
                 if (this.skillRows.length > 0) {
                     this.displayTopSkills();
@@ -301,42 +381,86 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         
-        setupSkillBars: function() {
+        setupSkillBarsAccessibility: function() {
             if (!DOM.skillBars.length) return;
             
             DOM.skillBars.forEach(bar => {
                 if (!bar.dataset.years) return;
                 
                 const dataYears = bar.dataset.years.split(',').map(Number);
-                const container = bar.closest('.skill-bar-container');
-                if (!container) return;
+                const skillName = bar.closest('.skill-row')?.querySelector('.skill-name')?.textContent || 'Skill';
                 
-                const fragment = document.createDocumentFragment();
-                const scaleContainer = Util.createElement('div', {
-                    cssText: 'position: absolute; height: 100%; width: 100%; top: 0; left: 0; display: flex; justify-content: space-between;'
+                let yearsDescription = dataYears.join(', ');
+                const ariaLabel = `${skillName} active in years ${yearsDescription}`;
+                bar.setAttribute('aria-label', ariaLabel);
+                
+                bar.setAttribute('title', `Active years: ${yearsDescription}`);
+                
+                this.createYearMarkers(bar, dataYears);
+            });
+        },
+        
+        createYearMarkers: function(bar, activeYears) {
+            const container = bar.closest('.skill-bar-container');
+            if (!container) return;
+            
+            const existingMarkers = container.querySelectorAll('.year-marker');
+            existingMarkers.forEach(marker => marker.remove());
+            
+            const startYear = CONFIG.startYear;
+            const endYear = CONFIG.currentYear;
+            const totalYears = endYear - startYear + 1;
+            
+            activeYears.forEach(year => {
+                if (year < startYear || year > endYear) return;
+                
+                const position = ((year - startYear) / totalYears) * 100;
+                const width = (1 / totalYears) * 100;
+                
+                const yearMarker = Util.createElement('div', {
+                    className: 'year-marker',
+                    attributes: {
+                        'data-year': year.toString(),
+                        'title': `Year: ${year}`
+                    },
+                    cssText: `
+                        position: absolute;
+                        left: ${position}%;
+                        width: ${width}%;
+                        height: 100%;
+                        background-color: #28a745;
+                        z-index: 1;
+                    `
                 });
                 
-                for (let year = CONFIG.startYear; year <= CONFIG.currentYear; year++) {
-                    const dashedLine = Util.createElement('div', {
-                        cssText: 'border-left: 1px dashed black; position: absolute; height: 100%; top: 0; left: 0;'
-                    });
-                    
-                    const yearLabel = Util.createElement('span', {
-                        text: year,
-                        cssText: 'position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #868e96;'
-                    });
-                    
-                    const yearElement = Util.createElement('div', {
-                        cssText: `flex: 1; position: relative; height: 100%; ${dataYears.includes(year) && dataYears.includes(year + 1) ? 'background: #28a745;' : ''}`,
-                        children: [dashedLine, yearLabel]
-                    });
-                    
-                    scaleContainer.appendChild(yearElement);
-                }
-                
-                fragment.appendChild(scaleContainer);
-                container.appendChild(fragment);
+                bar.appendChild(yearMarker);
             });
+            
+            if (window.innerWidth > 768) {
+                for (let year = startYear; year <= endYear; year++) {
+                    const position = ((year - startYear) / totalYears) * 100;
+                    
+                    const yearLabel = Util.createElement('div', {
+                        className: 'year-label',
+                        text: year.toString(),
+                        attributes: {
+                            'aria-hidden': 'true'
+                        },
+                        cssText: `
+                            position: absolute;
+                            left: ${position}%;
+                            top: -25px;
+                            transform: translateX(-50%);
+                            font-size: 10px;
+                            color: #000000;
+                            font-weight: bold;
+                            z-index: 2;
+                        `
+                    });
+                    
+                    container.appendChild(yearLabel);
+                }
+            }
         }
     };
     
@@ -346,6 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!DOM.projects.length || !DOM.filterSelect) return;
             
             this.setupProjectFilter();
+            this.setupProjectsAccessibility();
         },
         
         setupProjectFilter: function() {
@@ -371,14 +496,69 @@ document.addEventListener('DOMContentLoaded', function() {
             
             DOM.filterSelect.appendChild(fragment);
             
+            DOM.filterSelect.setAttribute('aria-label', 'Filter projects by category');
+            
             DOM.filterSelect.addEventListener('change', () => {
                 const selectedCategory = DOM.filterSelect.value;
                 
                 DOM.projects.forEach(project => {
                     const projectCategory = project.dataset.category;
-                    project.style.display = selectedCategory === 'all' || projectCategory === selectedCategory ? 'block' : 'none';
+                    const display = selectedCategory === 'all' || projectCategory === selectedCategory ? 'block' : 'none';
+                    project.style.display = display;
+                    
+                    project.setAttribute('aria-hidden', display === 'none' ? 'true' : 'false');
                 });
+                
+                const visibleProjects = Array.from(DOM.projects).filter(p => p.style.display !== 'none').length;
+                const announcement = `Showing ${visibleProjects} ${selectedCategory === 'all' ? 'projects' : selectedCategory + ' projects'}`;
+                this.announceToScreenReaders(announcement);
             });
+        },
+        
+        setupProjectsAccessibility: function() {
+            DOM.projects.forEach(project => {
+                if (!project.getAttribute('role')) {
+                    project.setAttribute('role', 'link');
+                }
+                
+                if (!project.getAttribute('tabindex')) {
+                    project.setAttribute('tabindex', '0');
+                }
+                
+                project.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        project.click();
+                    }
+                });
+                
+                const title = project.querySelector('h3')?.textContent || '';
+                const description = project.querySelector('p')?.textContent || '';
+                const category = project.dataset.category || '';
+                
+                const ariaLabel = `${title} - ${description} - Category: ${category}`;
+                project.setAttribute('aria-label', ariaLabel);
+            });
+        },
+        
+        announceToScreenReaders: function(message) {
+            let announcer = document.getElementById('sr-announcer');
+            
+            if (!announcer) {
+                announcer = Util.createElement('div', {
+                    attributes: {
+                        'id': 'sr-announcer',
+                        'aria-live': 'polite',
+                        'aria-atomic': 'true',
+                        'class': 'sr-only'
+                    },
+                    cssText: 'position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;'
+                });
+                
+                document.body.appendChild(announcer);
+            }
+            
+            announcer.textContent = message;
         }
     };
     
@@ -401,6 +581,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             if (src) {
                                 img.src = src;
                                 img.removeAttribute('data-src');
+                                
+                                if (!img.hasAttribute('alt')) {
+                                    const altText = img.getAttribute('data-alt') || 
+                                                    img.parentElement.textContent.trim() || 
+                                                    'Image';
+                                    img.setAttribute('alt', altText);
+                                }
                             }
                             
                             imageObserver.unobserve(img);
@@ -431,6 +618,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (src) {
                         img.src = src;
                         img.removeAttribute('data-src');
+                        
+                        if (!img.hasAttribute('alt')) {
+                            const altText = img.getAttribute('data-alt') || 
+                                            img.parentElement.textContent.trim() || 
+                                            'Image';
+                            img.setAttribute('alt', altText);
+                        }
                     }
                 }
                 
@@ -445,6 +639,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
+    const addAccessibilityStyles = function() {
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                margin: -1px;
+                padding: 0;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                border: 0;
+            }
+            
+            a:focus, button:focus, [role="button"]:focus, input:focus, select:focus, textarea:focus, [tabindex]:focus {
+                outline: 3px solid #4a148c;
+                outline-offset: 2px;
+            }
+            
+            .filter-btn, .more-btn, .less-btn {
+                color: #000000;
+                font-weight: bold;
+            }
+            
+            .skill-xp {
+                color: #000000;
+                font-weight: bold;
+            }
+        `;
+        
+        document.head.appendChild(styleElement);
+    };
+    
+    addAccessibilityStyles();
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
