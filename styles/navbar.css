@@ -31,18 +31,23 @@ body {
 .navbar .logo {
     display: flex;
     align-items: center;
-    margin-right: -50px;
-    margin-left: 20px;
-    margin-bottom: 10px;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    width: 300px;
+    height: 100px;
+    overflow: hidden;
 }
 
 .navbar .logo img {
-    height: 300px;
-    width: auto;
-    object-fit: contain;
+    width: 300px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
     pointer-events: none;
     -webkit-user-drag: none;
-    margin-top: 10px;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links-container {
