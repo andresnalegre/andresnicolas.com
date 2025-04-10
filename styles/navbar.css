@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../assets/fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Navbar */
 
 body {
@@ -33,14 +41,14 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0;
-    padding: 0;
+    padding: 1px 1px 1px 1px;
     width: 300px;
     height: 100px;
     overflow: hidden;
 }
 
 .navbar .logo img {
-    width: 150px;
+    width: 250px;
     height: 100px;
     object-fit: cover;
     object-position: center;
@@ -55,6 +63,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 80px;
 }
 
 .navbar ul {
@@ -104,12 +113,15 @@ body {
 }
 
 .download-cv {
-    margin-left: -50px;
+    margin-left: 0px;
+    margin-right: 50px;
 }
 
 .hamburger {
     display: none;
     cursor: pointer;
+    margin-right: 50px;
+    margin-left: 24px;
 }
 
 .bar {
@@ -267,7 +279,7 @@ body {
     }
 
     .download-cv {
-        margin-left: 8px;
+        margin-left: 0px;
     }
 }
 
