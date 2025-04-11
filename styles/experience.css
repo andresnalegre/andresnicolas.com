@@ -4,7 +4,6 @@
     background-color: var(--bg-light);
     padding: 60px 20px;
     text-align: center;
-    min-width: 450px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -115,6 +114,19 @@
     line-height: 1.5;
 }
 
+/* Flag Styles */
+.flag {
+    font-size: 1.1em;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 2px;
+    line-height: 1;
+}
+
+.timeline-item p br {
+    display: none;
+}
+
 /* Experience Media Queries */
 
 @media screen and (max-width: 1024px) {
@@ -148,6 +160,7 @@
 @media screen and (max-width: 480px) {
     #experience {
         padding: 40px 15px;
+        min-width: auto;
     }
 
     #experience h2 {
@@ -179,5 +192,9 @@
 
     .timeline-item:hover:before {
         transform: translateX(-50%) scale(1.1);
+    }
+    
+    .flag {
+        font-size: 1em;
     }
 }
