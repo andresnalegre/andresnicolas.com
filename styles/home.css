@@ -199,6 +199,7 @@
         width: 100%;
         background-size: cover;
         background-position: center center;
+        margin: -20px 0px 0px 0px;
     }
 
     .jumbotron {
