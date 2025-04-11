@@ -1,25 +1,8 @@
-@font-face {
-    font-family: 'Poppins';
-    src: url('../assets/fonts/Poppins-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
 /* Footer */
 
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Poppins', sans-serif;
-}
-
 footer {
-    background: #1e1e2f;
-    color: white;
+    background: var(--bg-dark);
+    color: var(--text-light);
     text-align: center;
     padding: 30px 0;
     margin-top: auto;
@@ -31,10 +14,11 @@ footer p {
     font-size: 0.95em;
     font-weight: 300;
     letter-spacing: 0.5px;
+    color: var(--text-light);
 }
 
 footer a {
-    color: #fff;
+    color: var(--text-light);
     text-decoration: none;
     font-weight: 500;
     padding: 2px 5px;
@@ -50,7 +34,7 @@ footer a::after {
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #fff;
+    background-color: var(--text-light);
     transition: width 0.3s ease;
 }
 

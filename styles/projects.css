@@ -1,21 +1,14 @@
 /* Projects */
 
-body {
-    margin: 0;
-    padding: 0;
-    background: #f4f4f4;
-    min-width: 450px;
-}
-
 .section {
     padding: 40px 0;
     text-align: center;
     min-height: 100vh;
-    background: #f4f4f4;
+    background: var(--bg-light);
 }
 
 #projects h2 {
-    color: #4a148c;
+    color: var(--primary);
     margin-bottom: 30px;
     font-size: 2.6em;
     font-weight: bold;
@@ -29,7 +22,7 @@ body {
     content: '';
     width: 60px;
     height: 4px;
-    background-color: #4a148c;
+    background-color: var(--primary);
     display: block;
     margin: 10px auto 0;
     border-radius: 2px;
@@ -44,16 +37,16 @@ body {
 #filter-container label {
     margin-right: 10px;
     font-weight: 500;
-    color: #333;
+    color: var(--text-dark);
 }
 
 #category-filter {
     padding: 8px 15px;
-    border: 1px solid #6a1b9a;
-    border-radius: 5px;
+    border: 1px solid var(--primary-light);
+    border-radius: var(--radius-sm);
     font-size: 1em;
-    background-color: white;
-    color: #333;
+    background-color: var(--bg-white);
+    color: var(--text-dark);
     cursor: pointer;
 }
 
@@ -72,11 +65,11 @@ body {
 }
 
 .project div {
-    background-color: #ffffff;
+    background-color: var(--bg-white);
     padding: 15px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
     transition: transform 0.3s, box-shadow 0.3s;
     min-height: 80px;
     display: flex;
@@ -86,7 +79,7 @@ body {
 
 .project div:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
 }
 
 .project h3 {
@@ -156,15 +149,5 @@ body {
 @media (hover: hover) {
     .project div:hover {
         transform: translateY(-2px);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .project div {
-        transition: none;
-    }
-
-    .project div:hover {
-        transform: none;
     }
 }

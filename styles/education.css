@@ -1,12 +1,5 @@
 /* Education */
 
-html, body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    width: 100%;
-}
-
 #education {
     background-image: url('../assets/Images/clouds.png');
     background-size: cover;
@@ -39,7 +32,7 @@ html, body {
 }
 
 #education h2 {
-    color: #ffffff;
+    color: var(--text-light);
     margin-bottom: 30px;
     font-size: clamp(1.8em, 5vw, 2.6em);
     font-weight: bold;
@@ -57,7 +50,7 @@ html, body {
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background: #ffffff;
+    background: var(--text-light);
     border-radius: 2px;
 }
 
@@ -73,12 +66,12 @@ html, body {
 .education-item {
     background-color: rgba(255, 255, 255, 0.95);
     border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     padding: clamp(20px, 4vw, 30px);
     margin: 20px auto;
     max-width: 500px;
     width: 90%;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);    
+    box-shadow: var(--shadow-lg);    
     position: relative;
     transition: all 0.3s ease;
 }
@@ -86,7 +79,7 @@ html, body {
 .education-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
+    background-color: var(--bg-white);
 }
 
 .education-item::before {
@@ -96,15 +89,15 @@ html, body {
     top: -25px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #4a148c;
-    color: #ffffff;
+    background-color: var(--primary);
+    color: var(--text-light);
     width: clamp(40px, 8vw, 50px);
     height: clamp(40px, 8vw, 50px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
     transition: all 0.3s ease;
 }
 
@@ -114,21 +107,21 @@ html, body {
 }
 
 .education-item h3 {
-    color: #4a148c;
+    color: var(--primary);
     font-size: clamp(1.1em, 3vw, 1.3em);
     margin-bottom: 15px;
     font-weight: 600;
 }
 
 .education-item p {
-    color: #4a5568;
+    color: var(--text-muted);
     font-size: clamp(0.9em, 2vw, 1em);
     line-height: 1.6;
     margin-bottom: 8px;
 }
 
 .education-item p:last-child {
-    color: #2980b9;
+    color: var(--primary-dark);
     font-weight: 500;
     font-size: clamp(0.85em, 2vw, 0.95em);
 }
@@ -153,11 +146,6 @@ html, body {
 }
 
 @media screen and (max-width: 480px) {
-    html, body {
-        overflow-x: hidden;
-        width: 100%;
-    }
-
     #education {
         width: 100%;
         background-size: cover;
@@ -196,20 +184,5 @@ html, body {
     
     .education-container {
         padding: 30px 15px;
-    }
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .education-item h3,
-    .education-item p {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .education-item,
-    .education-item::before {
-        transition: none;
     }
 }

@@ -1,28 +1,11 @@
-@font-face {
-    font-family: 'Poppins';
-    src: url('../assets/fonts/Poppins-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-}
-
 /* Navbar */
-
-body {
-    margin: 0;
-    padding-top: 130px;
-    overflow-x: hidden;
-    min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    min-width: 320px;
-}
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1e1e2f;
-    color: white;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
     padding: 0 20px;
     position: fixed;
     top: 0;
@@ -36,7 +19,6 @@ body {
     user-select: none;
 }
 
-/* Optimized logo styling */
 .navbar .logo {
     display: flex;
     align-items: center;
@@ -83,10 +65,8 @@ body {
 }
 
 .navbar a {
-    color: white;
-    text-decoration: none;
+    color: var(--text-light);
     font-size: 1em;
-    transition: color 0.3s;
 }
 
 .navbar a:hover {
@@ -95,14 +75,12 @@ body {
 
 .cv-button {
     background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    color: var(--text-light);
     padding: 12px 24px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    text-decoration: none;
+    border-radius: var(--radius-md);
     font-weight: 500;
     font-size: 1em;
-    transition: all 0.3s ease;
     white-space: nowrap;
     display: inline-flex;
     align-items: center;
@@ -217,7 +195,7 @@ body {
         top: 110px;
         width: 100%;
         height: calc(100vh - 110px);
-        background-color: #1e1e2f;
+        background-color: var(--bg-dark);
         transition: 0.3s;
         flex-direction: column;
         padding: 20px 0;
@@ -313,19 +291,8 @@ body {
     .nav-links-container.active li:nth-child(7) { animation-delay: 0.7s; }
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 .navbar a:focus,
 .cv-button:focus {
     outline: 2px solid #ffdd57;
     outline-offset: 2px;
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .navbar {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
 }

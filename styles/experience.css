@@ -1,7 +1,7 @@
 /* Experience */
 
 #experience {
-    background-color: #f8f9fa;
+    background-color: var(--bg-light);
     padding: 60px 20px;
     text-align: center;
     min-width: 450px;
@@ -12,7 +12,7 @@
 }
 
 #experience h2 {
-    color: #4a148c;
+    color: var(--primary);
     margin-bottom: 30px;
     font-size: 2.6em;
     font-weight: bold;
@@ -29,7 +29,7 @@
     transform: translateX(-50%);
     width: 60px;
     height: 3px;
-    background: #4a148c;
+    background: var(--primary);
     border-radius: 2px;
 }
 
@@ -38,7 +38,7 @@
     font-family: 'Dancing Script', cursive;
     font-size: 1.8em;
     margin-bottom: 20px;
-    color: #4a148c;
+    color: var(--primary);
 }
 
 .timeline {
@@ -65,10 +65,10 @@
     position: relative;
     margin: 60px auto;
     padding: 15px 20px;
-    background-color: #ffffff;
+    background-color: var(--bg-white);
     border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
     width: 40%;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -77,7 +77,7 @@
 
 .timeline-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg);
 }
 
 .timeline-item:before {
@@ -86,31 +86,31 @@
     top: -40px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #4a148c;
-    color: white;
+    background-color: var(--primary);
+    color: var(--text-light);
     font-size: 1em;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     text-align: center;
     line-height: 50px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
 }
 
 .timeline-item:hover::before {
     transform: translateX(-50%) scale(1.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .timeline-item h3 {
-    color: #4a148c;
+    color: var(--primary);
     font-size: 1.2em;
     margin-bottom: 10px;
 }
 
 .timeline-item p {
-    color: #4a5568;
+    color: var(--text-muted);
     font-size: 0.9em;
     margin-bottom: 8px;
     line-height: 1.5;
