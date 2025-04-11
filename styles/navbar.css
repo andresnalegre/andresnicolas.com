@@ -265,6 +265,82 @@
     }
 }
 
+@media screen and (max-width: 430px) {
+    .navbar {
+        padding: 0 10px;
+        height: 110px;
+    }
+
+    .navbar .logo {
+        width: 220px;
+        height: 90px;
+        background-size: contain;
+    }
+
+    .nav-links-container {
+        top: 88px;
+        height: calc(60vh - 50px);
+    }
+
+    .cv-button {
+        padding: 6px 12px;
+        font-size: 0.8em;
+        border-radius: 5px;
+    }
+
+    .download-cv {
+        margin-left: 0px;
+        margin-right: 20px;
+    }
+
+    .navbar .logo svg {
+        width: auto;
+        height: 150px;
+        display: block;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .navbar {
+        padding: 0 10px;
+        height: 110px;
+        
+    }
+
+    .nav-links-container.active {
+        left: -24px;
+    }
+
+    .navbar .logo {
+        width: 220px;
+        height: 90px;
+        background-size: contain;
+    }
+
+    .nav-links-container {
+        top: 88px;
+        height: calc(60vh - 50px);
+    }
+
+    .cv-button {
+        padding: 6px 12px;
+        font-size: 0.5em;
+        border-radius: 5px;
+    }
+
+    .download-cv {
+        margin-left: 0px;
+        margin-right: 60px;
+        width: auto;
+    }
+
+    .navbar .logo svg {
+        width: auto;
+        height: 150px;
+        display: block;
+    }
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;

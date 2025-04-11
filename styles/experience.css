@@ -35,7 +35,6 @@
 
 .timeline-past, .timeline-present {
     font-weight: bold;
-    font-family: 'Dancing Script', cursive;
     font-size: 1.8em;
     margin-bottom: 20px;
     color: var(--primary);
