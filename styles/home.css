@@ -1,13 +1,8 @@
-/* Home */
-
+/* Home Styles */
 #Home {
-    width: 100vw;
+    background: url("../assets/Images/geometric.webp") center center/cover no-repeat fixed;
+    width: 100%;
     height: 100vh;
-    background: url("../assets/Images/geometric.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     color: var(--text-light);
     position: relative;
     overflow: hidden;
@@ -26,7 +21,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+    background: linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.7));
     z-index: -1;
 }
 
@@ -59,8 +54,8 @@
     background: url("../assets/Images/profile.webp");
     background-size: cover;
     background-position: center;
-    border: 4px solid #ffffff;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid #fff;
+    box-shadow: 0 8px 20px rgba(0,0,0,.3);
     margin-bottom: 20px;
     animation: fadeIn 1.5s ease-in-out;
 }
@@ -68,7 +63,7 @@
 .jumbotron h1 {
     font-size: clamp(1.8em, 5vw, 3.5em);
     margin: 10px 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.6);
     animation: fadeInDown 1.5s ease-in-out;
     color: red;
     font-weight: 600;
@@ -79,9 +74,9 @@
 }
 
 .jumbotron p {
-    font-size: clamp(0.9em, 3vw, 1.3em);
+    font-size: clamp(.9em, 3vw, 1.3em);
     margin: 15px 0 30px 0;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 3px rgba(0,0,0,.5);
     animation: fadeIn 2s ease-in-out;
     color: #f0f0f0;
     font-weight: 300;
@@ -93,25 +88,25 @@
 .jumbotron .btn {
     margin: 10px;
     padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 25px);
-    border: 2px solid #ffffff;
+    border: 2px solid #fff;
     border-radius: var(--radius-full);
-    color: #ffffff;
+    color: #fff;
     background-color: transparent;
     text-decoration: none;
-    font-size: clamp(0.9em, 2vw, 1.1em);
+    font-size: clamp(.9em, 2vw, 1.1em);
     font-weight: bold;
     text-transform: uppercase;
-    transition: all 0.4s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all .4s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,.3);
 }
 
 .jumbotron .btn:hover {
     color: #ffd700;
-    background-color: #ffffff;
-    border-color: #ffffff;
+    background-color: #fff;
+    border-color: #fff;
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-    -webkit-text-stroke: 0.5px black;
+    box-shadow: 0 10px 20px rgba(0,0,0,.4);
+    -webkit-text-stroke: .5px black;
 }
 
 .social {
@@ -133,24 +128,32 @@
     justify-content: center;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform .3s ease, box-shadow .3s ease;
     animation: fadeIn 2s ease-in-out forwards;
     animation-delay: 1.5s;
 }
 
-.icon-white-bg { background-color: white; }
-.icon-black-bg { background-color: black; }
-.icon-yellow-bg { background-color: #ffdc52; }
+.icon-white-bg { 
+    background-color: white; 
+}
+
+.icon-black-bg { 
+    background-color: black; 
+}
+
+.icon-yellow-bg { 
+    background-color: #ffdc52; 
+}
 
 [class^="icon-"]:hover {
     transform: scale(1.1);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0,0,0,.3);
 }
 
 .social-icon {
     width: clamp(20px, 3vw, 24px);
     height: clamp(20px, 3vw, 24px);
-    transition: transform 0.3s ease;
+    transition: transform .3s ease;
 }
 
 #typed-output {
@@ -160,63 +163,61 @@
     text-align: center;
 }
 
-/* Home Media Queries */
-
+/* Media Queries */
 @media screen and (max-width: 1285px) {
-    .jumbotron {
-        max-width: 1000px;
+    .jumbotron { 
+        max-width: 1000px; 
     }
 }
 
 @media screen and (max-width: 980px) {
-    .jumbotron {
-        max-width: 800px;
+    .jumbotron { 
+        max-width: 800px; 
     }
-
-    .profile-pic {
-        border-width: 3px;
+    
+    .profile-pic { 
+        border-width: 2px; 
     }
 }
 
 @media screen and (max-width: 768px) {
     #Home {
         background-attachment: scroll;
-        background-position: center center;
     }
-
+    
     .jumbotron {
         max-width: 600px;
         padding: 15px;
     }
-
-    .centerize {
-        padding: 0 15px;
+    
+    .centerize { 
+        padding: 0 15px; 
     }
 }
 
 @media screen and (max-width: 480px) {
     #Home {
         width: 100%;
-        background-size: cover;
-        background-position: center center;
-        margin: -20px 0px 0px 0px;
+        margin: -20px 0 0 0;
     }
-
+    
     .jumbotron {
         max-width: 100%;
         padding: 10px;
     }
-
-    .centerize {
-        padding: 0 10px;
+    
+    .centerize { 
+        padding: 0 10px; 
     }
-
+    
     .profile-pic {
         border-width: 2px;
+        height: 90px;
+        width: 90px;
     }
-
-    .social {
-        gap: 8px;
+    
+    .social { 
+        gap: 8px; 
     }
 }
 
@@ -233,13 +234,13 @@
         height: min(100px, 15vw);
         margin-bottom: 10px;
     }
-
-    .jumbotron p {
-        margin: 10px 0 20px 0;
+    
+    .jumbotron p { 
+        margin: 10px 0 20px 0; 
     }
-
-    .social {
-        margin-top: 10px;
+    
+    .social { 
+        margin-top: 10px; 
     }
 }
 
@@ -249,25 +250,8 @@
     }
 }
 
-@media screen and (orientation: portrait) {
-    #Home {
-        background-position: center center;
-    }
-}
-
-@media screen and (orientation: landscape) and (max-height: 500px) {
-    #Home {
-        min-height: 100vh;
-    }
-    
-    .jumbotron {
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-}
-
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .jumbotron h1,
+    .jumbotron h1, 
     .jumbotron p {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
