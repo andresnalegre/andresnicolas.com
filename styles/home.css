@@ -48,8 +48,8 @@
 }
 
 .profile-pic {
-    width: min(150px, 20vw);
-    height: min(150px, 20vw);
+    width: min(150px, 30vw);
+    height: min(150px, 30vw);
     border-radius: 50%;
     background: url("../assets/Images/profile.webp");
     background-size: cover;
@@ -212,8 +212,8 @@
     
     .profile-pic {
         border-width: 2px;
-        height: 90px;
-        width: 90px;
+        height: min(120px, 40vw);
+        width: min(120px, 40vw);
     }
     
     .social { 
@@ -230,8 +230,8 @@
 
 @media screen and (max-height: 600px) {
     .profile-pic {
-        width: min(100px, 15vw);
-        height: min(100px, 15vw);
+        width: min(120px, 25vw);
+        height: min(120px, 25vw);
         margin-bottom: 10px;
     }
     
