@@ -225,6 +225,13 @@
         padding: 8px 20px;
         font-size: .85em;
     }
+
+    .certification-item {
+        padding: 15px 10px;
+        margin: 10px 5px;
+        width: 85%;
+        justify-self: center;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -237,6 +244,8 @@
     .certification-item {
         padding: 15px 10px;
         margin: 10px 5px;
+        width: 80%;
+        justify-self: center;
     }
     .certification-item::before {
         width: 50px;

@@ -1,10 +1,25 @@
-/* Projects */
-
+/* Projects Styles */
 .section {
     padding: 40px 0;
     text-align: center;
     min-height: 100vh;
     background: var(--bg-light);
+    position: relative;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0,0,0,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: .5;
+    pointer-events: none;
 }
 
 #projects h2 {
@@ -16,6 +31,7 @@
     letter-spacing: 1px;
     position: relative;
     display: inline-block;
+    z-index: 1;
 }
 
 #projects h2::after {
@@ -26,18 +42,31 @@
     display: block;
     margin: 10px auto 0;
     border-radius: 2px;
+    transition: width .3s ease, box-shadow .3s ease;
+}
+
+#projects h2:hover::after {
+    width: 100px;
+    box-shadow: 0 0 8px rgba(var(--primary-rgb, 74,111,165),.3);
 }
 
 #filter-container {
     margin: 20px auto;
     max-width: 300px;
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 #filter-container label {
     margin-right: 10px;
     font-weight: 500;
     color: var(--text-dark);
+    transition: color .3s ease;
+}
+
+#filter-container:focus-within label {
+    color: var(--primary);
 }
 
 #category-filter {
@@ -48,6 +77,14 @@
     background-color: var(--bg-white);
     color: var(--text-dark);
     cursor: pointer;
+    transition: all .3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+#category-filter:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 74,111,165),.2);
+    outline: none;
 }
 
 .projects-container {
@@ -57,11 +94,14 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .project {
     text-decoration: none;
     color: inherit;
+    display: grid;
 }
 
 .project div {
@@ -70,36 +110,61 @@
     border-radius: var(--radius-md);
     text-align: center;
     box-shadow: var(--shadow-sm);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all .3s ease;
     min-height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-bottom: 3px solid transparent;
+    position: relative;
+}
+
+.project div::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 0;
+    border-radius: var(--radius-md);
+    background-color: rgba(var(--primary-rgb, 74,111,165),.03);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+    transform: translateY(5px);
 }
 
 .project div:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
+    border-bottom: 3px solid var(--primary-light);
+}
+
+.project div:hover::before {
+    opacity: 1;
+    transform: translateY(8px);
 }
 
 .project h3 {
     margin: 0 0 5px;
     font-size: 1.1em;
     font-weight: 600;
+    transition: color .3s ease;
+}
+
+.project div:hover h3 {
+    color: var(--primary);
 }
 
 .project p {
     margin: 0;
-    font-size: 0.85em;
+    font-size: .85em;
     color: #666;
 }
 
-/* Projects Media Queries */
-
+/* Media Queries */
 @media screen and (max-width: 1024px) {
-    .projects-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .projects-container { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media screen and (max-width: 768px) {
@@ -107,11 +172,7 @@
         grid-template-columns: repeat(2, 1fr);
         padding: 0 15px;
     }
-
-    #projects h2 {
-        font-size: 2em;
-    }
-
+    #projects h2 { font-size: 2em; }
     .project div {
         padding: 12px;
         min-height: 70px;
@@ -119,35 +180,23 @@
 }
 
 @media screen and (max-width: 480px) {
-    .section {
-        padding: 20px 0;
-    }
-
+    .section { padding: 20px 0; }
     .projects-container {
         grid-template-columns: 1fr;
         padding: 0 10px;
     }
-
     .project div {
         padding: 12px;
-        min-height: 60px;
+        min-height: 100px;
+        width: 80%;
+        justify-self: center;
+        margin: 0 auto;
     }
-
-    .project h3 {
-        font-size: 0.95em;
-    }
-
-    .project p {
-        font-size: 0.75em;
-    }
-
-    #filter-container {
-        margin: 15px auto;
-    }
+    .project h3 { font-size: .95em; }
+    .project p { font-size: .75em; }
+    #filter-container { margin: 15px auto; }
 }
 
 @media (hover: hover) {
-    .project div:hover {
-        transform: translateY(-2px);
-    }
+    .project div:hover { transform: translateY(-2px); }
 }
