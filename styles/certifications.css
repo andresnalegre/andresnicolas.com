@@ -1,5 +1,4 @@
-/* Certifications */
-
+/* Certifications Styles */
 #certifications {
     background: var(--bg-light);
     padding: 40px 10px;
@@ -7,6 +6,20 @@
     text-align: center;
     color: var(--text-dark);
     min-height: 100vh;
+    position: relative;
+}
+
+#certifications::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(142,36,170,.03) 0, rgba(142,36,170,0) 50px),
+        radial-gradient(circle at 80% 80%, rgba(255,112,67,.03) 0, rgba(255,112,67,0) 50px);
+    z-index: 0;
 }
 
 #certifications h2 {
@@ -18,6 +31,7 @@
     letter-spacing: 1.5px;
     position: relative;
     display: inline-block;
+    z-index: 1;
 }
 
 #certifications h2::after {
@@ -28,6 +42,11 @@
     display: block;
     margin: 10px auto 0;
     border-radius: 2px;
+    transition: width .3s ease;
+}
+
+#certifications h2:hover::after {
+    width: 100px;
 }
 
 .certifications-container {
@@ -37,6 +56,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .certification-item {
@@ -52,13 +73,30 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform .3s ease, box-shadow .3s ease, background-color .3s ease;
 }
 
 .certification-item:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
     background-color: #fefaf7;
+}
+
+.certification-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s ease;
+}
+
+.certification-item:hover::after {
+    transform: scaleX(1);
 }
 
 .certification-item::before {
@@ -77,10 +115,13 @@
     align-items: flex-end;
     justify-content: center;
     box-shadow: var(--shadow-md);
+    transition: background .3s ease, transform .3s ease;
+    z-index: 2;
 }
 
 .certification-item:hover::before {
     background: var(--secondary-light);
+    transform: translateX(-50%) rotate(10deg);
 }
 
 .certification-header {
@@ -92,7 +133,12 @@
     font-weight: 600;
     color: var(--secondary);
     margin-bottom: 8px;
-    letter-spacing: 0.5px;
+    letter-spacing: .5px;
+    transition: transform .3s ease;
+}
+
+.certification-item:hover .year {
+    transform: scale(1.05);
 }
 
 .certification-content h3 {
@@ -100,7 +146,7 @@
     font-weight: 700;
     color: var(--text-dark);
     margin-bottom: 6px;
-    transition: color 0.3s ease;
+    transition: color .3s ease;
 }
 
 .certification-item:hover .certification-content h3 {
@@ -108,7 +154,7 @@
 }
 
 .provider {
-    font-size: 0.95em;
+    font-size: .95em;
     color: #555;
     font-weight: 500;
     margin-bottom: 40px;
@@ -116,7 +162,7 @@
 }
 
 .validate-link {
-    font-size: 0.95em;
+    font-size: .95em;
     font-weight: 600;
     color: var(--text-light);
     background: linear-gradient(135deg, var(--primary-light), #8e24aa);
@@ -125,102 +171,95 @@
     display: inline-block;
     text-decoration: none;
     box-shadow: var(--shadow-md);
-    transition: all 0.3s ease-in-out;
+    transition: all .3s ease-in-out;
     border: 2px solid transparent;
     text-transform: uppercase;
     letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.validate-link::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,.3) 0%, transparent 70%);
+    transform: translate(-100%, -100%);
+    opacity: 0;
+    transition: transform .5s, opacity .5s;
+    z-index: 1;
+}
+
+.validate-link:hover::before {
+    transform: translate(0, 0);
+    opacity: 1;
 }
 
 .validate-link:hover {
     background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
     color: var(--text-light);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 12px rgba(255, 112, 67, 0.3);
+    box-shadow: 0 6px 12px rgba(255,112,67,.3);
     border: 2px solid var(--secondary);
 }
 
-/* Certifications Media Queries */
+/* Media Queries */
 @media screen and (max-width: 768px) {
-    #certifications h2 {
-        font-size: 1.8em;
-    }
-
-    .certification-item {
-        padding: 20px 12px 15px;
-    }
-
+    #certifications h2 { font-size: 1.8em; }
+    .certification-item { padding: 20px 12px 15px; }
     .certification-item::before {
         width: 60px;
         height: 60px;
         font-size: 24px;
+        top: -27px;
     }
-
-    .certification-content h3 {
-        font-size: 1.1em;
-    }
-
+    .certification-content h3 { font-size: 1.1em; }
     .provider {
-        font-size: 0.9em;
+        font-size: .9em;
         margin-bottom: 30px;
     }
-
     .validate-link {
         padding: 8px 20px;
-        font-size: 0.85em;
+        font-size: .85em;
     }
 }
 
 @media screen and (max-width: 480px) {
-    #certifications {
-        padding: 30px 5px;
-    }
-
-    #certifications h2 {
-        font-size: 1.6em;
-    }
-
+    #certifications { padding: 30px 5px; }
+    #certifications h2 { font-size: 1.6em; }
     .certifications-container {
         grid-template-columns: 1fr;
         gap: 10px;
     }
-
     .certification-item {
         padding: 15px 10px;
         margin: 10px 5px;
     }
-
     .certification-item::before {
         width: 50px;
         height: 50px;
         font-size: 20px;
-        top: -25px;
+        top: -20px;
     }
-
-    .year {
-        font-size: 0.9em;
+    .certification-header {
+        margin-top: 15px;
     }
-
-    .certification-content h3 {
-        font-size: 1em;
-    }
-
+    .year { font-size: .9em; }
+    .certification-content h3 { font-size: 1em; }
     .provider {
-        font-size: 0.85em;
+        font-size: .85em;
         margin-bottom: 25px;
     }
-
     .validate-link {
         padding: 7px 18px;
-        font-size: 0.8em;
+        font-size: .8em;
     }
 }
 
 @media (hover: hover) {
-    .certification-item:hover {
-        transform: translateY(-3px);
-    }
-
-    .validate-link:hover {
-        transform: translateY(-2px) scale(1.03);
-    }
+    .certification-item:hover { transform: translateY(-3px); }
+    .validate-link:hover { transform: translateY(-2px) scale(1.03); }
 }
