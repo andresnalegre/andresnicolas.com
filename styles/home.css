@@ -57,14 +57,14 @@
     border: 2px solid #fff;
     box-shadow: 0 8px 20px rgba(0,0,0,.3);
     margin-bottom: 20px;
-    animation: fadeIn 1.5s ease-in-out;
+    animation: fadeIn 0.8s ease-out;
 }
 
 .jumbotron h1 {
     font-size: clamp(1.8em, 5vw, 3.5em);
     margin: 10px 0;
     text-shadow: 2px 2px 4px rgba(0,0,0,.6);
-    animation: fadeInDown 1.5s ease-in-out;
+    animation: fadeInDown 0.8s ease-out;
     color: red;
     font-weight: 600;
     letter-spacing: 1.5px;
@@ -96,7 +96,7 @@
     font-size: clamp(.9em, 3vw, 1.3em);
     margin: 15px 0 30px 0;
     text-shadow: 1px 1px 3px rgba(0,0,0,.5);
-    animation: fadeIn 2s ease-in-out;
+    animation: fadeIn 1s ease-out;
     color: #f0f0f0;
     font-weight: 300;
     line-height: 1.6;
@@ -115,7 +115,7 @@
     font-size: clamp(.9em, 2vw, 1.1em);
     font-weight: bold;
     text-transform: uppercase;
-    transition: all .4s ease;
+    transition: all .25s ease;
     box-shadow: 0 5px 15px rgba(0,0,0,.3);
 }
 
@@ -134,8 +134,8 @@
     gap: clamp(10px, 2vw, 15px);
     margin-top: 20px;
     opacity: 0;
-    animation: fadeIn 2s ease-in-out forwards;
-    animation-delay: 1.5s;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.8s;
     flex-wrap: wrap;
 }
 
@@ -147,9 +147,9 @@
     justify-content: center;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    transition: transform .3s ease, box-shadow .3s ease;
-    animation: fadeIn 2s ease-in-out forwards;
-    animation-delay: 1.5s;
+    transition: transform .2s ease, box-shadow .2s ease;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.8s;
 }
 
 .icon-white-bg { 
@@ -165,7 +165,7 @@
 }
 
 [class^="icon-"]:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     box-shadow: 0 4px 10px rgba(0,0,0,.3);
 }
 
