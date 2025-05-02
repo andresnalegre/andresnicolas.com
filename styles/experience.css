@@ -139,30 +139,17 @@
 }
 
 .flag {
+    font-size: 1.1em;
     display: inline-block;
     vertical-align: middle;
     margin: 0 2px;
-    margin-top: -2px;
     line-height: 1;
     transform: scale(1);
     transition: transform .2s ease;
 }
 
-.flag svg {
-    display: inline-block;
-    vertical-align: middle;
-    width: 25px;
-    height: 15px;
-    border-radius: 2px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
 .timeline-item:hover .flag {
     transform: scale(1.2);
-}
-
-.timeline-item:hover .flag svg {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .timeline-item p br { display: none; }
@@ -203,8 +190,5 @@
         line-height: 40px;
         font-size: .9em;
     }
-    .flag svg {
-        width: 20px;
-        height: 12px;
-    }
+    .flag { font-size: 1em; }
 }
