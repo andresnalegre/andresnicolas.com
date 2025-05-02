@@ -41,26 +41,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadEmailJS() {
         return new Promise((resolve, reject) => {
-            if (document.querySelector('script[src*="email.min.js"]')) {
-                if (typeof emailjs !== 'undefined') {
-                    emailjs.init({
-                        publicKey: "snWDTS8oEMk_09bNP"
-                    });
-                    resolve();
-                    return;
-                }
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init({
+                    publicKey: "snWDTS8oEMk_09bNP"
+                });
+                resolve();
+                return;
             }
             
-            setTimeout(() => {
+            let attempts = 0;
+            const checkInterval = setInterval(() => {
+                attempts++;
                 if (typeof emailjs !== 'undefined') {
+                    clearInterval(checkInterval);
                     emailjs.init({
                         publicKey: "snWDTS8oEMk_09bNP"
                     });
                     resolve();
-                } else {
-                    reject(new Error('EmailJS library not found or failed to initialize'));
+                } else if (attempts >= 10) {
+                    clearInterval(checkInterval);
+                    reject(new Error('EmailJS library not found after multiple attempts'));
                 }
-            }, 500);
+            }, 200);
         });
     }
 
