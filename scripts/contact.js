@@ -41,28 +41,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadEmailJS() {
         return new Promise((resolve, reject) => {
-            if (typeof emailjs !== 'undefined') {
+            if (document.querySelector('script[src*="emailjs"]')) {
+                const oldScripts = document.querySelectorAll('script[src*="emailjs"]');
+                oldScripts.forEach(script => script.remove());
+            }
+            
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+            
+            script.onload = () => {
                 emailjs.init({
                     publicKey: "snWDTS8oEMk_09bNP"
                 });
                 resolve();
-                return;
-            }
+            };
             
-            let attempts = 0;
-            const checkInterval = setInterval(() => {
-                attempts++;
-                if (typeof emailjs !== 'undefined') {
-                    clearInterval(checkInterval);
-                    emailjs.init({
-                        publicKey: "snWDTS8oEMk_09bNP"
-                    });
-                    resolve();
-                } else if (attempts >= 10) {
-                    clearInterval(checkInterval);
-                    reject(new Error('EmailJS library not found after multiple attempts'));
-                }
-            }, 200);
+            script.onerror = (error) => {
+                reject(error);
+            };
+            
+            document.head.appendChild(script);
         });
     }
 
