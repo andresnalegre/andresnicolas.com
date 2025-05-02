@@ -197,12 +197,17 @@
     .profile-pic { 
         border-width: 2px; 
     }
+    
+    #Home {
+        margin-top: -40px;
+    }
 }
 
 @media screen and (max-width: 768px) {
     #Home {
         background-attachment: scroll;
         background-position: center center;
+        margin-top: -50px;
     }
     
     .jumbotron {
@@ -218,7 +223,7 @@
 @media screen and (max-width: 480px) {
     #Home {
         width: 100%;
-        margin: -20px 0 0 0;
+        margin-top: -50px;
     }
     
     .jumbotron {
@@ -238,6 +243,12 @@
     
     .social { 
         gap: 8px; 
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #Home {
+        margin-top: -60px;
     }
 }
 
