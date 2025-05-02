@@ -499,7 +499,7 @@ footer a:hover::after {
     .navbar .logo {
         max-width: 188px;
         width: auto;
-        margin-left: -10px;
+        margin-left: -20px;
     }
     
     #Home {
