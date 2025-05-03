@@ -9,19 +9,6 @@
     position: relative;
 }
 
-#certifications::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        radial-gradient(circle at 20% 20%, rgba(142,36,170,.03) 0, rgba(142,36,170,0) 50px),
-        radial-gradient(circle at 80% 80%, rgba(255,112,67,.03) 0, rgba(255,112,67,0) 50px);
-    z-index: 0;
-}
-
 #certifications h2 {
     color: var(--primary-light);
     margin-bottom: 30px;
