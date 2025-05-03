@@ -60,6 +60,8 @@
     z-index: 1;
 }
 
+
+
 .certification-item {
     background: var(--bg-white);
     border: none;
@@ -234,7 +236,257 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (min-width: 300px) and (max-width: 614px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .certification-item {
+        padding: 15px 10px;
+        margin: 10px 5px;
+        width: 100%;
+    }
+    
+    .certification-item::before {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+        top: -20px;
+    }
+    
+    .certification-header {
+        margin-top: 10px;
+    }
+    
+    .year { 
+        font-size: 0.8em; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.9em; 
+    }
+    
+    .provider {
+        font-size: 0.8em;
+        margin-bottom: 20px;
+    }
+    
+    .validate-link {
+        padding: 6px 14px;
+        font-size: 0.75em;
+    }
+}
+
+@media screen and (min-width: 300px) and (max-width: 423px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+        padding: 3px;
+    }
+    
+    .certification-item {
+        padding: 5px 3px;
+        margin: 4px 1px;
+        min-height: auto;
+        height: auto;
+        width: 100%;
+        justify-self: center;
+        overflow: hidden;
+    }
+    
+    .certification-item::before {
+        width: 25px;
+        height: 25px;
+        font-size: 10px;
+        top: -10px;
+    }
+    
+    .certification-header {
+        margin-top: 4px;
+    }
+    
+    .year { 
+        font-size: 0.6em;
+        margin-bottom: 1px;
+        letter-spacing: 0; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.65em;
+        margin-bottom: 1px;
+        line-height: 1;
+    }
+    
+    .provider {
+        font-size: 0.6em;
+        margin-bottom: 5px;
+        line-height: 1;
+    }
+    
+    .validate-link {
+        padding: 2px 6px;
+        font-size: 0.55em;
+        letter-spacing: 0;
+        border-width: 1px;
+        box-shadow: none;
+        margin-top: 0;
+    }
+}
+
+@media screen and (min-width: 424px) and (max-width: 498px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        padding: 4px;
+    }
+    
+    .certification-item {
+        padding: 8px 4px;
+        margin: 5px 2px;
+        min-height: auto;
+        height: auto;
+        width: 98%;
+        justify-self: center;
+        overflow: hidden;
+    }
+    
+    .certification-item::before {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+        top: -13px;
+    }
+    
+    .certification-header {
+        margin-top: 5px;
+    }
+    
+    .year { 
+        font-size: 0.65em;
+        margin-bottom: 2px;
+        letter-spacing: 0; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.7em;
+        margin-bottom: 2px;
+        line-height: 1.1;
+    }
+    
+    .provider {
+        font-size: 0.65em;
+        margin-bottom: 8px;
+        line-height: 1.1;
+    }
+    
+    .validate-link {
+        padding: 3px 8px;
+        font-size: 0.6em;
+        letter-spacing: 0;
+        border-width: 1px;
+        box-shadow: var(--shadow-sm);
+    }
+}
+
+@media screen and (min-width: 499px) and (max-width: 535px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 5px;
+    }
+    
+    .certification-item {
+        padding: 10px 5px;
+        margin: 6px 3px;
+        min-height: auto;
+        height: auto;
+        width: 95%;
+        justify-self: center;
+    }
+    
+    .certification-item::before {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+        top: -15px;
+    }
+    
+    .certification-header {
+        margin-top: 6px;
+    }
+    
+    .year { 
+        font-size: 0.7em;
+        margin-bottom: 3px; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.8em;
+        margin-bottom: 3px;
+        line-height: 1.1;
+    }
+    
+    .provider {
+        font-size: 0.7em;
+        margin-bottom: 10px;
+        line-height: 1.1;
+    }
+    
+    .validate-link {
+        padding: 4px 10px;
+        font-size: 0.65em;
+        letter-spacing: 0px;
+        border-width: 1px;
+    }
+}
+
+@media screen and (max-width: 500px) and (not (min-width: 300px) and (max-width: 535px)) {
+    #certifications { padding: 20px 5px; }
+    #certifications h2 { font-size: 1.5em; }
+    
+    .certification-item {
+        padding: 12px 8px;
+        margin: 8px 4px;
+        min-height: auto;
+        height: auto;
+    }
+    
+    .certification-item::before {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        top: -18px;
+    }
+    
+    .certification-header {
+        margin-top: 8px;
+    }
+    
+    .year { 
+        font-size: 0.75em;
+        margin-bottom: 4px; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        line-height: 1.2;
+    }
+    
+    .provider {
+        font-size: 0.75em;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+    
+    .validate-link {
+        padding: 5px 12px;
+        font-size: 0.7em;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media screen and (max-width: 299px) {
     #certifications { padding: 30px 5px; }
     #certifications h2 { font-size: 1.6em; }
     .certifications-container {
