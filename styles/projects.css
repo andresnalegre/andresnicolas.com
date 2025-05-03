@@ -179,21 +179,39 @@
     }
 }
 
-@media screen and (max-width: 480px) {
-    .section { padding: 20px 0; }
+@media screen and (min-width: 350px) and (max-width: 600px) {
+    .projects-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0 12px;
+    }
+    .project div {
+        padding: 10px;
+        min-height: 70px;
+    }
+    .project h3 { font-size: .9em; }
+    .project p { font-size: .75em; }
+}
+
+@media screen and (max-width: 350px) {
     .projects-container {
         grid-template-columns: 1fr;
-        padding: 0 10px;
+        gap: 12px;
+        padding: 0 15px;
     }
     .project div {
         padding: 12px;
-        min-height: 100px;
-        width: 80%;
+        min-height: 80px;
+        width: 90%;
         justify-self: center;
         margin: 0 auto;
     }
     .project h3 { font-size: .95em; }
-    .project p { font-size: .75em; }
+    .project p { font-size: .8em; }
+}
+
+@media screen and (max-width: 480px) {
+    .section { padding: 20px 0; }
     #filter-container { margin: 15px auto; }
 }
 
