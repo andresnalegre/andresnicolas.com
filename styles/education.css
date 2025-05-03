@@ -153,7 +153,21 @@
     .education-item { width: 85%; }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (min-width: 416px) and (max-width: 500px) {
+    #education {
+        background-size: cover;
+        min-height: 70vh;
+        padding: 35px 0;
+    }
+    .education-container { padding: 25px 15px; }
+    .education-item {
+        width: 85%;
+        margin: 30px auto;
+        padding: 22px 18px;
+    }
+}
+
+@media screen and (max-width: 415px) {
     #education {
         background-size: cover;
         min-height: 60vh;
@@ -161,8 +175,69 @@
     }
     .education-container { padding: 20px 10px; }
     .education-item {
-        width: 90%;
-        margin: 30px auto;
+        width: 85%;
+        margin: 28px auto;
+        padding: 18px 15px;
+    }
+    .education-item::before {
+        width: 45px;
+        height: 45px;
+        font-size: 1.4em;
+        top: -22px;
+    }
+    .education-item h3 {
+        font-size: 1.05em;
+        margin-bottom: 10px;
+    }
+    .education-item p {
+        font-size: 0.9em;
+        line-height: 1.5;
+        margin-bottom: 6px;
+    }
+    .education-item p:last-child {
+        font-size: 0.85em;
+    }
+    #education h2 {
+        font-size: 2.2em;
+        margin-bottom: 25px;
+    }
+    .education-item::before {
+        top: -30px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    #education {
+        min-height: 50vh;
+        padding: 25px 0;
+    }
+    .education-container { padding: 15px 10px; }
+    .education-item {
+        width: 80%;
+        margin: 25px auto;
+        padding: 15px 12px;
+        border-width: 1px;
+    }
+    .education-item::before {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3em;
+        top: -28px;
+    }
+    .education-item h3 {
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+    .education-item p {
+        font-size: 0.85em;
+        line-height: 1.4;
+        margin-bottom: 5px;
+    }
+    .education-item p:last-child {
+        font-size: 0.8em;
+    }
+    #education h2 {
+        font-size: 2em;
     }
 }
 
