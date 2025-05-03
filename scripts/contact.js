@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const modalOverlay = document.createElement('div');
     modalOverlay.classList.add('modal-overlay');
+    modalOverlay.id = 'contact-modal-overlay';
     modalOverlay.style.display = 'none';
     document.body.appendChild(modalOverlay);
 
@@ -80,21 +81,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
     contactButton.addEventListener('click', function() {
         modalOverlay.style.display = 'flex';
+        setTimeout(() => {
+            modalOverlay.classList.add('active');
+        }, 10);
         document.body.style.overflow = 'hidden';
     });
 
     const closeBtn = contactModal.querySelector('.close-modal');
-    closeBtn.addEventListener('click', function() {
-        modalOverlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
+    closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeContactModal();
     });
 
     modalOverlay.addEventListener('click', function(event) {
         if (event.target === modalOverlay) {
-            modalOverlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            closeContactModal();
         }
     });
+
+    function closeContactModal() {
+        const modalOverlay = document.getElementById('contact-modal-overlay');
+        modalOverlay.classList.remove('active');
+        setTimeout(() => {
+            modalOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }, 300);
+    }
 
     const contactForm = document.getElementById('contact-form');
     const formStatus = document.getElementById('form-status');
@@ -169,8 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
             contactForm.reset();
             
             setTimeout(function() {
-                modalOverlay.style.display = 'none';
-                document.body.style.overflow = 'auto';
+                closeContactModal();
             }, 2000);
         } catch (error) {
             showMessagePopup('Failed to send message. Please try again.', 'error');
