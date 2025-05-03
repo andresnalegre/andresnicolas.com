@@ -3,7 +3,7 @@
     padding: 80px 0;
     background: linear-gradient(135deg, #e8f0fe, #f5f9ff);
     min-height: 100vh;
-    min-width: 450px;
+    min-width: auto;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -51,7 +51,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 300px;
+    min-width: auto;
     position: relative;
     animation: fadeInUp 1s ease-out forwards;
 }
@@ -274,16 +274,91 @@
         align-items: center;
     }
     .about-image {
-        max-width: 300px;
+        max-width: 280px;
         margin-bottom: 30px;
     }
-    .about-details { width: 100%; max-width: none; }
+    .about-image img {
+        max-width: 100%;
+    }
+    .about-details { 
+        width: 85%; 
+        max-width: 500px;
+        padding: 25px;
+        font-size: 0.95em;
+        margin: 0 auto;
+    }
+    .about-details h2 {
+        font-size: 1.8em;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+    }
+    .about-details p {
+        margin-bottom: 12px;
+    }
 }
 
-@media screen and (max-width: 480px) {
-    #about { padding: 60px 0; min-width: auto; }
-    .about-container { padding: 0 15px; gap: 20px; }
-    .about-details { padding: 20px; }
+@media screen and (max-width: 500px) {
+    #about { 
+        padding: 60px 0; 
+        min-width: auto; 
+    }
+    .about-container { 
+        padding: 0 15px; 
+        gap: 20px; 
+    }
+    .about-image {
+        max-width: 240px;
+        margin-bottom: 25px;
+    }
+    .about-image::after {
+        top: 15px;
+        left: 15px;
+        right: -15px;
+        bottom: -15px;
+    }
+    .about-details { 
+        width: 85%;
+        padding: 20px;
+        font-size: 0.9em;
+    }
+    .about-details h2 {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+    }
+    .about-details p {
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
     .about-social { gap: 8px; }
     .about-social a { padding: 6px 12px; font-size: .5em; }
+}
+
+@media screen and (max-width: 380px) {
+    #about { 
+        min-width: 100%; 
+        padding: 40px 0;
+    }
+    .about-image {
+        max-width: 200px;
+        margin-bottom: 20px;
+    }
+    .about-image::after {
+        top: 10px;
+        left: 10px;
+        right: -10px;
+        bottom: -10px;
+    }
+    .about-image img {
+        border-width: 2px;
+    }
+    .about-details {
+        width: 80%;
+        padding: 15px;
+        font-size: 0.85em;
+    }
+    .about-details h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
 }
