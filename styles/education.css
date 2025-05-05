@@ -150,7 +150,7 @@
         padding: 40px 0;
     }
     .education-container { padding: 30px 15px; }
-    .education-item { width: 85%; }
+    .education-item { width: 80%; }
 }
 
 @media screen and (max-width: 480px) {
