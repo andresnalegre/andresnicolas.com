@@ -637,21 +637,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
+    // Scroll to Top on Refresh
     const ScrollModule = {
         init: function() {
+            // When page loads/refreshes, scroll to top
             window.onload = function() {
-                window.scrollTo(0, 0);
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'auto'
+                });
             };
             
+            // Alternative approach to ensure position is reset
             window.addEventListener('beforeunload', function() {
-                window.scrollTo(0, 0);
+                sessionStorage.setItem('scrollReset', 'true');
             });
+            
+            // Check if we need to reset scroll position (works better on mobile)
+            if (sessionStorage.getItem('scrollReset') === 'true') {
+                sessionStorage.removeItem('scrollReset');
+                window.scrollTo(0, 0);
+            }
+            
+            // Handle mobile browsers that might ignore the above methods
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
         }
     };
     
+    // Initialize all modules
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
     LazyLoadModule.init();
-    ScrollModule.init();
+    ScrollModule.init();  // Initialize the new scroll module
 });
