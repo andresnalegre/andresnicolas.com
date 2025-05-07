@@ -569,22 +569,18 @@ document.addEventListener('DOMContentLoaded', function() {
             ],
         
             init: function() {
-                // Get DOM elements
                 this.projectElements = document.querySelectorAll('.project');
                 this.filterSelect = document.getElementById('category-filter');
                 
                 if (!this.projectElements.length || !this.filterSelect) return;
                 
-                // Create modal container
                 this.modal = this.createModal();
                 
-                // Create project map for quick lookup
                 this.projectMap = {};
                 this.projects.forEach(project => {
                     this.projectMap[project.id] = project;
                 });
                 
-                // Initialize functionality
                 this.setupProjectFilter();
                 this.setupProjectsAccessibility();
                 this.setupProjectModals();
@@ -624,7 +620,6 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             
             setupProjectFilter: function() {
-                // Populate filter with categories and counts
                 const categoryCount = {};
                 
                 this.projectElements.forEach(project => {
@@ -634,7 +629,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     categoryCount[category] = (categoryCount[category] || 0) + 1;
                 });
                 
-                // Add "All" option if not already present
                 if (!this.filterSelect.querySelector('option[value="all"]')) {
                     const allOption = document.createElement('option');
                     allOption.value = 'all';
@@ -642,7 +636,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.filterSelect.appendChild(allOption);
                 }
                 
-                // Add category options from project data
                 Object.entries(categoryCount).forEach(([category, count]) => {
                     const option = document.createElement('option');
                     option.value = category;
@@ -650,10 +643,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.filterSelect.appendChild(option);
                 });
                 
-                // Set accessibility attributes
                 this.filterSelect.setAttribute('aria-label', 'Filter projects by category');
                 
-                // Add change event listener
                 this.filterSelect.addEventListener('change', () => {
                     const selectedCategory = this.filterSelect.value;
                     
@@ -669,7 +660,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             setupProjectsAccessibility: function() {
                 this.projectElements.forEach(project => {
-                    // Set appropriate ARIA attributes
                     if (!project.getAttribute('role')) {
                         project.setAttribute('role', 'link');
                     }
@@ -678,7 +668,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         project.setAttribute('tabindex', '0');
                     }
                     
-                    // Add keyboard navigation
                     project.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
@@ -686,7 +675,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
                     
-                    // Set descriptive attributes
                     const title = project.querySelector('h3')?.textContent || '';
                     const description = project.querySelector('p')?.textContent || '';
                     const category = project.dataset.category || '';
@@ -712,7 +700,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             this.modal.innerHTML = this.createModalHTML(project);
                             this.modal.style.display = 'flex';
                             
-                            // Setup close button
                             const closeBtn = this.modal.querySelector('.close-modal');
                             closeBtn.addEventListener('click', (e) => {
                                 e.preventDefault();
@@ -720,21 +707,18 @@ document.addEventListener('DOMContentLoaded', function() {
                                 this.modal.style.display = 'none';
                             });
                             
-                            // Close on outside click
                             window.onclick = (e) => {
                                 if (e.target === this.modal) {
                                     this.modal.style.display = 'none';
                                 }
                             };
         
-                            // Setup demo button
                             const demoBtn = this.modal.querySelector('.demo-btn');
                             demoBtn.addEventListener('click', (e) => {
                                 e.preventDefault();
                                 this.showNotification("New updates Soon");
                             });
                             
-                            // Add keyboard navigation for modal
                             this.modal.querySelector('.modal-content').focus();
                             this.setupModalKeyboardNavigation();
                         }
