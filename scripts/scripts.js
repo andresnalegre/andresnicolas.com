@@ -637,8 +637,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
+    const ScrollModule = {
+        init: function() {
+            window.onload = function() {
+                window.scrollTo(0, 0);
+            };
+            
+            window.addEventListener('beforeunload', function() {
+                window.scrollTo(0, 0);
+            });
+        }
+    };
+    
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
     LazyLoadModule.init();
+    ScrollModule.init();
 });
