@@ -637,32 +637,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    // Scroll to Top on Refresh
+    // Smooth Scroll on Refresh
     const ScrollModule = {
         init: function() {
-            // When page loads/refreshes, scroll to top
-            window.onload = function() {
-                window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: 'auto'
-                });
-            };
-            
-            // Alternative approach to ensure position is reset
+            // Store scroll position before page unload
             window.addEventListener('beforeunload', function() {
-                sessionStorage.setItem('scrollReset', 'true');
+                sessionStorage.setItem('scrollPosition', window.scrollY);
             });
             
-            // Check if we need to reset scroll position (works better on mobile)
-            if (sessionStorage.getItem('scrollReset') === 'true') {
-                sessionStorage.removeItem('scrollReset');
-                window.scrollTo(0, 0);
-            }
+            // Restore scroll position with smooth animation on page load
+            window.addEventListener('load', function() {
+                // Get stored position or default to 0
+                const scrollPosition = sessionStorage.getItem('scrollPosition') || 0;
+                
+                // First scroll quickly to position to avoid flash of content
+                window.scrollTo(0, scrollPosition);
+                
+                // Then apply smooth scroll for a better visual effect
+                setTimeout(function() {
+                    window.scrollTo({
+                        top: scrollPosition,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                }, 10);
+            });
             
-            // Handle mobile browsers that might ignore the above methods
+            // Allow browser's default scroll restoration
             if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'manual';
+                history.scrollRestoration = 'auto';
             }
         }
     };
