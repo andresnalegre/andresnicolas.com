@@ -637,23 +637,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    // Smooth Scroll on Refresh
     const ScrollModule = {
         init: function() {
-            // Store scroll position before page unload
             window.addEventListener('beforeunload', function() {
                 sessionStorage.setItem('scrollPosition', window.scrollY);
             });
             
-            // Restore scroll position with smooth animation on page load
             window.addEventListener('load', function() {
-                // Get stored position or default to 0
                 const scrollPosition = sessionStorage.getItem('scrollPosition') || 0;
                 
-                // First scroll quickly to position to avoid flash of content
                 window.scrollTo(0, scrollPosition);
                 
-                // Then apply smooth scroll for a better visual effect
                 setTimeout(function() {
                     window.scrollTo({
                         top: scrollPosition,
@@ -663,17 +657,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 10);
             });
             
-            // Allow browser's default scroll restoration
             if ('scrollRestoration' in history) {
                 history.scrollRestoration = 'auto';
             }
         }
     };
     
-    // Initialize all modules
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
     LazyLoadModule.init();
-    ScrollModule.init();  // Initialize the new scroll module
+    ScrollModule.init();
 });
