@@ -317,12 +317,12 @@
     .about-container { 
         flex-direction: column;
         align-items: center;
-        max-width: 90%; /* Increased from 80% to 90% */
-        width: 90%; /* Increased from 80% to 90% */
+        max-width: 90%;
+        width: 90%;
     }
     .about-image {
-        width: 65%; /* Increased from 45% to 65% */
-        max-width: 320px; /* Increased from 280px to 320px */
+        width: 65%;
+        max-width: 320px;
         margin-bottom: 30px;
         justify-content: center;
     }
@@ -348,13 +348,13 @@
 
 @media screen and (min-width: 481px) and (max-width: 767px) {
     .about-container { 
-        max-width: 90%; /* Increased from not specified to 90% */
-        width: 90%;  /* Set explicit width */
+        max-width: 90%;
+        width: 90%;
     }
     
     .about-image {
-        width: 70%; /* Increased size */
-        max-width: 350px; /* Increased from not specified */
+        width: 70%;
+        max-width: 350px;
     }
     
     .about-details {
@@ -371,15 +371,15 @@
     }
     
     .about-container { 
-        max-width: 95%; /* Increased from 320px to 95% */
-        width: 95%; /* Increased from 70% to 95% */
-        padding: 0 10px; /* Increased from 8px to 10px */
+        max-width: 95%;
+        width: 95%;
+        padding: 0 10px;
     }
     
     .about-image {
-        width: 80%; /* Increased from 40% to 80% */
-        max-width: 240px; /* Increased from 160px to 240px */
-        margin-bottom: 25px; /* Increased from 20px to 25px */
+        width: 80%;
+        max-width: 240px;
+        margin-bottom: 25px;
     }
     
     .about-image::after {
@@ -394,32 +394,32 @@
     }
     
     .about-details { 
-        width: 85%; /* Increased from 95% to 100% */
-        max-width: 100%; /* Increased from 300px to 100% */
-        padding: 20px; /* Increased from 16px to 20px */
-        font-size: 0.9em; /* Slightly increased from 0.85em */
+        width: 85%;
+        max-width: 100%;
+        padding: 20px;
+        font-size: 0.9em;
     }
     
     .about-details h2 {
-        font-size: 1.5em; /* Increased from 1.4em */
-        margin-bottom: 18px; /* Increased from 15px */
-        padding-bottom: 12px; /* Increased from 10px */
+        font-size: 1.5em;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
     }
     
     .about-details p {
         line-height: 1.5;
-        margin-bottom: 12px; /* Increased from 10px */
-        font-size: 0.95em; /* Increased from 0.9em */
+        margin-bottom: 12px;
+        font-size: 0.95em;
     }
     
     .about-social { 
         gap: 8px; 
-        margin-top: 15px; /* Increased from 10px */
+        margin-top: 15px;
     }
     
     .about-social a { 
-        padding: 6px 12px; /* Increased from 5px 10px */ 
-        font-size: .6em; /* Increased from .5em */ 
+        padding: 6px 12px;
+        font-size: .6em;
     }
 }
 
@@ -429,14 +429,14 @@
         padding: 40px 0;
     }
     .about-container {
-        max-width: 95%; /* Increased from 320px to 95% */
-        width: 95%; /* Increased from 70% to 95% */
+        max-width: 95%;
+        width: 95%;
         padding: 0;
     }
     .about-image {
-        width: 85%; /* Increased from 65% to 85% */
-        max-width: 240px; /* Increased from 200px to 240px */
-        margin-bottom: 25px; /* Increased from 20px */
+        width: 85%;
+        max-width: 240px;
+        margin-bottom: 25px;
     }
     .about-image::after {
         top: 10px;
@@ -449,11 +449,11 @@
     }
     .about-details {
         width: 100%;
-        padding: 18px; /* Increased from 15px */
-        font-size: 0.9em; /* Increased from 0.85em */
+        padding: 18px;
+        font-size: 0.9em;
     }
     .about-details h2 {
-        font-size: 1.6em; /* Increased from 1.5em */
-        margin-bottom: 18px; /* Increased from 15px */
+        font-size: 1.6em;
+        margin-bottom: 18px;
     }
 }
