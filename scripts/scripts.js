@@ -483,82 +483,287 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    // Projects
-    const ProjectsModule = {
-        init: function() {
-            if (!DOM.projects.length || !DOM.filterSelect) return;
-            
-            this.setupProjectFilter();
-            this.setupProjectsAccessibility();
-        },
+        // Projects
+        const ProjectsModule = {
+            projects: [
+                {
+                    id: "storify",
+                    title: "Storify",
+                    description: "A web application for creating and sharing interactive stories using React.",
+                    github: "https://github.com/andresnalegre/Storify",
+                    demo: "https://andresnalegre.github.io/Storify",
+                    category: "React"
+                },
+                {
+                    id: "safepass",
+                    title: "SafePass",
+                    description: "Secure password manager developed with React and cutting-edge encryption.",
+                    github: "https://github.com/andresnalegre/SafePass",
+                    demo: "https://andresnalegre.github.io/SafePass",
+                    category: "React"
+                },
+                {
+                    id: "jamlite",
+                    title: "JamLite",
+                    description: "Minimalist music creation app built with React and Web Audio API.",
+                    github: "https://github.com/andresnalegre/JamLite",
+                    demo: "https://andresnalegre.github.io/JamLite",
+                    category: "React"
+                },
+                {
+                    id: "dailyblessing",
+                    title: "Daily Blessing",
+                    description: "Node.js API that delivers daily inspirational messages through a RESTful endpoint.",
+                    github: "https://github.com/andresnalegre/DailyBlessing",
+                    demo: "https://daily-blessing.herokuapp.com",
+                    category: "Node.js"
+                },
+                {
+                    id: "redcatch",
+                    title: "RedCatch",
+                    description: "React app for monitoring and analyzing social media traffic.",
+                    github: "https://github.com/andresnalegre/RedCatch",
+                    demo: "https://andresnalegre.github.io/RedCatch",
+                    category: "React"
+                },
+                {
+                    id: "datascrape",
+                    title: "DataScrape",
+                    description: "Python web scraping tool for collecting and analyzing data from various sources.",
+                    github: "https://github.com/andresnalegre/DataScrape",
+                    demo: "https://datascrape.pythonanywhere.com",
+                    category: "Python"
+                },
+                {
+                    id: "firecat",
+                    title: "Firecat",
+                    description: "Python security tool for detecting and preventing network attacks.",
+                    github: "https://github.com/andresnalegre/Firecat",
+                    demo: "https://firecat-demo.pythonanywhere.com",
+                    category: "Python"
+                },
+                {
+                    id: "piggybank",
+                    title: "Piggy Bank",
+                    description: "Personal finance management app with data visualization using React.",
+                    github: "https://github.com/andresnalegre/PiggyBank",
+                    demo: "https://andresnalegre.github.io/PiggyBank",
+                    category: "React"
+                },
+                {
+                    id: "astrocalc",
+                    title: "AstroCalc",
+                    description: "Web-based astronomical calculator for celestial calculations and coordinate conversions.",
+                    github: "https://github.com/andresnalegre/AstroCalc",
+                    demo: "https://andresnalegre.github.io/AstroCalc",
+                    category: "Web Development"
+                },
+                {
+                    id: "cipherflow",
+                    title: "Cipher Flow",
+                    description: "Web tool for encrypting and decrypting messages using various algorithms.",
+                    github: "https://github.com/andresnalegre/CipherFlow",
+                    demo: "https://andresnalegre.github.io/CipherFlow",
+                    category: "Web Development"
+                }
+            ],
         
-        setupProjectFilter: function() {
-            const categoryCount = {};
-            
-            DOM.projects.forEach(project => {
-                if (!project.dataset.category) return;
+            init: function() {
+                // Get DOM elements
+                this.projectElements = document.querySelectorAll('.project');
+                this.filterSelect = document.getElementById('category-filter');
                 
-                const category = project.dataset.category;
-                categoryCount[category] = (categoryCount[category] || 0) + 1;
-            });
-            
-            const fragment = document.createDocumentFragment();
-            
-            Object.entries(categoryCount).forEach(([category, count]) => {
-                const option = Util.createElement('option', {
-                    text: `${category} (${count})`,
-                    attributes: { value: category }
+                if (!this.projectElements.length || !this.filterSelect) return;
+                
+                // Create modal container
+                this.modal = this.createModal();
+                
+                // Create project map for quick lookup
+                this.projectMap = {};
+                this.projects.forEach(project => {
+                    this.projectMap[project.id] = project;
                 });
                 
-                fragment.appendChild(option);
-            });
+                // Initialize functionality
+                this.setupProjectFilter();
+                this.setupProjectsAccessibility();
+                this.setupProjectModals();
+            },
             
-            DOM.filterSelect.appendChild(fragment);
+            createModal: function() {
+                const modal = document.createElement('div');
+                modal.className = 'project-modal';
+                modal.id = 'project-modal';
+                document.body.appendChild(modal);
+                return modal;
+            },
             
-            DOM.filterSelect.setAttribute('aria-label', 'Filter projects by category');
+            createModalHTML: function(project) {
+                return `
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <h2>${project.title}</h2>
+                        <p>${project.description}</p>
+                        <div class="modal-buttons">
+                            <a href="${project.github}" target="_blank" class="modal-btn github-btn">Code</a>
+                            <button class="modal-btn demo-btn" data-project-id="${project.id}">Demo</button>
+                        </div>
+                    </div>
+                `;
+            },
             
-            DOM.filterSelect.addEventListener('change', () => {
-                const selectedCategory = DOM.filterSelect.value;
+            showNotification: function(message) {
+                const notification = document.createElement('div');
+                notification.className = 'message-popup info';
+                notification.textContent = message;
+                document.body.appendChild(notification);
                 
-                DOM.projects.forEach(project => {
-                    const projectCategory = project.dataset.category;
-                    const display = selectedCategory === 'all' || projectCategory === selectedCategory ? 'block' : 'none';
-                    project.style.display = display;
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            },
+            
+            setupProjectFilter: function() {
+                // Populate filter with categories and counts
+                const categoryCount = {};
+                
+                this.projectElements.forEach(project => {
+                    if (!project.dataset.category) return;
                     
-                    project.setAttribute('aria-hidden', display === 'none' ? 'true' : 'false');
+                    const category = project.dataset.category;
+                    categoryCount[category] = (categoryCount[category] || 0) + 1;
                 });
-            });
-        },
-        
-        setupProjectsAccessibility: function() {
-            DOM.projects.forEach(project => {
-                if (!project.getAttribute('role')) {
-                    project.setAttribute('role', 'link');
+                
+                // Add "All" option if not already present
+                if (!this.filterSelect.querySelector('option[value="all"]')) {
+                    const allOption = document.createElement('option');
+                    allOption.value = 'all';
+                    allOption.textContent = 'All Projects';
+                    this.filterSelect.appendChild(allOption);
                 }
                 
-                if (!project.getAttribute('tabindex')) {
-                    project.setAttribute('tabindex', '0');
-                }
+                // Add category options from project data
+                Object.entries(categoryCount).forEach(([category, count]) => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = `${category} (${count})`;
+                    this.filterSelect.appendChild(option);
+                });
                 
-                project.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        project.click();
+                // Set accessibility attributes
+                this.filterSelect.setAttribute('aria-label', 'Filter projects by category');
+                
+                // Add change event listener
+                this.filterSelect.addEventListener('change', () => {
+                    const selectedCategory = this.filterSelect.value;
+                    
+                    this.projectElements.forEach(project => {
+                        const projectCategory = project.dataset.category;
+                        const display = selectedCategory === 'all' || projectCategory === selectedCategory ? 'flex' : 'none';
+                        project.style.display = display;
+                        
+                        project.setAttribute('aria-hidden', display === 'none' ? 'true' : 'false');
+                    });
+                });
+            },
+            
+            setupProjectsAccessibility: function() {
+                this.projectElements.forEach(project => {
+                    // Set appropriate ARIA attributes
+                    if (!project.getAttribute('role')) {
+                        project.setAttribute('role', 'link');
+                    }
+                    
+                    if (!project.getAttribute('tabindex')) {
+                        project.setAttribute('tabindex', '0');
+                    }
+                    
+                    // Add keyboard navigation
+                    project.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            project.click();
+                        }
+                    });
+                    
+                    // Set descriptive attributes
+                    const title = project.querySelector('h3')?.textContent || '';
+                    const description = project.querySelector('p')?.textContent || '';
+                    const category = project.dataset.category || '';
+                    
+                    project.setAttribute('title', `${title} - ${category}`);
+                    
+                    if (project.getAttribute('role') === 'link') {
+                        project.setAttribute('aria-label', `${title} - ${description} - Category: ${category}`);
                     }
                 });
+            },
+            
+            setupProjectModals: function() {
+                this.projectElements.forEach(element => {
+                    const projectId = element.getAttribute('data-id');
+                    
+                    element.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        const project = this.projectMap[projectId];
+                        
+                        if (project) {
+                            this.modal.innerHTML = this.createModalHTML(project);
+                            this.modal.style.display = 'flex';
+                            
+                            // Setup close button
+                            const closeBtn = this.modal.querySelector('.close-modal');
+                            closeBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                this.modal.style.display = 'none';
+                            });
+                            
+                            // Close on outside click
+                            window.onclick = (e) => {
+                                if (e.target === this.modal) {
+                                    this.modal.style.display = 'none';
+                                }
+                            };
+        
+                            // Setup demo button
+                            const demoBtn = this.modal.querySelector('.demo-btn');
+                            demoBtn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                this.showNotification("New updates Soon");
+                            });
+                            
+                            // Add keyboard navigation for modal
+                            this.modal.querySelector('.modal-content').focus();
+                            this.setupModalKeyboardNavigation();
+                        }
+                    });
+                });
+            },
+            
+            setupModalKeyboardNavigation: function() {
+                const focusableElements = this.modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
                 
-                const title = project.querySelector('h3')?.textContent || '';
-                const description = project.querySelector('p')?.textContent || '';
-                const category = project.dataset.category || '';
-                
-                project.setAttribute('title', `${title} - ${category}`);
-                
-                if (project.getAttribute('role') === 'link') {
-                    project.setAttribute('aria-label', `${title} - ${description} - Category: ${category}`);
-                }
-            });
-        }
-    };
+                this.modal.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.modal.style.display = 'none';
+                    }
+                    
+                    if (e.key === 'Tab') {
+                        if (e.shiftKey && document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        } else if (!e.shiftKey && document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                });
+            }
+        };
     
     // Lazy Loading
     const LazyLoadModule = {
@@ -637,35 +842,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    const ScrollModule = {
-        init: function() {
-            window.addEventListener('beforeunload', function() {
-                sessionStorage.setItem('scrollPosition', window.scrollY);
-            });
-            
-            window.addEventListener('load', function() {
-                const scrollPosition = sessionStorage.getItem('scrollPosition') || 0;
-                
-                window.scrollTo(0, scrollPosition);
-                
-                setTimeout(function() {
-                    window.scrollTo({
-                        top: scrollPosition,
-                        left: 0,
-                        behavior: 'smooth'
-                    });
-                }, 10);
-            });
-            
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'auto';
-            }
-        }
-    };
-    
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
     LazyLoadModule.init();
-    ScrollModule.init();
 });
