@@ -1,34 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Add critical CSS inline for above-the-fold content
-    const addCriticalStyles = () => {
-        const criticalStyles = `
-            .intro-header {
-                height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #f5f5f5; /* Fallback before image loads */
-            }
-            .profile-pic {
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-                margin: 0 auto 20px;
-                background-color: #eee; /* Placeholder color */
-            }
-            .download-cv {
-                width: 150px; 
-                height: 40px;
-            }
-        `;
-        
-        const styleElement = document.createElement('style');
-        styleElement.textContent = criticalStyles;
-        document.head.appendChild(styleElement);
-    };
-    
-    // Execute critical styles immediately
-    addCriticalStyles();
 
     const CONFIG = {
         startYear: 2014,
@@ -49,13 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
             common: 'width: 100%; padding: 12px; border-radius: 30px; font-weight: bold; font-size: 1rem; border: none; cursor: pointer;',
             primary: 'background-color: #4a148c; color: white;',
             marginTop: 'margin-top: 15px;'
-        },
-        
-        // Cache configuration
-        cache: {
-            version: '1.0',
-            expiration: 60 * 60 * 24 * 7, // 7 days in seconds
-            prefix: 'portfolio_'
         }
     };
     
@@ -72,9 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         moreBtn: document.querySelector('.more-btn'),
         projects: document.querySelectorAll('.project'),
         filterSelect: document.getElementById('category-filter'),
-        lazyImages: document.querySelectorAll('img[loading="lazy"], img[data-src]'),
-        certContainer: document.querySelector('.certifications-container'),
-        certItems: document.querySelectorAll('.certification-item')
+        lazyImages: document.querySelectorAll('img[data-src]')
     };
     
     const Util = {
@@ -117,93 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
         clearChildren: function(element) {
             if (!element) return;
             element.innerHTML = '';
-        },
-        
-        // Cache utilities
-        cache: {
-            set: function(key, value, expirationInSeconds = CONFIG.cache.expiration) {
-                const now = new Date();
-                const item = {
-                    value: value,
-                    expiry: now.getTime() + (expirationInSeconds * 1000)
-                };
-                try {
-                    localStorage.setItem(CONFIG.cache.prefix + key, JSON.stringify(item));
-                    return true;
-                } catch (e) {
-                    console.warn('Cache set failed:', e);
-                    return false;
-                }
-            },
-            
-            get: function(key) {
-                const itemStr = localStorage.getItem(CONFIG.cache.prefix + key);
-                
-                if (!itemStr) return null;
-                
-                try {
-                    const item = JSON.parse(itemStr);
-                    const now = new Date();
-                    
-                    if (now.getTime() > item.expiry) {
-                        localStorage.removeItem(CONFIG.cache.prefix + key);
-                        return null;
-                    }
-                    
-                    return item.value;
-                } catch (e) {
-                    console.warn('Cache get failed:', e);
-                    return null;
-                }
-            },
-            
-            clear: function(keyStartsWith = '') {
-                const prefix = CONFIG.cache.prefix + keyStartsWith;
-                
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key && key.startsWith(prefix)) {
-                        localStorage.removeItem(key);
-                    }
-                }
-            },
-            
-            clearExpired: function() {
-                const now = new Date().getTime();
-                
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    
-                    if (key && key.startsWith(CONFIG.cache.prefix)) {
-                        const itemStr = localStorage.getItem(key);
-                        
-                        try {
-                            const item = JSON.parse(itemStr);
-                            if (now > item.expiry) {
-                                localStorage.removeItem(key);
-                            }
-                        } catch (e) {
-                            // Invalid item, remove it
-                            localStorage.removeItem(key);
-                        }
-                    }
-                }
-            }
-        },
-        
-        debounce: function(func, wait, immediate) {
-            let timeout;
-            return function() {
-                const context = this, args = arguments;
-                const later = function() {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                const callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
         }
     };
     
@@ -292,16 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         init: function() {
             if (!DOM.skillsTable) return;
             
-            // Check if skills data is in cache
-            const cachedSkillsData = Util.cache.get('skills_data');
-            if (cachedSkillsData) {
-                this.skillRows = cachedSkillsData;
-            } else {
-                this.initializeSkills();
-                // Cache skills data
-                Util.cache.set('skills_data', this.skillRows);
-            }
-            
+            this.initializeSkills();
             this.setupFilterButtons();
             this.setupSkillBars();
             
@@ -326,62 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             this.addAccessibilityStyles();
-            
-            // Optimize certifications display
-            this.initializeCertifications();
-        },
-        
-        initializeCertifications: function() {
-            if (!DOM.certContainer || !DOM.certItems.length) return;
-            
-            // Show only first 6 initially
-            const itemsToShow = 6;
-            let hiddenItems = 0;
-            
-            DOM.certItems.forEach((item, index) => {
-                if (index >= itemsToShow) {
-                    item.style.display = 'none';
-                    item.classList.add('lazy-cert');
-                    hiddenItems++;
-                }
-            });
-            
-            // Add "Load More" button if needed
-            if (hiddenItems > 0) {
-                const buttonStyle = `${CONFIG.buttonStyles.common} ${CONFIG.buttonStyles.primary} ${CONFIG.buttonStyles.marginTop}`;
-                
-                const loadMoreBtn = Util.createElement('button', {
-                    className: 'more-btn certs-more-btn',
-                    text: 'Mostrar mais certificações',
-                    cssText: buttonStyle,
-                    attributes: {
-                        'role': 'button',
-                        'aria-expanded': 'false',
-                        'aria-controls': 'lazy-certs'
-                    },
-                    events: {
-                        click: () => {
-                            document.querySelectorAll('.lazy-cert').forEach(item => {
-                                item.style.display = 'flex';
-                            });
-                            loadMoreBtn.style.display = 'none';
-                            loadMoreBtn.setAttribute('aria-expanded', 'true');
-                        },
-                        keydown: (e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                document.querySelectorAll('.lazy-cert').forEach(item => {
-                                    item.style.display = 'flex';
-                                });
-                                loadMoreBtn.style.display = 'none';
-                                loadMoreBtn.setAttribute('aria-expanded', 'true');
-                            }
-                        }
-                    }
-                });
-                
-                DOM.certContainer.after(loadMoreBtn);
-            }
         },
         
         addAccessibilityStyles: function() {
@@ -434,55 +243,35 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeSkills: function() {
             if (!DOM.skillsTable) return;
             
-            try {
-                const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
-                this.skillRows = [];
+            const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
+            this.skillRows = [];
+            
+            allSkillRows.forEach(row => {
+                const bar = row.querySelector('.skill-bar');
+                if (!bar || !bar.dataset.years) return;
                 
-                // Salvar referências originais para evitar problemas no DOM
-                const rowsData = [];
+                const dataYears = bar.dataset.years.split(',').map(Number);
+                const totalYears = dataYears.length;
+                const totalXP = totalYears * CONFIG.xpPerYear;
+                const skillXP = row.querySelector('.skill-xp');
                 
-                allSkillRows.forEach(row => {
-                    const bar = row.querySelector('.skill-bar');
-                    if (!bar || !bar.dataset.years) return;
-                    
-                    const dataYears = bar.dataset.years.split(',').map(Number);
-                    const totalYears = dataYears.length;
-                    const totalXP = totalYears * CONFIG.xpPerYear;
-                    const skillXP = row.querySelector('.skill-xp');
-                    
-                    if (skillXP) {
-                        skillXP.textContent = `${totalXP} XP`;
-                        skillXP.setAttribute('data-years', bar.dataset.years);
-                    }
-                    
-                    const skillName = row.querySelector('.skill-name')?.textContent || '';
-                    bar.setAttribute('title', `${skillName} skill active in years ${dataYears.join(', ')}`);
-                    
-                    // Não adicionar mais um span se já existir
-                    if (!row.querySelector('.sr-only')) {
-                        const srText = document.createElement('span');
-                        srText.className = 'sr-only';
-                        srText.textContent = `${skillName} skill active in years ${dataYears.join(', ')}`;
-                        row.appendChild(srText);
-                    }
-                    
-                    rowsData.push({ 
-                        element: row, 
-                        xp: totalXP,
-                        skillName: skillName,
-                        years: dataYears.join(', ')
-                    });
-                });
+                if (skillXP) {
+                    skillXP.textContent = `${totalXP} XP`;
+                    skillXP.setAttribute('data-years', bar.dataset.years);
+                }
                 
-                // Ordenar por XP e guardar os dados
-                rowsData.sort((a, b) => b.xp - a.xp);
-                this.skillRows = rowsData;
+                const skillName = row.querySelector('.skill-name')?.textContent || '';
+                bar.setAttribute('title', `${skillName} skill active in years ${dataYears.join(', ')}`);
                 
-                console.log('Skills inicializadas com sucesso:', this.skillRows.length);
-            } catch (error) {
-                console.error('Erro ao inicializar skills:', error);
-                this.skillRows = [];
-            }
+                const srText = document.createElement('span');
+                srText.className = 'sr-only';
+                srText.textContent = `${skillName} skill active in years ${dataYears.join(', ')}`;
+                row.appendChild(srText);
+                
+                this.skillRows.push({ element: row, xp: totalXP });
+            });
+            
+            this.skillRows.sort((a, b) => b.xp - a.xp);
         },
         
         displayTopSkills: function() {
@@ -493,25 +282,19 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const fragment = document.createDocumentFragment();
             
-            // Verificar se cada elemento existe antes de manipulá-lo
             topSkills.forEach(row => {
-                if (row && row.element) {
-                    row.element.style.display = 'flex';
-                    fragment.appendChild(row.element.cloneNode(true));
-                }
+                row.element.style.display = 'flex';
+                fragment.appendChild(row.element);
             });
             
             if (DOM.moreBtn) {
                 DOM.moreBtn.style.display = 'block';
-                fragment.appendChild(DOM.moreBtn.cloneNode(true));
+                fragment.appendChild(DOM.moreBtn);
             }
             
-            // Verificar se cada elemento existe antes de manipulá-lo
             remainingSkills.forEach(row => {
-                if (row && row.element) {
-                    row.element.style.display = 'none';
-                    fragment.appendChild(row.element.cloneNode(true));
-                }
+                row.element.style.display = 'none';
+                fragment.appendChild(row.element);
             });
             
             this.removeLessButton();
@@ -523,25 +306,17 @@ document.addEventListener('DOMContentLoaded', function() {
         showAllSkills: function() {
             if (!DOM.skillsTable) return;
             
-            try {
-                const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
-                if (allSkillRows && allSkillRows.length) {
-                    allSkillRows.forEach(row => {
-                        if (row) {
-                            row.style.display = 'flex';
-                        }
-                    });
-                }
-                
-                if (DOM.moreBtn) {
-                    DOM.moreBtn.style.display = 'none';
-                    DOM.moreBtn.setAttribute('aria-expanded', 'true');
-                }
-                
-                this.addLessButton();
-            } catch (error) {
-                console.error('Erro ao mostrar todas as skills:', error);
+            const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
+            allSkillRows.forEach(row => {
+                row.style.display = 'flex';
+            });
+            
+            if (DOM.moreBtn) {
+                DOM.moreBtn.style.display = 'none';
+                DOM.moreBtn.setAttribute('aria-expanded', 'true');
             }
+            
+            this.addLessButton();
         },
         
         addLessButton: function() {
@@ -680,25 +455,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 bar.setAttribute('title', `Active years: ${dataYears.join(', ')}`);
                 
-                // Create a simplified and optimized skill bar
-                // Instead of creating elements for each year, just set the width based on years
-                const yearCount = dataYears.length;
-                const maxWidth = Math.min(yearCount * 10, 100); // Cap at 100%
-                
-                // Immediately set the width for better performance
-                requestAnimationFrame(() => {
-                    bar.style.width = `${maxWidth}%`;
-                });
-                
-                // Update skill XP text
-                const skillRow = bar.closest('.skill-row');
-                if (skillRow) {
-                    const xpElement = skillRow.querySelector('.skill-xp');
-                    if (xpElement) {
-                        const totalXP = yearCount * CONFIG.xpPerYear;
-                        xpElement.textContent = `${totalXP} XP`;
-                    }
+                for (let year = CONFIG.startYear; year <= CONFIG.currentYear; year++) {
+                    const dashedLine = Util.createElement('div', {
+                        cssText: 'border-left: 1px dashed black; position: absolute; height: 100%; top: 0; left: 0;'
+                    });
+                    
+                    const yearLabel = Util.createElement('span', {
+                        text: year,
+                        className: 'year-label',
+                        attributes: {
+                            'aria-hidden': 'true'
+                        },
+                        cssText: 'position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; color: #000000; font-weight: bold;'
+                    });
+                    
+                    const yearElement = Util.createElement('div', {
+                        cssText: `flex: 1; position: relative; height: 100%; ${dataYears.includes(year) && dataYears.includes(year + 1) ? 'background: #28a745;' : ''}`,
+                        children: [dashedLine, yearLabel]
+                    });
+                    
+                    scaleContainer.appendChild(yearElement);
                 }
+                
+                fragment.appendChild(scaleContainer);
+                container.appendChild(fragment);
             });
         }
     };
@@ -794,54 +574,33 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (!this.projectElements.length || !this.filterSelect) return;
             
-            // Initialize lazily to improve initial page load
-            this.initWithDelay();
-        },
-        
-        initWithDelay: function() {
-            // Create modal after initial page load to improve performance
-            setTimeout(() => {
-                this.modal = this.createModal();
-                
-                this.projectTitleMap = {};
-                this.projectElements.forEach(element => {
-                    const title = element.querySelector('h3')?.textContent;
-                    if (title) {
-                        this.projectTitleMap[title] = element;
-                    }
-                });
-                
-                this.projectMap = {};
-                this.projects.forEach(project => {
-                    this.projectMap[project.id] = project;
-                });
-                
-                this.setupProjectFilter();
-                this.setupProjectsAccessibility();
-                this.setupProjectModals();
-            }, 500); // Delay initialization for better initial loading
+            this.modal = this.createModal();
+            
+            this.projectTitleMap = {};
+            this.projectElements.forEach(element => {
+                const title = element.querySelector('h3')?.textContent;
+                if (title) {
+                    this.projectTitleMap[title] = element;
+                }
+            });
+            
+            this.projectMap = {};
+            this.projects.forEach(project => {
+                this.projectMap[project.id] = project;
+            });
+            
+            this.setupProjectFilter();
+            this.setupProjectsAccessibility();
+            this.setupProjectModals();
         },
         
         createModal: function() {
-            // Check cache first
-            const cachedModalHtml = Util.cache.get('modal_element');
-            if (cachedModalHtml) {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = cachedModalHtml;
-                const modal = tempDiv.firstChild;
-                document.body.appendChild(modal);
-                return modal;
-            }
-            
             let modal = document.getElementById('project-modal');
             if (!modal) {
                 modal = document.createElement('div');
                 modal.className = 'project-modal';
                 modal.id = 'project-modal';
                 document.body.appendChild(modal);
-                
-                // Cache modal HTML
-                Util.cache.set('modal_element', modal.outerHTML);
             }
             return modal;
         },
@@ -878,21 +637,12 @@ document.addEventListener('DOMContentLoaded', function() {
         setupProjectFilter: function() {
             const categoryCount = {};
             
-            // Check cache first
-            const cachedCategoryCount = Util.cache.get('project_categories');
-            if (cachedCategoryCount) {
-                Object.assign(categoryCount, cachedCategoryCount);
-            } else {
-                this.projectElements.forEach(project => {
-                    if (!project.dataset.category) return;
-                    
-                    const category = project.dataset.category;
-                    categoryCount[category] = (categoryCount[category] || 0) + 1;
-                });
+            this.projectElements.forEach(project => {
+                if (!project.dataset.category) return;
                 
-                // Cache category count
-                Util.cache.set('project_categories', categoryCount);
-            }
+                const category = project.dataset.category;
+                categoryCount[category] = (categoryCount[category] || 0) + 1;
+            });
             
             if (!this.filterSelect.querySelector('option[value="all"]')) {
                 const allOption = document.createElement('option');
@@ -912,8 +662,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const projectsContainer = this.projectElements[0]?.parentElement;
             
-            // Use debounce to improve performance
-            const debouncedFilterHandler = Util.debounce(() => {
+            this.filterSelect.addEventListener('change', () => {
                 const selectedCategory = this.filterSelect.value;
                 let visibleCount = 0;
                 
@@ -940,9 +689,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     projectsContainer.dataset.visibleItems = visibleCount;
                 }
-            }, 100);
-            
-            this.filterSelect.addEventListener('change', debouncedFilterHandler);
+            });
         },
         
         setupProjectsAccessibility: function() {
@@ -975,42 +722,33 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         
         setupProjectModals: function() {
-            // Use event delegation for better performance
-            const projectsContainer = this.projectElements[0]?.parentElement;
-            if (projectsContainer) {
-                projectsContainer.addEventListener('click', (e) => {
-                    const projectElement = e.target.closest('.project');
-                    if (projectElement) {
-                        e.preventDefault();
-                        this.handleProjectClick(projectElement);
-                    }
+            this.projectElements.forEach(element => {
+                const newElement = element.cloneNode(true);
+                if (element.parentNode) {
+                    element.parentNode.replaceChild(newElement, element);
+                }
+                
+                newElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleProjectClick(newElement);
                 });
-            }
+            });
+            
+            this.projectElements = document.querySelectorAll('.project');
         },
         
         handleProjectClick: function(element) {
             let projectId = element.getAttribute('data-id');
             let project = null;
             
-            // Check cache first
-            const cachedProject = Util.cache.get(`project_${projectId}`);
-            if (cachedProject) {
-                project = cachedProject;
-            } else {
-                if (projectId) {
-                    project = this.projectMap[projectId];
-                }
-                
-                if (!project) {
-                    const title = element.querySelector('h3')?.textContent;
-                    if (title) {
-                        project = this.projects.find(p => p.title === title);
-                    }
-                }
-                
-                // Cache the project data
-                if (project) {
-                    Util.cache.set(`project_${projectId}`, project);
+            if (projectId) {
+                project = this.projectMap[projectId];
+            }
+            
+            if (!project) {
+                const title = element.querySelector('h3')?.textContent;
+                if (title) {
+                    project = this.projects.find(p => p.title === title);
                 }
             }
             
@@ -1082,46 +820,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lazy Loading
     const LazyLoadModule = {
         init: function() {
-            this.lazyImages = document.querySelectorAll('img[loading="lazy"], img[data-src]');
-            
-            if (!this.lazyImages.length) return;
-            
-            // Set proper src for missing image in about section
-            const aboutImage = document.querySelector('.about-image img');
-            if (aboutImage && !aboutImage.src) {
-                aboutImage.src = './assets/Images/Andres.webp';
-                aboutImage.setAttribute('loading', 'lazy');
-                aboutImage.setAttribute('decoding', 'async');
-            }
+            if (!DOM.lazyImages.length) return;
             
             this.setupLazyLoading();
-            this.prefetchCriticalImages();
-            
-            // Add cache headers meta tag
-            this.addCacheControlMeta();
-        },
-        
-        addCacheControlMeta: function() {
-            const meta = document.createElement('meta');
-            meta.httpEquiv = 'Cache-Control';
-            meta.content = 'max-age=604800'; // 1 week
-            document.head.appendChild(meta);
-        },
-        
-        prefetchCriticalImages: function() {
-            // Prefetch critical images for better performance
-            const criticalImages = [
-                './assets/Images/profile.webp',
-                './assets/Images/geometric.webp'
-            ];
-            
-            criticalImages.forEach(imgSrc => {
-                const link = document.createElement('link');
-                link.rel = 'prefetch';
-                link.href = imgSrc;
-                link.as = 'image';
-                document.head.appendChild(link);
-            });
         },
         
         setupLazyLoading: function() {
@@ -1130,18 +831,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             const img = entry.target;
-                            const src = img.getAttribute('data-src') || img.getAttribute('src');
+                            const src = img.getAttribute('data-src');
                             
                             if (src) {
                                 img.src = src;
-                                
-                                // Remove data-src to avoid re-processing
                                 img.removeAttribute('data-src');
                                 
                                 if (!img.hasAttribute('alt')) {
                                     const altText = img.getAttribute('data-alt') || 
-                                                img.parentElement.textContent.trim() || 
-                                                'Image';
+                                                   img.parentElement.textContent.trim() || 
+                                                   'Image';
                                     img.setAttribute('alt', altText);
                                 }
                             }
@@ -1149,15 +848,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             imageObserver.unobserve(img);
                         }
                     });
-                }, {
-                    rootMargin: '200px' // Load images 200px before they come into view
                 });
                 
-                this.lazyImages.forEach(img => {
+                DOM.lazyImages.forEach(img => {
                     imageObserver.observe(img);
                 });
             } else {
-                // Fallback for browsers without IntersectionObserver
                 this.loadImagesInBatches();
             }
         },
@@ -1165,14 +861,14 @@ document.addEventListener('DOMContentLoaded', function() {
         loadImagesInBatches: function() {
             const batchSize = 5;
             let loadedCount = 0;
-            const totalImages = this.lazyImages.length;
+            const totalImages = DOM.lazyImages.length;
             
             const loadNextBatch = () => {
                 const end = Math.min(loadedCount + batchSize, totalImages);
                 
                 for (let i = loadedCount; i < end; i++) {
-                    const img = this.lazyImages[i];
-                    const src = img.getAttribute('data-src') || img.getAttribute('src');
+                    const img = DOM.lazyImages[i];
+                    const src = img.getAttribute('data-src');
                     
                     if (src) {
                         img.src = src;
@@ -1180,8 +876,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         if (!img.hasAttribute('alt')) {
                             const altText = img.getAttribute('data-alt') || 
-                                        img.parentElement.textContent.trim() || 
-                                        'Image';
+                                           img.parentElement.textContent.trim() || 
+                                           'Image';
                             img.setAttribute('alt', altText);
                         }
                     }
@@ -1190,9 +886,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadedCount = end;
                 
                 if (loadedCount < totalImages) {
-                    requestIdleCallback 
-                        ? requestIdleCallback(() => loadNextBatch())
-                        : setTimeout(loadNextBatch, 100);
+                    setTimeout(loadNextBatch, 100);
                 }
             };
             
@@ -1200,141 +894,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    // Service Worker Registration for caching
-    const ServiceWorkerModule = {
-        init: function() {
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('./service-worker.js')
-                        .then(registration => {
-                            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                        })
-                        .catch(err => {
-                            console.log('ServiceWorker registration failed: ', err);
-                        });
-                });
-            }
-        }
-    };
-    
-    // Performance optimizer
-    const PerformanceModule = {
-        init: function() {
-            // Clear expired cache items
-            Util.cache.clearExpired();
-            
-            // Add cache control headers
-            this.addCacheHeaders();
-            
-            // Optimize resource loading
-            this.optimizeResourceLoading();
-            
-            // Optimize animations
-            this.optimizeAnimations();
-        },
-        
-        addCacheHeaders: function() {
-            // Add cache control meta tag if not already present
-            if (!document.querySelector('meta[http-equiv="Cache-Control"]')) {
-                const meta = document.createElement('meta');
-                meta.setAttribute('http-equiv', 'Cache-Control');
-                meta.setAttribute('content', 'max-age=86400'); // 1 day cache
-                document.head.appendChild(meta);
-            }
-        },
-        
-        optimizeResourceLoading: function() {
-            // Prefetch links for better performance
-            const links = document.querySelectorAll('a');
-            const visitedUrls = new Set();
-            
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && href.startsWith('/') && !visitedUrls.has(href)) {
-                    visitedUrls.add(href);
-                    
-                    // Create prefetch link
-                    const prefetchLink = document.createElement('link');
-                    prefetchLink.rel = 'prefetch';
-                    prefetchLink.href = href;
-                    document.head.appendChild(prefetchLink);
-                }
-            });
-        },
-        
-        optimizeAnimations: function() {
-            // Use requestAnimationFrame for animations
-            const animateElements = document.querySelectorAll('.skill-bar, .timeline-item');
-            
-            if (animateElements.length) {
-                requestAnimationFrame(() => {
-                    animateElements.forEach(el => {
-                        el.style.opacity = '1';
-                        el.style.transform = 'translateY(0)';
-                    });
-                });
-            }
-        }
-    };
-    
-    // Initialize modules in order of importance
     NavbarModule.init();
+    SkillsModule.init();
+    ProjectsModule.init();
     LazyLoadModule.init();
-    
-    // Verificar e corrigir elementos críticos
-    const fixCriticalElements = () => {
-        // Verificar imagem no about
-        const aboutImage = document.querySelector('.about-image img');
-        if (aboutImage && !aboutImage.src) {
-            aboutImage.src = './assets/Images/Andres.webp';
-            aboutImage.setAttribute('loading', 'lazy');
-            aboutImage.setAttribute('decoding', 'async');
-        }
-        
-        // Verificar dimensões do botão de download
-        const downloadBtn = document.querySelector('.download-cv');
-        if (downloadBtn) {
-            downloadBtn.style.width = '150px';
-            downloadBtn.style.height = '40px';
-        }
-    };
-    
-    fixCriticalElements();
-    
-    // Usar requestAnimationFrame para o primeiro carregamento importante
-    requestAnimationFrame(() => {
-        // Carregamento seguro de módulos com tratamento de erro
-        try {
-            SkillsModule.init();
-        } catch (error) {
-            console.error('Erro ao inicializar SkillsModule:', error);
-        }
-    });
-    
-    // Defer non-critical modules
-    setTimeout(() => {
-        try {
-            PerformanceModule.init();
-        } catch (error) {
-            console.error('Erro ao inicializar PerformanceModule:', error);
-        }
-    }, 200);
-    
-    // Initialize modules after initial load
-    setTimeout(() => {
-        try {
-            ProjectsModule.init();
-        } catch (error) {
-            console.error('Erro ao inicializar ProjectsModule:', error);
-        }
-        
-        // Only initialize service worker if browser supports it
-        if ('serviceWorker' in navigator) {
-            try {
-                ServiceWorkerModule.init();
-            } catch (error) {
-                console.error('Erro ao inicializar ServiceWorkerModule:', error);
-            }
-        }
-    }, 500);
 });
