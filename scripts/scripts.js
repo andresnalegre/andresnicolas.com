@@ -529,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     id: "datascrape",
                     title: "DataScrape",
-                    description: "Python web scraping tool for collecting and analyzing data from various sources.",
+                    description: "DataScrape is a Python project where I collect data from a given URL and save it into a chosen folder.",
                     github: "https://github.com/andresnalegre/DataScrape",
                     demo: "https://datascrape.pythonanywhere.com",
                     category: "Python"
@@ -537,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     id: "firecat",
                     title: "Firecat",
-                    description: "Python security tool for detecting and preventing network attacks.",
+                    description: "Firecat is a Python project where I built a simple browser app that lets users perform searches.",
                     github: "https://github.com/andresnalegre/Firecat",
                     demo: "https://firecat-demo.pythonanywhere.com",
                     category: "Python"
@@ -545,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     id: "piggybank",
                     title: "Piggy Bank",
-                    description: "Personal finance management app with data visualization using React.",
+                    description: "Piggy Bank is a React project where I built a simple piggy bank that lets you add and withdraw money, and view your transaction history by date.",
                     github: "https://github.com/andresnalegre/PiggyBank",
                     demo: "https://andresnalegre.github.io/PiggyBank",
                     category: "React"
@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     id: "astrocalc",
                     title: "AstroCalc",
-                    description: "Web-based astronomical calculator for celestial calculations and coordinate conversions.",
+                    description: "AstroCalc is a calculator project where I show design and logic in a simple and interactive way.",
                     github: "https://github.com/andresnalegre/AstroCalc",
                     demo: "https://andresnalegre.github.io/AstroCalc",
                     category: "Web Development"
