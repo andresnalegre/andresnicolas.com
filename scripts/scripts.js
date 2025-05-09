@@ -262,15 +262,32 @@ document.addEventListener('DOMContentLoaded', function() {
         init: function() {
             if (!DOM.skillsTable) return;
             
-            // Try to get skills from cache first
-            const cachedSkills = CacheModule.get('skills');
-            if (cachedSkills) {
-                this.skillRows = cachedSkills;
-                this.renderSkills();
+            // We shouldn't cache DOM elements directly
+            // Instead, we'll cache only the skill data (years, names)
+            this.initializeSkills();
+            
+            // Apply cached filter preference if available
+            const cachedFilterPref = CacheModule.get('activeSkillFilter');
+            if (cachedFilterPref) {
+                const filterBtn = document.querySelector(`.filter-btn[data-category="${cachedFilterPref}"]`);
+                if (filterBtn) {
+                    // Apply the cached filter selection
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-pressed', 'false');
+                    });
+                    filterBtn.classList.add('active');
+                    filterBtn.setAttribute('aria-pressed', 'true');
+                    
+                    // Apply the filter
+                    this.toggleCategory(cachedFilterPref);
+                }
             } else {
-                this.initializeSkills();
-                // Cache skills for future use
-                CacheModule.set('skills', this.skillRows);
+                // Default behavior - apply most-progress filter if active
+                const activeFilterBtn = document.querySelector('.filter-btn.active');
+                if (activeFilterBtn && activeFilterBtn.dataset.category === 'most-progress') {
+                    this.displayTopSkills();
+                }
             }
             
             this.setupFilterButtons();
@@ -289,11 +306,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.showAllSkills();
                     }
                 });
-            }
-            
-            const activeFilterBtn = document.querySelector('.filter-btn.active');
-            if (activeFilterBtn && activeFilterBtn.dataset.category === 'most-progress') {
-                this.displayTopSkills();
             }
             
             this.addAccessibilityStyles();
@@ -388,43 +400,23 @@ document.addEventListener('DOMContentLoaded', function() {
         renderSkills: function() {
             if (!this.skillRows.length || !DOM.skillsTable) return;
             
-            // Get the first skill row as a template
-            const templateRow = DOM.skillsTable.querySelector('.skill-row');
-            if (!templateRow) return;
+            // We need to reinitialize skills instead of using cached elements
+            // This is because DOM elements can't be serialized properly in localStorage
+            this.initializeSkills();
             
-            // Clear existing rows
-            Util.clearChildren(DOM.skillsTable);
-            
-            // Recreate skill rows based on cached data
-            this.skillRows.forEach(skill => {
-                if (skill.element) {
-                    DOM.skillsTable.appendChild(skill.element);
-                } else {
-                    // Create new element if not present
-                    const newRow = templateRow.cloneNode(true);
-                    const skillName = newRow.querySelector('.skill-name');
-                    const skillXP = newRow.querySelector('.skill-xp');
-                    const skillBar = newRow.querySelector('.skill-bar');
-                    
-                    if (skillName) skillName.textContent = skill.name;
-                    if (skillXP) {
-                        skillXP.textContent = `${skill.xp} XP`;
-                        skillXP.setAttribute('data-years', skill.years.join(','));
+            // Since we've reinitialized, we can just display the skills directly
+            // No need to access potentially invalid cached DOM elements
+            const activeFilterBtn = document.querySelector('.filter-btn.active');
+            if (activeFilterBtn && activeFilterBtn.dataset.category === 'most-progress') {
+                this.displayTopSkills();
+            } else {
+                // Show all skills
+                this.skillRows.forEach(row => {
+                    if (row.element) {
+                        row.element.style.display = 'flex';
                     }
-                    if (skillBar) {
-                        skillBar.setAttribute('data-years', skill.years.join(','));
-                        skillBar.setAttribute('title', `${skill.name} skill active in years ${skill.years.join(', ')}`);
-                    }
-                    
-                    const srText = document.createElement('span');
-                    srText.className = 'sr-only';
-                    srText.textContent = `${skill.name} skill active in years ${skill.years.join(', ')}`;
-                    newRow.appendChild(srText);
-                    
-                    DOM.skillsTable.appendChild(newRow);
-                    skill.element = newRow;
-                }
-            });
+                });
+            }
         },
         
         displayTopSkills: function() {
