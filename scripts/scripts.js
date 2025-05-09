@@ -894,6 +894,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
+    /* init */
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
