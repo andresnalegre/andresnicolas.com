@@ -606,6 +606,10 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         
         createModalHTML: function(project) {
+            const demoButtonHTML = project.demo === "#" ?
+                `<button class="modal-btn demo-btn" data-project-id="${project.id}">Demo</button>` :
+                `<a href="${project.demo}" target="_blank" class="modal-btn demo-btn">Demo</a>`;
+                
             return `
                 <div class="modal-content">
                     <span class="close-modal">&times;</span>
@@ -613,7 +617,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p>${project.description}</p>
                     <div class="modal-buttons">
                         <a href="${project.github}" target="_blank" class="modal-btn github-btn">Code</a>
-                        <a href="${project.demo}" target="_blank" class="modal-btn demo-btn">Demo</a>
+                        ${demoButtonHTML}
                     </div>
                 </div>
             `;
@@ -758,6 +762,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     e.stopPropagation();
                     this.modal.style.display = 'none';
                 });
+                
+                // Add event listener for demo buttons that need popup
+                const demoBtn = this.modal.querySelector('.demo-btn');
+                if (demoBtn && !demoBtn.getAttribute('href')) {
+                    demoBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.showNotification("New updates soon");
+                    });
+                }
                 
                 window.onclick = (e) => {
                     if (e.target === this.modal) {
