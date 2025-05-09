@@ -561,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 {
                     id: "cipherflow",
                     title: "Cipher Flow",
-                    description: "Web tool for encrypting and decrypting messages using various algorithms.",
+                    description: "CipherFlow is a web dev project inspired by The Matrix where I recreated the iconic code rain, used the soundtrack from the first movie, and added interactions that feel like the film, building something immersive and nostalgic.",
                     github: "https://github.com/andresnalegre/CipherFlow",
                     demo: "https://andresnalegre.github.io/CipherFlow",
                     category: "Web Development"
