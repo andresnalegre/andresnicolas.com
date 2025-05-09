@@ -489,41 +489,41 @@ document.addEventListener('DOMContentLoaded', function() {
             {
                 id: "storify",
                 title: "Storify",
-                description: "A web application for creating and sharing interactive stories using React.",
+                description: "Storify is a React project to easily store and download files.",
                 github: "https://github.com/andresnalegre/Storify",
-                demo: "https://andresnalegre.github.io/Storify",
+                demo: "#",
                 category: "React"
             },
             {
                 id: "safepass",
                 title: "SafePass",
-                description: "Secure password manager developed with React and cutting-edge encryption.",
+                description: "SafePass is a password manager built with React that lets you generate strong passwords, check their strength, and store them securely.",
                 github: "https://github.com/andresnalegre/SafePass",
-                demo: "https://andresnalegre.github.io/SafePass",
+                demo: "#",
                 category: "React"
             },
             {
                 id: "jamlite",
                 title: "JamLite",
-                description: "Minimalist music creation app built with React and Web Audio API.",
+                description: "JamLite is a React project connected to the Spotify API that lets you create or edit playlists by adding songs.",
                 github: "https://github.com/andresnalegre/JamLite",
-                demo: "https://andresnalegre.github.io/JamLite",
+                demo: "#",
                 category: "React"
             },
             {
                 id: "dailyblessing",
                 title: "Daily Blessing",
-                description: "Node.js API that delivers daily inspirational messages through a RESTful endpoint.",
+                description: "Daily Blessing is a Node.js project that generates random blessings to make your day more blessed.",
                 github: "https://github.com/andresnalegre/DailyBlessing",
-                demo: "https://daily-blessing.herokuapp.com",
+                demo: "#",
                 category: "Node.js"
             },
             {
                 id: "redcatch",
                 title: "RedCatch",
-                description: "React app for monitoring and analyzing social media traffic.",
+                description: "RedCatch is a React project connected to the Reddit API to fetch and display posts.",
                 github: "https://github.com/andresnalegre/RedCatch",
-                demo: "https://andresnalegre.github.io/RedCatch",
+                demo: "#",
                 category: "React"
             },
             {
@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: "DataScrape",
                 description: "DataScrape is a Python project where I collect data from a given URL and save it into a chosen folder.",
                 github: "https://github.com/andresnalegre/DataScrape",
-                demo: "https://datascrape.pythonanywhere.com",
+                demo: "#",
                 category: "Python"
             },
             {
@@ -539,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: "Firecat",
                 description: "Firecat is a Python project where I built a simple browser app that lets users perform searches.",
                 github: "https://github.com/andresnalegre/Firecat",
-                demo: "https://firecat-demo.pythonanywhere.com",
+                demo: "#",
                 category: "Python"
             },
             {
@@ -547,7 +547,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: "Piggy Bank",
                 description: "Piggy Bank is a React project where I built a simple piggy bank that lets you add and withdraw money, and view your transaction history by date.",
                 github: "https://github.com/andresnalegre/PiggyBank",
-                demo: "https://andresnalegre.github.io/PiggyBank",
+                demo: "#",
                 category: "React"
             },
             {
