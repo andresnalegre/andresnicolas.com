@@ -19,19 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
             common: 'width: 100%; padding: 12px; border-radius: 30px; font-weight: bold; font-size: 1rem; border: none; cursor: pointer;',
             primary: 'background-color: #4a148c; color: white;',
             marginTop: 'margin-top: 15px;'
-        },
-        
-        // Cache policy configuration
-        cache: {
-            enabled: true,
-            version: '1.0.0',
-            expiration: {
-                projects: 86400000, // 24 hours in milliseconds
-                skills: 604800000,  // 7 days in milliseconds
-                general: 3600000    // 1 hour in milliseconds
-            },
-            prefix: 'portfolio_cache_',
-            storageType: 'localStorage' // 'localStorage' or 'sessionStorage'
         }
     };
     
@@ -91,200 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
         clearChildren: function(element) {
             if (!element) return;
             element.innerHTML = '';
-        }
-    };
-    
-    // Cache Module
-    const CacheModule = {
-        storage: null,
-        
-        init: function() {
-            if (!CONFIG.cache.enabled) return;
-            
-            try {
-                // Check if chosen storage type is available
-                const storageType = CONFIG.cache.storageType === 'sessionStorage' ? sessionStorage : localStorage;
-                
-                // Test storage
-                const testKey = `${CONFIG.cache.prefix}test`;
-                storageType.setItem(testKey, 'test');
-                storageType.removeItem(testKey);
-                
-                this.storage = storageType;
-                
-                // Check cache version and clear if outdated
-                this.checkVersion();
-                
-                // Clear expired items
-                this.clearExpired();
-                
-                console.log('Cache system initialized successfully');
-            } catch (error) {
-                console.warn('Cache system initialization failed:', error);
-                CONFIG.cache.enabled = false;
-            }
-        },
-        
-        checkVersion: function() {
-            const versionKey = `${CONFIG.cache.prefix}version`;
-            const cachedVersion = this.storage.getItem(versionKey);
-            
-            if (cachedVersion !== CONFIG.cache.version) {
-                console.log(`Cache version changed from ${cachedVersion} to ${CONFIG.cache.version}. Clearing cache.`);
-                this.clearAll();
-                this.storage.setItem(versionKey, CONFIG.cache.version);
-            }
-        },
-        
-        clearAll: function() {
-            if (!this.storage) return;
-            
-            const keysToRemove = [];
-            
-            for (let i = 0; i < this.storage.length; i++) {
-                const key = this.storage.key(i);
-                if (key && key.startsWith(CONFIG.cache.prefix)) {
-                    keysToRemove.push(key);
-                }
-            }
-            
-            keysToRemove.forEach(key => {
-                this.storage.removeItem(key);
-            });
-            
-            console.log(`Cleared ${keysToRemove.length} cached items`);
-        },
-        
-        clearExpired: function() {
-            if (!this.storage) return;
-            
-            const now = Date.now();
-            const keysToRemove = [];
-            
-            for (let i = 0; i < this.storage.length; i++) {
-                const key = this.storage.key(i);
-                if (key && key.startsWith(CONFIG.cache.prefix)) {
-                    try {
-                        const item = JSON.parse(this.storage.getItem(key));
-                        if (item.expiry && item.expiry < now) {
-                            keysToRemove.push(key);
-                        }
-                    } catch (e) {
-                        // If we can't parse the item, remove it
-                        keysToRemove.push(key);
-                    }
-                }
-            }
-            
-            keysToRemove.forEach(key => {
-                this.storage.removeItem(key);
-            });
-            
-            if (keysToRemove.length > 0) {
-                console.log(`Removed ${keysToRemove.length} expired cache items`);
-            }
-        },
-        
-        getItem: function(key, category = 'general') {
-            if (!this.storage || !CONFIG.cache.enabled) return null;
-            
-            const cacheKey = `${CONFIG.cache.prefix}${key}`;
-            const cachedData = this.storage.getItem(cacheKey);
-            
-            if (!cachedData) return null;
-            
-            try {
-                const item = JSON.parse(cachedData);
-                
-                // Check if expired
-                if (item.expiry && item.expiry < Date.now()) {
-                    this.storage.removeItem(cacheKey);
-                    return null;
-                }
-                
-                return item.data;
-            } catch (error) {
-                console.warn(`Error parsing cached item: ${key}`, error);
-                this.storage.removeItem(cacheKey);
-                return null;
-            }
-        },
-        
-        setItem: function(key, data, category = 'general') {
-            if (!this.storage || !CONFIG.cache.enabled) return;
-            
-            const cacheKey = `${CONFIG.cache.prefix}${key}`;
-            const expiryTime = CONFIG.cache.expiration[category] || CONFIG.cache.expiration.general;
-            
-            const item = {
-                data: data,
-                timestamp: Date.now(),
-                expiry: Date.now() + expiryTime
-            };
-            
-            try {
-                this.storage.setItem(cacheKey, JSON.stringify(item));
-            } catch (error) {
-                console.warn(`Error caching item: ${key}`, error);
-                
-                // If quota exceeded, clear old items
-                if (error.name === 'QuotaExceededError' || error.code === 22) {
-                    this.clearOldest(5);
-                    try {
-                        // Try again after clearing
-                        this.storage.setItem(cacheKey, JSON.stringify(item));
-                    } catch (e) {
-                        // If still failing, disable cache
-                        console.error('Cache storage failed even after clearing oldest items', e);
-                        CONFIG.cache.enabled = false;
-                    }
-                }
-            }
-        },
-        
-        removeItem: function(key) {
-            if (!this.storage) return;
-            
-            const cacheKey = `${CONFIG.cache.prefix}${key}`;
-            this.storage.removeItem(cacheKey);
-        },
-        
-        clearOldest: function(count = 5) {
-            if (!this.storage) return;
-            
-            // Get all cache items
-            const cacheItems = [];
-            
-            for (let i = 0; i < this.storage.length; i++) {
-                const key = this.storage.key(i);
-                if (key && key.startsWith(CONFIG.cache.prefix)) {
-                    try {
-                        const item = JSON.parse(this.storage.getItem(key));
-                        cacheItems.push({
-                            key: key,
-                            timestamp: item.timestamp || 0
-                        });
-                    } catch (e) {
-                        // If we can't parse, just add with timestamp 0
-                        cacheItems.push({
-                            key: key,
-                            timestamp: 0
-                        });
-                    }
-                }
-            }
-            
-            // Sort by timestamp (oldest first)
-            cacheItems.sort((a, b) => a.timestamp - b.timestamp);
-            
-            // Remove the oldest 'count' items
-            const itemsToRemove = cacheItems.slice(0, count);
-            
-            itemsToRemove.forEach(item => {
-                this.storage.removeItem(item.key);
-            });
-            
-            console.log(`Cleared ${itemsToRemove.length} oldest cached items to free up space`);
         }
     };
     
@@ -373,19 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         init: function() {
             if (!DOM.skillsTable) return;
             
-            // Try to get from cache first
-            const cachedSkillRows = CacheModule.getItem('skillRows', 'skills');
-            if (cachedSkillRows) {
-                this.skillRows = cachedSkillRows;
-                this.renderFromCache();
-            } else {
-                this.initializeSkills();
-                // Cache the processed skill data
-                if (this.skillRows.length > 0) {
-                    CacheModule.setItem('skillRows', this.skillRows, 'skills');
-                }
-            }
-            
+            this.initializeSkills();
             this.setupFilterButtons();
             this.setupSkillBars();
             
@@ -410,40 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             this.addAccessibilityStyles();
-        },
-        
-        renderFromCache: function() {
-            // This function rebuilds skill rows from cached data
-            if (!this.skillRows.length || !DOM.skillsTable) return;
-            
-            // First, clear the existing skill rows
-            const existingRows = DOM.skillsTable.querySelectorAll('.skill-row');
-            existingRows.forEach(row => row.remove());
-            
-            // Recreate skill rows from cached data
-            this.skillRows.forEach(skillData => {
-                if (!skillData.html) return;
-                
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = skillData.html;
-                const newRow = tempDiv.firstChild;
-                
-                if (newRow) {
-                    DOM.skillsTable.appendChild(newRow);
-                    
-                    // Reattach event listeners if needed
-                    const skillBar = newRow.querySelector('.skill-bar');
-                    if (skillBar) {
-                        skillBar.setAttribute('title', `${skillData.name} skill active in years ${skillData.years.join(', ')}`);
-                    }
-                    
-                    // Add screen reader text
-                    const srText = document.createElement('span');
-                    srText.className = 'sr-only';
-                    srText.textContent = `${skillData.name} skill active in years ${skillData.years.join(', ')}`;
-                    newRow.appendChild(srText);
-                }
-            });
         },
         
         addAccessibilityStyles: function() {
@@ -521,14 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 srText.textContent = `${skillName} skill active in years ${dataYears.join(', ')}`;
                 row.appendChild(srText);
                 
-                // Store both the DOM element and the serialized HTML for caching
-                this.skillRows.push({ 
-                    element: row, 
-                    xp: totalXP,
-                    html: row.outerHTML,
-                    name: skillName,
-                    years: dataYears
-                });
+                this.skillRows.push({ element: row, xp: totalXP });
             });
             
             this.skillRows.sort((a, b) => b.xp - a.xp);
@@ -836,15 +576,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             this.modal = this.createModal();
             
-            // Try to get projects from cache
-            const cachedProjects = CacheModule.getItem('projects', 'projects');
-            if (cachedProjects) {
-                this.projects = cachedProjects;
-            } else {
-                // Cache the projects data for future use
-                CacheModule.setItem('projects', this.projects, 'projects');
-            }
-            
             this.projectTitleMap = {};
             this.projectElements.forEach(element => {
                 const title = element.querySelector('h3')?.textContent;
@@ -904,92 +635,61 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         
         setupProjectFilter: function() {
-            // Check if filter options are cached
-            const cachedFilterOptions = CacheModule.getItem('filterOptions', 'projects');
+            const categoryCount = {};
             
-            if (cachedFilterOptions) {
-                // Restore from cache
-                const filterSelect = document.getElementById('category-filter');
-                if (filterSelect) {
-                    filterSelect.innerHTML = cachedFilterOptions;
-                }
-            } else {
-                const categoryCount = {};
+            this.projectElements.forEach(project => {
+                if (!project.dataset.category) return;
                 
-                this.projectElements.forEach(project => {
-                    if (!project.dataset.category) return;
-                    
-                    const category = project.dataset.category;
-                    categoryCount[category] = (categoryCount[category] || 0) + 1;
-                });
-                
-                if (!this.filterSelect.querySelector('option[value="all"]')) {
-                    const allOption = document.createElement('option');
-                    allOption.value = 'all';
-                    allOption.textContent = 'All Projects';
-                    this.filterSelect.appendChild(allOption);
-                }
-                
-                Object.entries(categoryCount).forEach(([category, count]) => {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = `${category} (${count})`;
-                    this.filterSelect.appendChild(option);
-                });
-                
-                // Cache the generated filter HTML
-                if (this.filterSelect) {
-                    CacheModule.setItem('filterOptions', this.filterSelect.innerHTML, 'projects');
-                }
+                const category = project.dataset.category;
+                categoryCount[category] = (categoryCount[category] || 0) + 1;
+            });
+            
+            if (!this.filterSelect.querySelector('option[value="all"]')) {
+                const allOption = document.createElement('option');
+                allOption.value = 'all';
+                allOption.textContent = 'All Projects';
+                this.filterSelect.appendChild(allOption);
             }
+            
+            Object.entries(categoryCount).forEach(([category, count]) => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = `${category} (${count})`;
+                this.filterSelect.appendChild(option);
+            });
             
             this.filterSelect.setAttribute('aria-label', 'Filter projects by category');
             
             const projectsContainer = this.projectElements[0]?.parentElement;
             
-            // Restore last selected filter from cache if available
-            const lastSelectedFilter = CacheModule.getItem('lastSelectedFilter', 'general');
-            if (lastSelectedFilter && this.filterSelect) {
-                this.filterSelect.value = lastSelectedFilter;
-                // Apply the filter immediately
-                this.applyProjectFilter(lastSelectedFilter);
-            }
-            
             this.filterSelect.addEventListener('change', () => {
                 const selectedCategory = this.filterSelect.value;
-                // Cache the user's selection
-                CacheModule.setItem('lastSelectedFilter', selectedCategory, 'general');
-                this.applyProjectFilter(selectedCategory);
-            });
-        },
-        
-        applyProjectFilter: function(selectedCategory) {
-            let visibleCount = 0;
-            const projectsContainer = this.projectElements[0]?.parentElement;
-            
-            this.projectElements.forEach(project => {
-                const projectCategory = project.dataset.category;
-                const shouldShow = selectedCategory === 'all' || projectCategory === selectedCategory;
+                let visibleCount = 0;
                 
-                if (shouldShow) {
-                    project.style.display = '';
-                    project.setAttribute('aria-hidden', 'false');
-                    visibleCount++;
-                } else {
-                    project.style.display = 'none';
-                    project.setAttribute('aria-hidden', 'true');
+                this.projectElements.forEach(project => {
+                    const projectCategory = project.dataset.category;
+                    const shouldShow = selectedCategory === 'all' || projectCategory === selectedCategory;
+                    
+                    if (shouldShow) {
+                        project.style.display = '';
+                        project.setAttribute('aria-hidden', 'false');
+                        visibleCount++;
+                    } else {
+                        project.style.display = 'none';
+                        project.setAttribute('aria-hidden', 'true');
+                    }
+                });
+                
+                if (projectsContainer) {
+                    if (visibleCount <= 2) {
+                        projectsContainer.classList.add('few-items');
+                    } else {
+                        projectsContainer.classList.remove('few-items');
+                    }
+                    
+                    projectsContainer.dataset.visibleItems = visibleCount;
                 }
             });
-            
-            if (projectsContainer) {
-                if (visibleCount <= 2) {
-                    projectsContainer.classList.add('few-items');
-                } else {
-                    projectsContainer.classList.remove('few-items');
-                }
-                
-                projectsContainer.dataset.visibleItems = visibleCount;
-            }
         },
         
         setupProjectsAccessibility: function() {
@@ -1041,27 +741,14 @@ document.addEventListener('DOMContentLoaded', function() {
             let projectId = element.getAttribute('data-id');
             let project = null;
             
-            // Try to get project details from cache first
-            const cacheKey = `project_${projectId || element.querySelector('h3')?.textContent}`;
-            const cachedProject = CacheModule.getItem(cacheKey, 'projects');
+            if (projectId) {
+                project = this.projectMap[projectId];
+            }
             
-            if (cachedProject) {
-                project = cachedProject;
-            } else {
-                if (projectId) {
-                    project = this.projectMap[projectId];
-                }
-                
-                if (!project) {
-                    const title = element.querySelector('h3')?.textContent;
-                    if (title) {
-                        project = this.projects.find(p => p.title === title);
-                    }
-                }
-                
-                // Cache the project details for future use
-                if (project) {
-                    CacheModule.setItem(cacheKey, project, 'projects');
+            if (!project) {
+                const title = element.querySelector('h3')?.textContent;
+                if (title) {
+                    project = this.projects.find(p => p.title === title);
                 }
             }
             
