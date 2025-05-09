@@ -1,0 +1,512 @@
+/* Certifications Styles */
+#certifications {
+    background: var(--bg-light);
+    padding: 40px 10px;
+    margin: 0;
+    margin-top: 20px;
+    text-align: center;
+    color: var(--text-dark);
+    min-height: 100vh;
+    position: relative;
+}
+
+#certifications h2 {
+    color: var(--primary-light);
+    margin-bottom: 30px;
+    font-size: 2.6em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+#certifications h2::after {
+    content: '';
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-light);
+    display: block;
+    margin: 10px auto 0;
+    border-radius: 2px;
+    transition: width .3s ease;
+}
+
+#certifications h2:hover::after {
+    width: 100px;
+}
+
+.certifications-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.certification-item {
+    background: var(--bg-white);
+    border: none;
+    border-radius: var(--radius-xl);
+    padding: 25px 15px 15px;
+    margin: 15px 5px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform .3s ease, box-shadow .3s ease, background-color .3s ease;
+}
+
+.certification-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    background-color: #fefaf7;
+}
+
+.certification-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s ease;
+}
+
+.certification-item:hover::after {
+    transform: scaleX(1);
+}
+
+.certification-item::before {
+    content: '🏆';
+    background: var(--secondary);
+    color: var(--text-light);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 28px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: background .3s ease, transform .3s ease;
+    z-index: 2;
+}
+
+.certification-item:hover::before {
+    background: var(--secondary-light);
+    transform: translateX(-50%) rotate(10deg);
+}
+
+.certification-header {
+    margin-top: 20px;
+}
+
+.year {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 8px;
+    letter-spacing: .5px;
+    transition: transform .3s ease;
+}
+
+.certification-item:hover .year {
+    transform: scale(1.05);
+}
+
+.certification-content h3 {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    transition: color .3s ease;
+}
+
+.certification-item:hover .certification-content h3 {
+    color: var(--secondary);
+}
+
+.provider {
+    font-size: .95em;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 40px;
+    line-height: 1.4;
+}
+
+.validate-link {
+    font-size: .95em;
+    font-weight: 600;
+    color: var(--text-light);
+    background: linear-gradient(135deg, var(--primary-light), #8e24aa);
+    padding: 10px 24px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+    transition: all .3s ease-in-out;
+    border: 2px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.validate-link::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,.3) 0%, transparent 70%);
+    transform: translate(-100%, -100%);
+    opacity: 0;
+    transition: transform .5s, opacity .5s;
+    z-index: 1;
+}
+
+.validate-link:hover::before {
+    transform: translate(0, 0);
+    opacity: 1;
+}
+
+.validate-link:hover {
+    background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+    color: var(--text-light);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(255,112,67,.3);
+    border: 2px solid var(--secondary);
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    #certifications h2 { font-size: 1.8em; }
+    .certification-item { padding: 20px 12px 15px; }
+    .certification-item::before {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        top: -27px;
+    }
+    .certification-content h3 { font-size: 1.1em; }
+    .provider {
+        font-size: .9em;
+        margin-bottom: 30px;
+    }
+    .validate-link {
+        padding: 8px 20px;
+        font-size: .85em;
+    }
+
+    .certification-item {
+        padding: 15px 10px;
+        margin: 10px 5px;
+        width: 85%;
+        justify-self: center;
+    }
+}
+
+@media screen and (min-width: 300px) and (max-width: 614px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .certification-item {
+        padding: 15px 10px;
+        margin: 10px 5px;
+        width: 100%;
+    }
+    
+    .certification-item::before {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+        top: -20px;
+    }
+    
+    .certification-header {
+        margin-top: 10px;
+    }
+    
+    .year { 
+        font-size: 0.8em; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.9em; 
+    }
+    
+    .provider {
+        font-size: 0.8em;
+        margin-bottom: 20px;
+    }
+    
+    .validate-link {
+        padding: 6px 14px;
+        font-size: 0.75em;
+    }
+}
+
+@media screen and (min-width: 300px) and (max-width: 423px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+        padding: 3px;
+    }
+    
+    .certification-item {
+        padding: 5px 3px;
+        margin: 4px 1px;
+        min-height: auto;
+        height: auto;
+        width: 100%;
+        justify-self: center;
+        overflow: hidden;
+    }
+    
+    .certification-item::before {
+        width: 25px;
+        height: 25px;
+        font-size: 10px;
+        top: -10px;
+    }
+    
+    .certification-header {
+        margin-top: 4px;
+    }
+    
+    .year { 
+        font-size: 0.6em;
+        margin-bottom: 1px;
+        letter-spacing: 0; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.65em;
+        margin-bottom: 1px;
+        line-height: 1;
+    }
+    
+    .provider {
+        font-size: 0.6em;
+        margin-bottom: 5px;
+        line-height: 1;
+    }
+    
+    .validate-link {
+        padding: 2px 6px;
+        font-size: 0.55em;
+        letter-spacing: 0;
+        border-width: 1px;
+        box-shadow: none;
+        margin-top: 0;
+    }
+}
+
+@media screen and (min-width: 424px) and (max-width: 498px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        padding: 4px;
+    }
+    
+    .certification-item {
+        padding: 8px 4px;
+        margin: 5px 2px;
+        min-height: auto;
+        height: auto;
+        width: 98%;
+        justify-self: center;
+        overflow: hidden;
+    }
+    
+    .certification-item::before {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+        top: -13px;
+    }
+    
+    .certification-header {
+        margin-top: 5px;
+    }
+    
+    .year { 
+        font-size: 0.65em;
+        margin-bottom: 2px;
+        letter-spacing: 0; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.7em;
+        margin-bottom: 2px;
+        line-height: 1.1;
+    }
+    
+    .provider {
+        font-size: 0.65em;
+        margin-bottom: 8px;
+        line-height: 1.1;
+    }
+    
+    .validate-link {
+        padding: 3px 8px;
+        font-size: 0.6em;
+        letter-spacing: 0;
+        border-width: 1px;
+        box-shadow: var(--shadow-sm);
+    }
+}
+
+@media screen and (min-width: 499px) and (max-width: 535px) {
+    .certifications-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 5px;
+    }
+    
+    .certification-item {
+        padding: 10px 5px;
+        margin: 6px 3px;
+        min-height: auto;
+        height: auto;
+        width: 95%;
+        justify-self: center;
+    }
+    
+    .certification-item::before {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+        top: -15px;
+    }
+    
+    .certification-header {
+        margin-top: 6px;
+    }
+    
+    .year { 
+        font-size: 0.7em;
+        margin-bottom: 3px; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.8em;
+        margin-bottom: 3px;
+        line-height: 1.1;
+    }
+    
+    .provider {
+        font-size: 0.7em;
+        margin-bottom: 10px;
+        line-height: 1.1;
+    }
+    
+    .validate-link {
+        padding: 4px 10px;
+        font-size: 0.65em;
+        letter-spacing: 0px;
+        border-width: 1px;
+    }
+}
+
+@media screen and (max-width: 500px) and (not (min-width: 300px) and (max-width: 535px)) {
+    #certifications { padding: 20px 5px; }
+    #certifications h2 { font-size: 1.5em; }
+    
+    .certification-item {
+        padding: 12px 8px;
+        margin: 8px 4px;
+        min-height: auto;
+        height: auto;
+    }
+    
+    .certification-item::before {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        top: -18px;
+    }
+    
+    .certification-header {
+        margin-top: 8px;
+    }
+    
+    .year { 
+        font-size: 0.75em;
+        margin-bottom: 4px; 
+    }
+    
+    .certification-content h3 { 
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        line-height: 1.2;
+    }
+    
+    .provider {
+        font-size: 0.75em;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+    
+    .validate-link {
+        padding: 5px 12px;
+        font-size: 0.7em;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media screen and (max-width: 299px) {
+    #certifications { padding: 30px 5px; }
+    #certifications h2 { font-size: 1.6em; }
+    .certifications-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .certification-item {
+        padding: 15px 10px;
+        margin: 10px 5px;
+        width: 80%;
+        justify-self: center;
+    }
+    .certification-item::before {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        top: -20px;
+    }
+    .certification-header {
+        margin-top: 15px;
+    }
+    .year { font-size: .9em; }
+    .certification-content h3 { font-size: 1em; }
+    .provider {
+        font-size: .85em;
+        margin-bottom: 25px;
+    }
+    .validate-link {
+        padding: 7px 18px;
+        font-size: .8em;
+    }
+}
+
+@media (hover: hover) {
+    .certification-item:hover { transform: translateY(-3px); }
+    .validate-link:hover { transform: translateY(-2px) scale(1.03); }
+}
