@@ -434,35 +434,55 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeSkills: function() {
             if (!DOM.skillsTable) return;
             
-            const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
-            this.skillRows = [];
-            
-            allSkillRows.forEach(row => {
-                const bar = row.querySelector('.skill-bar');
-                if (!bar || !bar.dataset.years) return;
+            try {
+                const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
+                this.skillRows = [];
                 
-                const dataYears = bar.dataset.years.split(',').map(Number);
-                const totalYears = dataYears.length;
-                const totalXP = totalYears * CONFIG.xpPerYear;
-                const skillXP = row.querySelector('.skill-xp');
+                // Salvar referências originais para evitar problemas no DOM
+                const rowsData = [];
                 
-                if (skillXP) {
-                    skillXP.textContent = `${totalXP} XP`;
-                    skillXP.setAttribute('data-years', bar.dataset.years);
-                }
+                allSkillRows.forEach(row => {
+                    const bar = row.querySelector('.skill-bar');
+                    if (!bar || !bar.dataset.years) return;
+                    
+                    const dataYears = bar.dataset.years.split(',').map(Number);
+                    const totalYears = dataYears.length;
+                    const totalXP = totalYears * CONFIG.xpPerYear;
+                    const skillXP = row.querySelector('.skill-xp');
+                    
+                    if (skillXP) {
+                        skillXP.textContent = `${totalXP} XP`;
+                        skillXP.setAttribute('data-years', bar.dataset.years);
+                    }
+                    
+                    const skillName = row.querySelector('.skill-name')?.textContent || '';
+                    bar.setAttribute('title', `${skillName} skill active in years ${dataYears.join(', ')}`);
+                    
+                    // Não adicionar mais um span se já existir
+                    if (!row.querySelector('.sr-only')) {
+                        const srText = document.createElement('span');
+                        srText.className = 'sr-only';
+                        srText.textContent = `${skillName} skill active in years ${dataYears.join(', ')}`;
+                        row.appendChild(srText);
+                    }
+                    
+                    rowsData.push({ 
+                        element: row, 
+                        xp: totalXP,
+                        skillName: skillName,
+                        years: dataYears.join(', ')
+                    });
+                });
                 
-                const skillName = row.querySelector('.skill-name')?.textContent || '';
-                bar.setAttribute('title', `${skillName} skill active in years ${dataYears.join(', ')}`);
+                // Ordenar por XP e guardar os dados
+                rowsData.sort((a, b) => b.xp - a.xp);
+                this.skillRows = rowsData;
                 
-                const srText = document.createElement('span');
-                srText.className = 'sr-only';
-                srText.textContent = `${skillName} skill active in years ${dataYears.join(', ')}`;
-                row.appendChild(srText);
-                
-                this.skillRows.push({ element: row, xp: totalXP });
-            });
-            
-            this.skillRows.sort((a, b) => b.xp - a.xp);
+                console.log('Skills inicializadas com sucesso:', this.skillRows.length);
+            } catch (error) {
+                console.error('Erro ao inicializar skills:', error);
+                this.skillRows = [];
+            }
         },
         
         displayTopSkills: function() {
@@ -473,19 +493,25 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const fragment = document.createDocumentFragment();
             
+            // Verificar se cada elemento existe antes de manipulá-lo
             topSkills.forEach(row => {
-                row.element.style.display = 'flex';
-                fragment.appendChild(row.element);
+                if (row && row.element) {
+                    row.element.style.display = 'flex';
+                    fragment.appendChild(row.element.cloneNode(true));
+                }
             });
             
             if (DOM.moreBtn) {
                 DOM.moreBtn.style.display = 'block';
-                fragment.appendChild(DOM.moreBtn);
+                fragment.appendChild(DOM.moreBtn.cloneNode(true));
             }
             
+            // Verificar se cada elemento existe antes de manipulá-lo
             remainingSkills.forEach(row => {
-                row.element.style.display = 'none';
-                fragment.appendChild(row.element);
+                if (row && row.element) {
+                    row.element.style.display = 'none';
+                    fragment.appendChild(row.element.cloneNode(true));
+                }
             });
             
             this.removeLessButton();
@@ -497,17 +523,25 @@ document.addEventListener('DOMContentLoaded', function() {
         showAllSkills: function() {
             if (!DOM.skillsTable) return;
             
-            const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
-            allSkillRows.forEach(row => {
-                row.style.display = 'flex';
-            });
-            
-            if (DOM.moreBtn) {
-                DOM.moreBtn.style.display = 'none';
-                DOM.moreBtn.setAttribute('aria-expanded', 'true');
+            try {
+                const allSkillRows = DOM.skillsTable.querySelectorAll('.skill-row');
+                if (allSkillRows && allSkillRows.length) {
+                    allSkillRows.forEach(row => {
+                        if (row) {
+                            row.style.display = 'flex';
+                        }
+                    });
+                }
+                
+                if (DOM.moreBtn) {
+                    DOM.moreBtn.style.display = 'none';
+                    DOM.moreBtn.setAttribute('aria-expanded', 'true');
+                }
+                
+                this.addLessButton();
+            } catch (error) {
+                console.error('Erro ao mostrar todas as skills:', error);
             }
-            
-            this.addLessButton();
         },
         
         addLessButton: function() {
@@ -1247,18 +1281,60 @@ document.addEventListener('DOMContentLoaded', function() {
     NavbarModule.init();
     LazyLoadModule.init();
     
+    // Verificar e corrigir elementos críticos
+    const fixCriticalElements = () => {
+        // Verificar imagem no about
+        const aboutImage = document.querySelector('.about-image img');
+        if (aboutImage && !aboutImage.src) {
+            aboutImage.src = './assets/Images/Andres.webp';
+            aboutImage.setAttribute('loading', 'lazy');
+            aboutImage.setAttribute('decoding', 'async');
+        }
+        
+        // Verificar dimensões do botão de download
+        const downloadBtn = document.querySelector('.download-cv');
+        if (downloadBtn) {
+            downloadBtn.style.width = '150px';
+            downloadBtn.style.height = '40px';
+        }
+    };
+    
+    fixCriticalElements();
+    
+    // Usar requestAnimationFrame para o primeiro carregamento importante
+    requestAnimationFrame(() => {
+        // Carregamento seguro de módulos com tratamento de erro
+        try {
+            SkillsModule.init();
+        } catch (error) {
+            console.error('Erro ao inicializar SkillsModule:', error);
+        }
+    });
+    
     // Defer non-critical modules
     setTimeout(() => {
-        SkillsModule.init();
-        PerformanceModule.init();
-    }, 100);
+        try {
+            PerformanceModule.init();
+        } catch (error) {
+            console.error('Erro ao inicializar PerformanceModule:', error);
+        }
+    }, 200);
     
     // Initialize modules after initial load
     setTimeout(() => {
-        ProjectsModule.init();
+        try {
+            ProjectsModule.init();
+        } catch (error) {
+            console.error('Erro ao inicializar ProjectsModule:', error);
+        }
+        
         // Only initialize service worker if browser supports it
         if ('serviceWorker' in navigator) {
-            ServiceWorkerModule.init();
+            try {
+                ServiceWorkerModule.init();
+            } catch (error) {
+                console.error('Erro ao inicializar ServiceWorkerModule:', error);
+            }
         }
-    }, 300);
+    }, 500);
 });
