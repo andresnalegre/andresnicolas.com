@@ -483,271 +483,326 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-        // Projects
-        const ProjectsModule = {
-            projects: [
-                {
-                    id: "storify",
-                    title: "Storify",
-                    description: "A web application for creating and sharing interactive stories using React.",
-                    github: "https://github.com/andresnalegre/Storify",
-                    demo: "https://andresnalegre.github.io/Storify",
-                    category: "React"
-                },
-                {
-                    id: "safepass",
-                    title: "SafePass",
-                    description: "Secure password manager developed with React and cutting-edge encryption.",
-                    github: "https://github.com/andresnalegre/SafePass",
-                    demo: "https://andresnalegre.github.io/SafePass",
-                    category: "React"
-                },
-                {
-                    id: "jamlite",
-                    title: "JamLite",
-                    description: "Minimalist music creation app built with React and Web Audio API.",
-                    github: "https://github.com/andresnalegre/JamLite",
-                    demo: "https://andresnalegre.github.io/JamLite",
-                    category: "React"
-                },
-                {
-                    id: "dailyblessing",
-                    title: "Daily Blessing",
-                    description: "Node.js API that delivers daily inspirational messages through a RESTful endpoint.",
-                    github: "https://github.com/andresnalegre/DailyBlessing",
-                    demo: "https://daily-blessing.herokuapp.com",
-                    category: "Node.js"
-                },
-                {
-                    id: "redcatch",
-                    title: "RedCatch",
-                    description: "React app for monitoring and analyzing social media traffic.",
-                    github: "https://github.com/andresnalegre/RedCatch",
-                    demo: "https://andresnalegre.github.io/RedCatch",
-                    category: "React"
-                },
-                {
-                    id: "datascrape",
-                    title: "DataScrape",
-                    description: "DataScrape is a Python project where I collect data from a given URL and save it into a chosen folder.",
-                    github: "https://github.com/andresnalegre/DataScrape",
-                    demo: "https://datascrape.pythonanywhere.com",
-                    category: "Python"
-                },
-                {
-                    id: "firecat",
-                    title: "Firecat",
-                    description: "Firecat is a Python project where I built a simple browser app that lets users perform searches.",
-                    github: "https://github.com/andresnalegre/Firecat",
-                    demo: "https://firecat-demo.pythonanywhere.com",
-                    category: "Python"
-                },
-                {
-                    id: "piggybank",
-                    title: "Piggy Bank",
-                    description: "Piggy Bank is a React project where I built a simple piggy bank that lets you add and withdraw money, and view your transaction history by date.",
-                    github: "https://github.com/andresnalegre/PiggyBank",
-                    demo: "https://andresnalegre.github.io/PiggyBank",
-                    category: "React"
-                },
-                {
-                    id: "astrocalc",
-                    title: "AstroCalc",
-                    description: "AstroCalc is a calculator project where I show design and logic in a simple and interactive way.",
-                    github: "https://github.com/andresnalegre/AstroCalc",
-                    demo: "https://andresnalegre.github.io/AstroCalc",
-                    category: "Web Development"
-                },
-                {
-                    id: "cipherflow",
-                    title: "Cipher Flow",
-                    description: "CipherFlow is a web dev project inspired by The Matrix where I recreated the iconic code rain, used the soundtrack from the first movie, and added interactions that feel like the film, building something immersive and nostalgic.",
-                    github: "https://github.com/andresnalegre/CipherFlow",
-                    demo: "https://andresnalegre.github.io/CipherFlow",
-                    category: "Web Development"
-                }
-            ],
-        
-            init: function() {
-                this.projectElements = document.querySelectorAll('.project');
-                this.filterSelect = document.getElementById('category-filter');
-                
-                if (!this.projectElements.length || !this.filterSelect) return;
-                
-                this.modal = this.createModal();
-                
-                this.projectMap = {};
-                this.projects.forEach(project => {
-                    this.projectMap[project.id] = project;
-                });
-                
-                this.setupProjectFilter();
-                this.setupProjectsAccessibility();
-                this.setupProjectModals();
+    // Projects
+    const ProjectsModule = {
+        projects: [
+            {
+                id: "storify",
+                title: "Storify",
+                description: "A web application for creating and sharing interactive stories using React.",
+                github: "https://github.com/andresnalegre/Storify",
+                demo: "https://andresnalegre.github.io/Storify",
+                category: "React"
             },
+            {
+                id: "safepass",
+                title: "SafePass",
+                description: "Secure password manager developed with React and cutting-edge encryption.",
+                github: "https://github.com/andresnalegre/SafePass",
+                demo: "https://andresnalegre.github.io/SafePass",
+                category: "React"
+            },
+            {
+                id: "jamlite",
+                title: "JamLite",
+                description: "Minimalist music creation app built with React and Web Audio API.",
+                github: "https://github.com/andresnalegre/JamLite",
+                demo: "https://andresnalegre.github.io/JamLite",
+                category: "React"
+            },
+            {
+                id: "dailyblessing",
+                title: "Daily Blessing",
+                description: "Node.js API that delivers daily inspirational messages through a RESTful endpoint.",
+                github: "https://github.com/andresnalegre/DailyBlessing",
+                demo: "https://daily-blessing.herokuapp.com",
+                category: "Node.js"
+            },
+            {
+                id: "redcatch",
+                title: "RedCatch",
+                description: "React app for monitoring and analyzing social media traffic.",
+                github: "https://github.com/andresnalegre/RedCatch",
+                demo: "https://andresnalegre.github.io/RedCatch",
+                category: "React"
+            },
+            {
+                id: "datascrape",
+                title: "DataScrape",
+                description: "DataScrape is a Python project where I collect data from a given URL and save it into a chosen folder.",
+                github: "https://github.com/andresnalegre/DataScrape",
+                demo: "https://datascrape.pythonanywhere.com",
+                category: "Python"
+            },
+            {
+                id: "firecat",
+                title: "Firecat",
+                description: "Firecat is a Python project where I built a simple browser app that lets users perform searches.",
+                github: "https://github.com/andresnalegre/Firecat",
+                demo: "https://firecat-demo.pythonanywhere.com",
+                category: "Python"
+            },
+            {
+                id: "piggybank",
+                title: "Piggy Bank",
+                description: "Piggy Bank is a React project where I built a simple piggy bank that lets you add and withdraw money, and view your transaction history by date.",
+                github: "https://github.com/andresnalegre/PiggyBank",
+                demo: "https://andresnalegre.github.io/PiggyBank",
+                category: "React"
+            },
+            {
+                id: "astrocalc",
+                title: "AstroCalc",
+                description: "AstroCalc is a calculator project where I show design and logic in a simple and interactive way.",
+                github: "https://github.com/andresnalegre/AstroCalc",
+                demo: "https://andresnalegre.github.io/AstroCalc",
+                category: "Web Development"
+            },
+            {
+                id: "cipherflow",
+                title: "Cipher Flow",
+                description: "CipherFlow is a web dev project inspired by The Matrix where I recreated the iconic code rain, used the soundtrack from the first movie, and added interactions that feel like the film, building something immersive and nostalgic.",
+                github: "https://github.com/andresnalegre/CipherFlow",
+                demo: "https://andresnalegre.github.io/CipherFlow",
+                category: "Web Development"
+            }
+        ],
+
+        init: function() {
+            this.projectElements = document.querySelectorAll('.project');
+            this.filterSelect = document.getElementById('category-filter');
             
-            createModal: function() {
-                const modal = document.createElement('div');
+            if (!this.projectElements.length || !this.filterSelect) return;
+            
+            this.modal = this.createModal();
+            
+            this.projectTitleMap = {};
+            this.projectElements.forEach(element => {
+                const title = element.querySelector('h3')?.textContent;
+                if (title) {
+                    this.projectTitleMap[title] = element;
+                }
+            });
+            
+            this.projectMap = {};
+            this.projects.forEach(project => {
+                this.projectMap[project.id] = project;
+            });
+            
+            this.setupProjectFilter();
+            this.setupProjectsAccessibility();
+            this.setupProjectModals();
+        },
+        
+        createModal: function() {
+            let modal = document.getElementById('project-modal');
+            if (!modal) {
+                modal = document.createElement('div');
                 modal.className = 'project-modal';
                 modal.id = 'project-modal';
                 document.body.appendChild(modal);
-                return modal;
-            },
-            
-            createModalHTML: function(project) {
-                return `
-                    <div class="modal-content">
-                        <span class="close-modal">&times;</span>
-                        <h2>${project.title}</h2>
-                        <p>${project.description}</p>
-                        <div class="modal-buttons">
-                            <a href="${project.github}" target="_blank" class="modal-btn github-btn">Code</a>
-                            <button class="modal-btn demo-btn" data-project-id="${project.id}">Demo</button>
-                        </div>
+            }
+            return modal;
+        },
+        
+        createModalHTML: function(project) {
+            return `
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>${project.title}</h2>
+                    <p>${project.description}</p>
+                    <div class="modal-buttons">
+                        <a href="${project.github}" target="_blank" class="modal-btn github-btn">Code</a>
+                        <a href="${project.demo}" target="_blank" class="modal-btn demo-btn">Demo</a>
                     </div>
-                `;
-            },
+                </div>
+            `;
+        },
+        
+        showNotification: function(message) {
+            const notification = document.createElement('div');
+            notification.className = 'message-popup info';
+            notification.textContent = message;
+            document.body.appendChild(notification);
             
-            showNotification: function(message) {
-                const notification = document.createElement('div');
-                notification.className = 'message-popup info';
-                notification.textContent = message;
-                document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        },
+        
+        setupProjectFilter: function() {
+            const categoryCount = {};
+            
+            this.projectElements.forEach(project => {
+                if (!project.dataset.category) return;
                 
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
-            },
+                const category = project.dataset.category;
+                categoryCount[category] = (categoryCount[category] || 0) + 1;
+            });
             
-            setupProjectFilter: function() {
-                const categoryCount = {};
+            if (!this.filterSelect.querySelector('option[value="all"]')) {
+                const allOption = document.createElement('option');
+                allOption.value = 'all';
+                allOption.textContent = 'All Projects';
+                this.filterSelect.appendChild(allOption);
+            }
+            
+            Object.entries(categoryCount).forEach(([category, count]) => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = `${category} (${count})`;
+                this.filterSelect.appendChild(option);
+            });
+            
+            this.filterSelect.setAttribute('aria-label', 'Filter projects by category');
+            
+            const projectsContainer = this.projectElements[0]?.parentElement;
+            
+            this.filterSelect.addEventListener('change', () => {
+                const selectedCategory = this.filterSelect.value;
+                let visibleCount = 0;
                 
                 this.projectElements.forEach(project => {
-                    if (!project.dataset.category) return;
+                    const projectCategory = project.dataset.category;
+                    const shouldShow = selectedCategory === 'all' || projectCategory === selectedCategory;
                     
-                    const category = project.dataset.category;
-                    categoryCount[category] = (categoryCount[category] || 0) + 1;
+                    if (shouldShow) {
+                        project.style.display = '';
+                        project.setAttribute('aria-hidden', 'false');
+                        visibleCount++;
+                    } else {
+                        project.style.display = 'none';
+                        project.setAttribute('aria-hidden', 'true');
+                    }
                 });
                 
-                if (!this.filterSelect.querySelector('option[value="all"]')) {
-                    const allOption = document.createElement('option');
-                    allOption.value = 'all';
-                    allOption.textContent = 'All Projects';
-                    this.filterSelect.appendChild(allOption);
+                if (projectsContainer) {
+                    if (visibleCount <= 2) {
+                        projectsContainer.classList.add('few-items');
+                    } else {
+                        projectsContainer.classList.remove('few-items');
+                    }
+                    
+                    projectsContainer.dataset.visibleItems = visibleCount;
+                }
+            });
+        },
+        
+        setupProjectsAccessibility: function() {
+            this.projectElements.forEach(project => {
+                if (!project.getAttribute('role')) {
+                    project.setAttribute('role', 'button');
                 }
                 
-                Object.entries(categoryCount).forEach(([category, count]) => {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = `${category} (${count})`;
-                    this.filterSelect.appendChild(option);
-                });
+                if (!project.getAttribute('tabindex')) {
+                    project.setAttribute('tabindex', '0');
+                }
                 
-                this.filterSelect.setAttribute('aria-label', 'Filter projects by category');
-                
-                this.filterSelect.addEventListener('change', () => {
-                    const selectedCategory = this.filterSelect.value;
-                    
-                    this.projectElements.forEach(project => {
-                        const projectCategory = project.dataset.category;
-                        const display = selectedCategory === 'all' || projectCategory === selectedCategory ? 'flex' : 'none';
-                        project.style.display = display;
-                        
-                        project.setAttribute('aria-hidden', display === 'none' ? 'true' : 'false');
-                    });
-                });
-            },
-            
-            setupProjectsAccessibility: function() {
-                this.projectElements.forEach(project => {
-                    if (!project.getAttribute('role')) {
-                        project.setAttribute('role', 'link');
-                    }
-                    
-                    if (!project.getAttribute('tabindex')) {
-                        project.setAttribute('tabindex', '0');
-                    }
-                    
-                    project.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            project.click();
-                        }
-                    });
-                    
-                    const title = project.querySelector('h3')?.textContent || '';
-                    const description = project.querySelector('p')?.textContent || '';
-                    const category = project.dataset.category || '';
-                    
-                    project.setAttribute('title', `${title} - ${category}`);
-                    
-                    if (project.getAttribute('role') === 'link') {
-                        project.setAttribute('aria-label', `${title} - ${description} - Category: ${category}`);
-                    }
-                });
-            },
-            
-            setupProjectModals: function() {
-                this.projectElements.forEach(element => {
-                    const projectId = element.getAttribute('data-id');
-                    
-                    element.addEventListener('click', (e) => {
+                project.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        
-                        const project = this.projectMap[projectId];
-                        
-                        if (project) {
-                            this.modal.innerHTML = this.createModalHTML(project);
-                            this.modal.style.display = 'flex';
-                            
-                            const closeBtn = this.modal.querySelector('.close-modal');
-                            closeBtn.addEventListener('click', (e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                this.modal.style.display = 'none';
-                            });
-                            
-                            window.onclick = (e) => {
-                                if (e.target === this.modal) {
-                                    this.modal.style.display = 'none';
-                                }
-                            };
-        
-                            const demoBtn = this.modal.querySelector('.demo-btn');
-                            demoBtn.addEventListener('click', (e) => {
-                                e.preventDefault();
-                                this.showNotification("New updates Soon");
-                            });
-                            
-                            this.modal.querySelector('.modal-content').focus();
-                            this.setupModalKeyboardNavigation();
-                        }
-                    });
+                        project.click();
+                    }
                 });
-            },
-            
-            setupModalKeyboardNavigation: function() {
-                const focusableElements = this.modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
                 
-                this.modal.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') {
+                const title = project.querySelector('h3')?.textContent || '';
+                const description = project.querySelector('p')?.textContent || '';
+                const category = project.dataset.category || '';
+                
+                project.setAttribute('title', `${title} - ${category}`);
+                
+                if (project.getAttribute('role') === 'button') {
+                    project.setAttribute('aria-label', `${title} - ${description} - Category: ${category}`);
+                }
+            });
+        },
+        
+        setupProjectModals: function() {
+            this.projectElements.forEach(element => {
+                const newElement = element.cloneNode(true);
+                if (element.parentNode) {
+                    element.parentNode.replaceChild(newElement, element);
+                }
+                
+                newElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleProjectClick(newElement);
+                });
+            });
+            
+            this.projectElements = document.querySelectorAll('.project');
+        },
+        
+        handleProjectClick: function(element) {
+            let projectId = element.getAttribute('data-id');
+            let project = null;
+            
+            if (projectId) {
+                project = this.projectMap[projectId];
+            }
+            
+            if (!project) {
+                const title = element.querySelector('h3')?.textContent;
+                if (title) {
+                    project = this.projects.find(p => p.title === title);
+                }
+            }
+            
+            if (project) {
+                this.modal.innerHTML = this.createModalHTML(project);
+                this.modal.style.display = 'flex';
+                
+                const closeBtn = this.modal.querySelector('.close-modal');
+                closeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.modal.style.display = 'none';
+                });
+                
+                window.onclick = (e) => {
+                    if (e.target === this.modal) {
                         this.modal.style.display = 'none';
                     }
-                    
-                    if (e.key === 'Tab') {
-                        if (e.shiftKey && document.activeElement === firstElement) {
-                            e.preventDefault();
-                            lastElement.focus();
-                        } else if (!e.shiftKey && document.activeElement === lastElement) {
-                            e.preventDefault();
-                            firstElement.focus();
-                        }
+                };
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.modal.style.display === 'flex') {
+                        this.modal.style.display = 'none';
                     }
                 });
+                
+                this.setupModalKeyboardNavigation();
             }
-        };
+        },
+        
+        setupModalKeyboardNavigation: function() {
+            const focusableElements = this.modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (!focusableElements.length) return;
+            
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            setTimeout(() => {
+                firstElement.focus();
+            }, 100);
+            
+            const handleKeyDown = (e) => {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey && document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    } else if (!e.shiftKey && document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            };
+            
+            this.modal.removeEventListener('keydown', handleKeyDown);
+            
+            this.modal.addEventListener('keydown', handleKeyDown);
+        }
+    };
     
     // Lazy Loading
     const LazyLoadModule = {
