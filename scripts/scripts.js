@@ -763,7 +763,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.modal.style.display = 'none';
                 });
                 
-                // Add event listener for demo buttons that need popup
                 const demoBtn = this.modal.querySelector('.demo-btn');
                 if (demoBtn && !demoBtn.getAttribute('href')) {
                     demoBtn.addEventListener('click', (e) => {
