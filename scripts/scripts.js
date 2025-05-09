@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
             common: 'width: 100%; padding: 12px; border-radius: 30px; font-weight: bold; font-size: 1rem; border: none; cursor: pointer;',
             primary: 'background-color: #4a148c; color: white;',
             marginTop: 'margin-top: 15px;'
+        },
+        
+        // Cache policy configuration
+        cache: {
+            enabled: true,
+            duration: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+            prefix: 'portfolio_',
+            version: '1.0.0'
         }
     };
     
@@ -78,6 +86,94 @@ document.addEventListener('DOMContentLoaded', function() {
         clearChildren: function(element) {
             if (!element) return;
             element.innerHTML = '';
+        }
+    };
+    
+    // Cache Module
+    const CacheModule = {
+        init: function() {
+            if (!CONFIG.cache.enabled || !window.localStorage) return;
+            
+            // Check cache version and clear if outdated
+            this.checkVersion();
+        },
+        
+        checkVersion: function() {
+            const storedVersion = localStorage.getItem(`${CONFIG.cache.prefix}version`);
+            
+            if (storedVersion !== CONFIG.cache.version) {
+                this.clearAll();
+                localStorage.setItem(`${CONFIG.cache.prefix}version`, CONFIG.cache.version);
+            }
+        },
+        
+        getKey: function(key) {
+            return `${CONFIG.cache.prefix}${key}`;
+        },
+        
+        set: function(key, value, customExpiry = null) {
+            if (!CONFIG.cache.enabled || !window.localStorage) return false;
+            
+            try {
+                const expiryTime = customExpiry || Date.now() + CONFIG.cache.duration;
+                const cacheObject = {
+                    value: value,
+                    expiry: expiryTime
+                };
+                
+                localStorage.setItem(this.getKey(key), JSON.stringify(cacheObject));
+                return true;
+            } catch (e) {
+                console.warn('Cache set failed:', e);
+                return false;
+            }
+        },
+        
+        get: function(key) {
+            if (!CONFIG.cache.enabled || !window.localStorage) return null;
+            
+            try {
+                const cachedData = localStorage.getItem(this.getKey(key));
+                
+                if (!cachedData) return null;
+                
+                const cacheObject = JSON.parse(cachedData);
+                
+                // Check if cache has expired
+                if (Date.now() > cacheObject.expiry) {
+                    this.remove(key);
+                    return null;
+                }
+                
+                return cacheObject.value;
+            } catch (e) {
+                console.warn('Cache get failed:', e);
+                return null;
+            }
+        },
+        
+        remove: function(key) {
+            if (!CONFIG.cache.enabled || !window.localStorage) return;
+            
+            try {
+                localStorage.removeItem(this.getKey(key));
+            } catch (e) {
+                console.warn('Cache remove failed:', e);
+            }
+        },
+        
+        clearAll: function() {
+            if (!CONFIG.cache.enabled || !window.localStorage) return;
+            
+            try {
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith(CONFIG.cache.prefix)) {
+                        localStorage.removeItem(key);
+                    }
+                });
+            } catch (e) {
+                console.warn('Cache clearAll failed:', e);
+            }
         }
     };
     
@@ -166,7 +262,17 @@ document.addEventListener('DOMContentLoaded', function() {
         init: function() {
             if (!DOM.skillsTable) return;
             
-            this.initializeSkills();
+            // Try to get skills from cache first
+            const cachedSkills = CacheModule.get('skills');
+            if (cachedSkills) {
+                this.skillRows = cachedSkills;
+                this.renderSkills();
+            } else {
+                this.initializeSkills();
+                // Cache skills for future use
+                CacheModule.set('skills', this.skillRows);
+            }
+            
             this.setupFilterButtons();
             this.setupSkillBars();
             
@@ -268,10 +374,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 srText.textContent = `${skillName} skill active in years ${dataYears.join(', ')}`;
                 row.appendChild(srText);
                 
-                this.skillRows.push({ element: row, xp: totalXP });
+                this.skillRows.push({ 
+                    element: row, 
+                    xp: totalXP,
+                    name: skillName,
+                    years: dataYears
+                });
             });
             
             this.skillRows.sort((a, b) => b.xp - a.xp);
+        },
+        
+        renderSkills: function() {
+            if (!this.skillRows.length || !DOM.skillsTable) return;
+            
+            // Get the first skill row as a template
+            const templateRow = DOM.skillsTable.querySelector('.skill-row');
+            if (!templateRow) return;
+            
+            // Clear existing rows
+            Util.clearChildren(DOM.skillsTable);
+            
+            // Recreate skill rows based on cached data
+            this.skillRows.forEach(skill => {
+                if (skill.element) {
+                    DOM.skillsTable.appendChild(skill.element);
+                } else {
+                    // Create new element if not present
+                    const newRow = templateRow.cloneNode(true);
+                    const skillName = newRow.querySelector('.skill-name');
+                    const skillXP = newRow.querySelector('.skill-xp');
+                    const skillBar = newRow.querySelector('.skill-bar');
+                    
+                    if (skillName) skillName.textContent = skill.name;
+                    if (skillXP) {
+                        skillXP.textContent = `${skill.xp} XP`;
+                        skillXP.setAttribute('data-years', skill.years.join(','));
+                    }
+                    if (skillBar) {
+                        skillBar.setAttribute('data-years', skill.years.join(','));
+                        skillBar.setAttribute('title', `${skill.name} skill active in years ${skill.years.join(', ')}`);
+                    }
+                    
+                    const srText = document.createElement('span');
+                    srText.className = 'sr-only';
+                    srText.textContent = `${skill.name} skill active in years ${skill.years.join(', ')}`;
+                    newRow.appendChild(srText);
+                    
+                    DOM.skillsTable.appendChild(newRow);
+                    skill.element = newRow;
+                }
+            });
         },
         
         displayTopSkills: function() {
@@ -411,6 +564,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const category = btn.dataset.category;
             this.toggleCategory(category);
+            
+            // Save filter preference in cache
+            CacheModule.set('activeSkillFilter', category);
         },
         
         toggleCategory: function(category) {
@@ -589,6 +745,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.projectMap[project.id] = project;
             });
             
+            // Check for cached projects first
+            const cachedProjects = CacheModule.get('projects');
+            if (!cachedProjects) {
+                // Cache the project data
+                CacheModule.set('projects', this.projects);
+            }
+            
+            // Restore filter selection from cache
+            const cachedFilterSelection = CacheModule.get('projectFilter');
+            if (cachedFilterSelection && this.filterSelect) {
+                this.filterSelect.value = cachedFilterSelection;
+            }
+            
             this.setupProjectFilter();
             this.setupProjectsAccessibility();
             this.setupProjectModals();
@@ -689,6 +858,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     projectsContainer.dataset.visibleItems = visibleCount;
                 }
+                
+                // Cache user's filter preference
+                CacheModule.set('projectFilter', selectedCategory);
             });
         },
         
@@ -753,6 +925,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             if (project) {
+                // Cache last viewed project
+                CacheModule.set('lastViewedProject', project.id);
+                
                 this.modal.innerHTML = this.createModalHTML(project);
                 this.modal.style.display = 'flex';
                 
@@ -843,6 +1018,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                                    'Image';
                                     img.setAttribute('alt', altText);
                                 }
+                                
+                                // Cache loaded image paths
+                                CacheModule.set(`image_loaded_${src}`, true);
                             }
                             
                             imageObserver.unobserve(img);
@@ -851,7 +1029,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 DOM.lazyImages.forEach(img => {
-                    imageObserver.observe(img);
+                    const src = img.getAttribute('data-src');
+                    
+                    // Check if image was already loaded in a previous session
+                    if (src && CacheModule.get(`image_loaded_${src}`)) {
+                        img.src = src;
+                        img.removeAttribute('data-src');
+                        
+                        if (!img.hasAttribute('alt')) {
+                            const altText = img.getAttribute('data-alt') || 
+                                          img.parentElement.textContent.trim() || 
+                                          'Image';
+                            img.setAttribute('alt', altText);
+                        }
+                    } else {
+                        imageObserver.observe(img);
+                    }
                 });
             } else {
                 this.loadImagesInBatches();
@@ -880,6 +1073,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                            'Image';
                             img.setAttribute('alt', altText);
                         }
+                        
+                        // Cache loaded image paths
+                        CacheModule.set(`image_loaded_${src}`, true);
                     }
                 }
                 
@@ -894,8 +1090,107 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
+    // Performance Monitoring
+    const PerformanceModule = {
+        metrics: {
+            pageLoad: null,
+            firstContentfulPaint: null,
+            domInteractive: null
+        },
+        
+        init: function() {
+            // Don't initialize if the browser doesn't support the Performance API
+            if (!window.performance || !window.performance.timing) return;
+            
+            window.addEventListener('load', () => {
+                // Wait a bit to ensure all metrics are available
+                setTimeout(() => {
+                    this.collectMetrics();
+                    this.saveMetricsToCache();
+                }, 1000);
+            });
+        },
+        
+        collectMetrics: function() {
+            const timing = window.performance.timing;
+            
+            this.metrics = {
+                pageLoad: timing.loadEventEnd - timing.navigationStart,
+                firstContentfulPaint: this.getFCP(),
+                domInteractive: timing.domInteractive - timing.navigationStart
+            };
+            
+            // Log performance data for developers
+            console.log('Performance metrics:', this.metrics);
+        },
+        
+        getFCP: function() {
+            // Get First Contentful Paint if available
+            if (window.performance && window.performance.getEntriesByType) {
+                const paintEntries = window.performance.getEntriesByType('paint');
+                const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint');
+                
+                if (fcpEntry) {
+                    return fcpEntry.startTime;
+                }
+            }
+            
+            return null;
+        },
+        
+        saveMetricsToCache: function() {
+            // Save performance metrics to cache for analysis
+            CacheModule.set('performanceMetrics', this.metrics);
+        }
+    };
+    
+    // Initialize all modules
+    CacheModule.init();
     NavbarModule.init();
     SkillsModule.init();
     ProjectsModule.init();
     LazyLoadModule.init();
+    PerformanceModule.init();
+    
+    // Initialize predefined user preferences from cache
+    const initializeUserPreferences = function() {
+        // Set up theme preference if cached
+        const cachedTheme = CacheModule.get('theme');
+        if (cachedTheme) {
+            document.documentElement.setAttribute('data-theme', cachedTheme);
+        }
+        
+        // Restore scroll position if applicable
+        const lastViewedSection = CacheModule.get('lastViewedSection');
+        if (lastViewedSection) {
+            const sectionElement = document.querySelector(lastViewedSection);
+            if (sectionElement) {
+                NavbarModule.smoothScroll(lastViewedSection);
+            }
+        }
+        
+        // Set up event to save scroll position
+        let scrollTimer;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                // Find which section is currently in view
+                const sections = document.querySelectorAll('section[id]');
+                let currentSection = null;
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        currentSection = `#${section.id}`;
+                    }
+                });
+                
+                if (currentSection) {
+                    CacheModule.set('lastViewedSection', currentSection);
+                }
+            }, 500);
+        });
+    };
+    
+    initializeUserPreferences();
 });
